@@ -1,0 +1,10 @@
+@layer base {
+  #root {
+    @apply min-h-screen;
+  }
+
+  /* shadcn base */
+  * {
+    @apply border-border outline-ring/50;
+  }
+}

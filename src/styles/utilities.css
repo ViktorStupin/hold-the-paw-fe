@@ -1,0 +1,16 @@
+@layer utilities {
+  /* padding-inline mixin */
+  .u-content-padding {
+    @apply px-4 md:px-6 lg:px-8;
+  }
+
+  /* page-grid mixin */
+  .u-page-grid {
+    @apply grid grid-cols-4 gap-4 md:grid-cols-12 md:gap-6 lg:grid-cols-24 lg:gap-4;
+  }
+
+  /* hover mixin (універсальний) */
+  .u-hover-opacity {
+    @apply transition-opacity duration-200 hover:opacity-80;
+  }
+}

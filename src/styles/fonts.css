@@ -1,0 +1,13 @@
+@font-face {
+  font-family: "SF Pro Rounded";
+  src: url('../assets/fonts/SF-Pro-Rounded-Bold.otf') format('opentype');
+  font-weight: 700;    /* bold */
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SF Pro Rounded";
+  src: url('../assets/fonts/SF-Pro-Rounded-Medium.otf') format('opentype');
+  font-weight: 500;    /* medium */
+  font-display: swap;
+}
