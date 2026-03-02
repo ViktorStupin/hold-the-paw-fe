@@ -35,13 +35,12 @@
   --gray-30: #eeeef0;
   --gray-0: #fafafa;
 
-  --light-opacity: #FFFFFF26;
+  --light-opacity: #ffffff26;
 
   --error: #ae2222;
   --success: #0da049;
   --success: #eccf3c;
-  --info: #3446E9;
-
+  --info: #3446e9;
 
   --font-sans: 'SF Pro Rounded', ui-sans-serif, system-ui, sans-serif;
 }
@@ -81,8 +80,25 @@
   --color-primary-0: var(--primary-0);
 
   --color-gray-100: var(--gray-100);
+  --color-gray-90: var(--gray-90);
+  --color-gray-80: var(--gray-80);
+  --color-gray-70: var(--gray-70);
+  --color-gray-50: var(--gray-50);
+  --color-gray-30: var(--gray-30);
   --color-gray-0: var(--gray-0);
 
-  /* Шрифти як theme token */
+  --color-light-opacity: var(--light-opacity);
+  --color-error: var(--error);
+  --color-success: var(--success);  
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+
   --font-family-sans: var(--font-sans);
+
+  --breakpoint-xs: 475px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1440px;
+  --breakpoint-2xl: 1536px;
 }

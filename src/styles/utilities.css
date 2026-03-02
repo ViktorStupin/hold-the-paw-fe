@@ -1,16 +1,54 @@
-@layer utilities {
-  /* padding-inline mixin */
-  .u-content-padding {
-    @apply px-4 md:px-6 lg:px-8;
-  }
+@import 'tailwindcss';
 
-  /* page-grid mixin */
-  .u-page-grid {
-    @apply grid grid-cols-4 gap-4 md:grid-cols-12 md:gap-6 lg:grid-cols-24 lg:gap-4;
-  }
+@utility u-content-padding {
+  @apply px-4  lg:px-12;
+}
 
-  /* hover mixin (універсальний) */
-  .u-hover-opacity {
-    @apply transition-opacity duration-200 hover:opacity-80;
-  }
+@utility u-page-grid {
+  @apply grid grid-cols-4 gap-4 md:grid-cols-12 md:gap-6 lg:grid-cols-24 lg:gap-4;
+}
+
+@utility u-hover-opacity {
+  @apply transition-opacity duration-200 hover:opacity-80;
+}
+
+@utility u-container {
+  @apply box-border w-full u-content-padding lg:w-(--breakpoint-xl) mx-auto;
+}
+
+@utility icon {
+  @apply block w-4 h-4 aspect-square bg-no-repeat bg-cover shrink-0;
+}
+
+@utility icon-sm {
+  @apply w-4 h-4;
+}
+@utility icon-md {
+  @apply w-5 h-5;
+}
+@utility icon-lg {
+  @apply w-6 h-6;
+}
+@utility icon-xl {
+  @apply w-8 h-8;
+}
+@utility icon-2xl {
+  @apply w-11 h-11;
+}
+
+@utility icon-hover-scale {
+  @apply hover:scale-110 transition-transform duration-200;
+}
+
+@utility icon-rotate-90 {
+  @apply rotate-90;
+}
+@utility icon-rotate--90 {
+  @apply -rotate-90;
+}
+@utility icon-rotate-180 {
+  @apply rotate-180;
+}
+@utility icon-rotate--180 {
+  @apply -rotate-180;
 }
