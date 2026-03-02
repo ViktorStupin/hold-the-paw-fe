@@ -1,5 +1,4 @@
 import { Outlet } from 'react-router-dom';
-import './App.css';
 import { Footer } from './layouts/Footer';
 import { Header } from './layouts/Header';
 
@@ -9,6 +8,7 @@ function App() {
       <Header />
       <main>
         <Outlet />
+        <h1 className='typo-h1'>Hold the Paw</h1>
       </main>
       <Footer />
     </>
