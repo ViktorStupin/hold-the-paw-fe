@@ -8,7 +8,6 @@ function App() {
       <Header />
       <main>
         <Outlet />
-        <h1 className='typo-h1'>Hold the Paw</h1>
       </main>
       <Footer />
     </>

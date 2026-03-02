@@ -1,41 +1,49 @@
+import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/utils/hooks/useIsMobile';
+import clsx from 'clsx';
 import React from 'react';
+import { steps } from '../steps/constants/steps';
+import { Icon } from '@/components/ui/icon';
 
-type Props = { currentStep: number; changeStep: (step: number) => void; totalSteps: number };
+type Props = { currentStep: number };
 
-export const ProgressBar: React.FC<Props> = ({ currentStep, changeStep, totalSteps }) => {
-  const stepWidth = `${100 / (totalSteps - 1)}%`; // Ширина для лінійок
+export const ProgressBar: React.FC<Props> = ({ currentStep }) => {
+  const isMobile = useIsMobile();
 
   return (
-    <div className='flex items-center justify-between w-full mb-8 max-w-2xl mx-auto'>
-      {Array.from({ length: totalSteps }).map((_, index) => {
-        const isActive = index === currentStep;
+    <div className='flex items-center px-6 mt-4 mb-6 lg:mt-0 lg:px-16 max-w-276 mx-auto lg:mb-20'>
+      {steps.map((step, index) => {
+        const isActive = index <= currentStep;
         const isCompleted = index < currentStep;
-        const isLast = index === totalSteps - 1;
+        const isLast = index === steps.length - 1;
 
         return (
           <React.Fragment key={index}>
-            <div className='flex flex-col items-center w-6 md:w-11'>
-              <div
-                className='w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-300'
-              >
-                {isCompleted ? '✓' : index + 1}
-              </div>
+            <div
+              className={clsx(
+                'relative flex flex-col items-center justify-center rounded-full aspect-square',
+                'w-6 md: lg:w-11',
+                {
+                  'bg-primary-40 text-white': isActive,
+                  'bg-gray-50 text-gray-0': !isActive,
+                }
+              )}
+            >
+              {isCompleted ? (
+                <Icon hoverScale={false} variant='check' size={isMobile ? 'sm' : 'lg'} />
+              ) : (
+                <span className={cn(' text-gray-0', isMobile ? 'typo-main' : 'typo-h2')}>
+                  {index + 1}
+                </span>
+              )}
+
+              {!isMobile && (
+                <h3 className='absolute top-17 whitespace-nowrap text-center typo-h3'>
+                  {step.title}
+                </h3>
+              )}
             </div>
-            {!isLast && (
-              <div
-                className={`
-                  flex-1 h-1 mx-2 bg-gradient-to-r transition-all duration-500
-                  ${
-                    isCompleted
-                      ? 'bg-green-500'
-                      : index < currentStep
-                        ? 'bg-green-500'
-                        : 'bg-gray-200'
-                  }
-                `}
-                style={{ flexBasis: stepWidth }}
-              />
-            )}
+            {!isLast && <div className='flex-1 h-px mx-2 bg-gray-70 lg:mx-8' />}
           </React.Fragment>
         );
       })}
