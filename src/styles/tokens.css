@@ -1,8 +1,7 @@
 :root {
   --radius: 0.625rem;
 
-  /* shadcn tokens (твоя тема) */
-  --background: oklch(1 0 0);
+  --background: #eeeef0;
   --foreground: #111;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -21,14 +20,30 @@
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
 
-  /* ТВОЇ “figma palette” кольори (приклад) */
-  --brand-100: #a300dd;
-  --brand-80: #c03fee;
+  --primary-100: #a300dd;
+  --primary-80: #c03fee;
+  --primary-60: #da5dfe;
+  --primary-40: #d07aef;
+  --primary-20: #dda5f1;
+  --primary-0: #f8e5fe;
+
   --gray-100: #1f2022;
+  --gray-90: #55575d;
+  --gray-80: #7b808d;
+  --gray-70: #afb3be;
+  --gray-50: #c8cacf;
+  --gray-30: #eeeef0;
   --gray-0: #fafafa;
 
-  /* ТВОЇ шрифти (приклад) */
-  --font-sans: "SF Pro Rounded", ui-sans-serif, system-ui, sans-serif;
+  --light-opacity: #FFFFFF26;
+
+  --error: #ae2222;
+  --success: #0da049;
+  --success: #eccf3c;
+  --info: #3446E9;
+
+
+  --font-sans: 'SF Pro Rounded', ui-sans-serif, system-ui, sans-serif;
 }
 
 @theme {
@@ -58,9 +73,13 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* ТВОЯ палітра як tailwind colors */
-  --color-brand-100: var(--brand-100);
-  --color-brand-80: var(--brand-80);
+  --color-primary-100: var(--primary-100);
+  --color-primary-80: var(--primary-80);
+  --color-primary-60: var(--primary-60);
+  --color-primary-40: var(--primary-40);
+  --color-primary-20: var(--primary-20);
+  --color-primary-0: var(--primary-0);
+
   --color-gray-100: var(--gray-100);
   --color-gray-0: var(--gray-0);
 
