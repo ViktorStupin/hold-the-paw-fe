@@ -1,12 +1,16 @@
+import { Outlet } from 'react-router-dom';
 import './App.css';
-import { Button } from './components/ui/button';
+import { Footer } from './layouts/Footer';
+import { Header } from './layouts/Header';
 
 function App() {
   return (
     <>
-      <div>
-        <h1 className='typo-h1 text-center'>H1 — SF Pro Rounded (Bold)</h1>
-      </div>
+      <Header />
+      <main>
+        <Outlet />
+      </main>
+      <Footer />
     </>
   );
 }
