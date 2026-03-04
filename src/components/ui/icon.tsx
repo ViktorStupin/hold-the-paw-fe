@@ -24,7 +24,7 @@ export const Icon: React.FC<IconProps> = ({
   rotate,
 }) => {
   return (
-    <div
+    <svg
       className={cn(
         'icon',
         `icon-${size}`,

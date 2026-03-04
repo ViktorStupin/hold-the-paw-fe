@@ -13,7 +13,7 @@
 }
 
 @utility u-container {
-  @apply box-border w-full u-content-padding lg:w-(--breakpoint-xl) mx-auto;
+  @apply box-border w-full u-content-padding lg:w-(--breakpoint-lg) mx-auto;
 }
 
 @utility icon {

@@ -6,18 +6,19 @@ import { Slot } from 'radix-ui';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-circle border border-solid transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-circle border border-solid transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
   {
     variants: {
       variant: {
         primary:
-          'bg-primary-40 text-gray-0 hover:bg-primary-60 hover:shadow-[-4px_4px_10px_0px_#0000001A] active:bg-primary-20 disabled:bg-gray-50',
+          'bg-primary-40 text-gray-0 border-none hover:bg-primary-60 hover:shadow-[-4px_4px_10px_0px_#0000001A] active:bg-primary-20 disabled:bg-gray-50',
         secondary:
-          'bg-nature text-gray-90 border-gray-90 hover:bg-gray-30 hover:border-gray-100 hover:text-gray-100 hover:shadow-[-4px_4px_10px_0px_#0000001A] active:text-gray-80 active:border-gray-80 active:bg-gray-50 disabled:border-gray-70 disabled:text-gray-70',
+          'text-gray-90 border-gray-90 hover:bg-gray-30 hover:border-gray-100 hover:text-gray-100 hover:shadow-[-4px_4px_10px_0px_#0000001A] active:text-gray-80 active:border-gray-80 active:bg-gray-50 disabled:border-gray-70 disabled:text-gray-70',
         tertiary:
           'bg-light-opacity text-gray-0 hover:border-gray-0 hover:shadow-[-4px_4px_10px_0px_#0000001A] active:text-gray-50 active:border-gray-50 disabled:border-gray-70 disabled:text-gray-70',
-        choise: 'type-main bg-gray-30 text-gray-90 hover:bg-primary-20 hover:text-primary-60 active:bg-primary-20 active:border-primary-60 disabled:bg-gray-30 disabled:text-gray-50 disabled:border-gray-50',
-          // destructive:
+        choise:
+          'type-main bg-gray-30 text-gray-90 border-none hover:bg-primary-20 hover:text-primary-60 hover:border-1 hover:border-solid active:bg-primary-20 active:border-primary-60 active: border-1 active: border-solid disabled:bg-gray-30 disabled:text-gray-50 disabled:border-gray-50 disabled: border-1 disabled: border-solid',
+        // destructive:
         //   'bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
         // outline:
         //   'border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
