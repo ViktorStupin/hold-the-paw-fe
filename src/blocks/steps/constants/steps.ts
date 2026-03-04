@@ -1,11 +1,11 @@
-import type React from 'react';
 import { StepFour } from '../StepFour';
 import { StepOne } from '../StepOne';
 import { StepThree } from '../StepThree';
 import { StepTwo } from '../StepTwo';
+import type { ComponentType } from 'react';
 
 type Step = {
-  component: React.FC;
+  component: ComponentType;
   title: string;
 };
 
