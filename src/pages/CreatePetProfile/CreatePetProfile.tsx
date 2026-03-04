@@ -15,30 +15,32 @@ export const CreatePetProfile = () => {
   };
 
   return (
-    <div className='u-container pt-1 lg:pt-10'>
-      <ProgressBar currentStep={currentStep} />
-      {React.createElement(step.component)}
-      <div className='flex justify-center gap-10 lg:max-w-4xl mx-auto'>
-        {!isMobile && currentStep > 0 && (
+    <div className='u-container'>
+      <section className='pt-1 pb-8  lg:pt-10 lg:pb-10'>
+        <ProgressBar currentStep={currentStep} />
+        {React.createElement(step.component)}
+        <div className='flex justify-center gap-10 mt-6 lg:max-w-4xl lg:mx-auto lg:mt-10'>
+          {!isMobile && currentStep > 0 && (
+            <Button
+              onClick={() => changeStep(currentStep - 1)}
+              size='default'
+              variant='secondary'
+              className='flex-1'
+            >
+              Повернутися назад
+            </Button>
+          )}
           <Button
-            onClick={() => changeStep(currentStep - 1)}
+            onClick={() => changeStep(currentStep + 1)}
+            variant='primary'
             size='default'
-            variant='secondary'
-            className='flex-1'
+            className='flex-1 max-w-109.5'
+            // disabled={true}
           >
-            Повернутися назад
+            {currentStep === steps.length - 1 ? 'Завершити' : 'Продовжити'}
           </Button>
-        )}
-        <Button
-          onClick={() => changeStep(currentStep + 1)}
-          variant='primary'
-          size='default'
-          className='flex-1 max-w-109.5'
-          // disabled={true}
-        >
-          Продовжити
-        </Button>
-      </div>
+        </div>
+      </section>
     </div>
   );
 };
