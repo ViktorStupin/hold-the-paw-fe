@@ -14,5 +14,12 @@
   .type-main {
     @apply font-sans font-medium text-[16px] leading-[138%] text-foreground;
   }
-  /* додаси далі h3/h4/body/small... */
+ 
+  .type-secondary {
+    @apply font-sans font-medium text-[14px] leading-[138%] text-foreground;
+  }
+
+  .type-button{
+    @apply font-sans font-medium text-[18px] leading-[100%] text-foreground;
+  }
 }
