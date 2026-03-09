@@ -38,13 +38,11 @@
 
   --error: #ae2222;
   --success: #0da049;
-  --success: #eccf3c;
+  --warning: #eccf3c;
   --info: #3446e9;
   --nature: #fff;
 
   --font-sans: 'SF Pro Rounded', ui-sans-serif, system-ui, sans-serif;
-
-  --shadow: '-4px_4px_10px_0px_#0000001A';
 }
 
 @theme {
@@ -106,5 +104,5 @@
   --breakpoint-xl: 1440px;
   --breakpoint-2xl: 1536px;
 
-  --shadow-default: var(--shadow);
+  --shadow-default: -4px 4px 10px 0px #0000001a;
 }

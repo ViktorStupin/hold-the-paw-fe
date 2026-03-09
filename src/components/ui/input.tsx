@@ -1,21 +1,57 @@
-import * as React from "react"
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
 
-import { cn } from "@/lib/utils"
+const inputVariants = cva(
+  [
+    "w-full min-w-0 rounded-circle border outline-none transition-colors",
 
-function Input({ className, type, ...props }: React.ComponentProps<"input">) {
-  return (
+    "border-transparent",
+
+    "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+
+    // default focus/hover border
+    "hover:border-primary-40 focus:border-primary-40",
+    
+
+    // error
+    "aria-[invalid=true]:border-error aria-[invalid=true]:hover:border-error aria-[invalid=true]:focus:border-error",
+
+    // success
+    "data-[valid=true]:border-success data-[valid=true]:hover:border-success data-[valid=true]:focus:border-success",
+  ],
+  {
+    variants: {
+      size: {
+        sm: "h-10 px-4 py-2",
+        md: "h-13.5 px-6 py-4",
+        lg: "h-16 px-8 py-6",
+      },
+      bg: {
+        gray30: "bg-gray-30",
+        white: "bg-gray-0",
+      },
+    },
+    defaultVariants: {
+      size: "md",
+      bg: "gray30",
+    },
+  }
+);
+
+type NativeInputProps = Omit<React.ComponentProps<"input">, "size">;
+
+export interface InputProps extends NativeInputProps, VariantProps<typeof inputVariants> {}
+
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type = "text", size, bg, ...props }, ref) => (
     <input
+      ref={ref}
       type={type}
-      data-slot="input"
-      className={cn(
-        "h-9 w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none selection:bg-primary selection:text-primary-foreground file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:bg-input/30",
-        "focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
-        "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
-        className
-      )}
+      className={cn(inputVariants({ size, bg }), className)}
       {...props}
     />
   )
-}
+);
 
-export { Input }
+Input.displayName = "Input";
