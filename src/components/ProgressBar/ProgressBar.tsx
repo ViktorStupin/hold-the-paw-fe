@@ -3,11 +3,14 @@ import { useIsMobile } from '@/utils/hooks/useIsMobile';
 import clsx from 'clsx';
 import React from 'react';
 import { steps } from '../steps/constants/steps';
-import { Icon } from '@/components/ui/icon';
+import { Check } from 'lucide-react';
+import { Icon } from '../ui/icon';
 
-type Props = { currentStep: number };
+interface IProgressBarProps {
+  currentStep: number;
+}
 
-export const ProgressBar: React.FC<Props> = ({ currentStep }) => {
+export const ProgressBar: React.FC<IProgressBarProps> = ({ currentStep }) => {
   const isMobile = useIsMobile();
 
   return (
@@ -30,7 +33,7 @@ export const ProgressBar: React.FC<Props> = ({ currentStep }) => {
               )}
             >
               {isCompleted ? (
-                <Icon hoverScale={false} variant='check' size={isMobile ? 'sm' : 'lg'} />
+                <Icon icon={Check} size={isMobile ? 16 : 24} color='#FAFAFA' />
               ) : (
                 <span className={cn(' text-gray-0', isMobile ? 'typo-main' : 'typo-h2')}>
                   {index + 1}

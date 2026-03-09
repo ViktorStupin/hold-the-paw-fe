@@ -1,38 +1,62 @@
-import React from 'react';
-import { cn } from '@/lib/utils'; // twMerge(clsx)
+import { cva, type VariantProps } from 'class-variance-authority';
+import type { LucideIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-type IconSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-type IconVariant = 'check';
+const iconVariants = cva('shrink-0 transition-transform', {
+  variants: {
+    rotate: {
+      0: '',
+      90: 'rotate-90',
+      '-90': '-rotate-90',
+      180: 'rotate-180',
+      '-180': '-rotate-180',
+    },
+    scale: {
+      100: '',
+      110: 'scale-110',
+      125: 'scale-125',
+    },
+    hoverScale: {
+      true: 'hover:scale-110',
+      false: '',
+    },
+  },
+  defaultVariants: {
+    rotate: 0,
+    scale: 100,
+    hoverScale: false,
+  },
+});
 
-interface IconProps {
-  variant: IconVariant;
+type IconSize = 16 | 20 | 24 | 32 | 48;
+
+type IconProps = VariantProps<typeof iconVariants> & {
+  icon: LucideIcon;
   size?: IconSize;
+  color?: string;
+  strokeWidth?: number;
+  absoluteStrokeWidth?: boolean;
   className?: string;
-  hoverScale?: boolean;
-  rotate?: '90' | '-90' | '180' | '-180';
-}
-
-const ICON_MAP: Record<IconVariant, string> = {
-  check: 'src/assets/icons/check.svg',
 };
 
-export const Icon: React.FC<IconProps> = ({
-  variant,
-  size = 'md',
-  className,
-  hoverScale = true,
+export function Icon({
+  icon: LucideIcon,
+  size = 24,
+  color = 'var(--gray-0)',
+  strokeWidth = 2,
+  absoluteStrokeWidth,
   rotate,
-}) => {
+  scale,
+  hoverScale,
+  className,
+}: IconProps) {
   return (
-    <svg
-      className={cn(
-        'icon',
-        `icon-${size}`,
-        hoverScale && 'icon-hover-scale',
-        rotate && `icon-rotate-${rotate}`,
-        className
-      )}
-      style={{ backgroundImage: `url(${ICON_MAP[variant]})` }}
+    <LucideIcon
+      size={size}
+      color={color}
+      strokeWidth={strokeWidth}
+      absoluteStrokeWidth={absoluteStrokeWidth}
+      className={cn(iconVariants({ rotate, scale, hoverScale }), className)}
     />
   );
-};
+}

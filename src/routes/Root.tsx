@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { NotFoundPage } from '../pages/NotFoundPage';
 import App from '@/App';
 import { RoutePath } from './root.config';
@@ -7,7 +7,7 @@ import { CreatePetProfile } from '@/pages/CreatePetProfile/CreatePetProfile';
 
 export const Root = () => {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         //TODO: protected routes
         <Route path={RoutePath.Default} element={<App />}>
@@ -22,6 +22,6 @@ export const Root = () => {
           <Route path={RoutePath.NotFound} element={<NotFoundPage />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
