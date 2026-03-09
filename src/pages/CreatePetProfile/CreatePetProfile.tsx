@@ -7,6 +7,8 @@ import { useIsMobile } from '@/utils/hooks/useIsMobile';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ProgressBar } from '@/components/ProgressBar/ProgressBar';
+import clsx from 'clsx';
+import { scrollTop } from '@/services/layouts';
 
 export const CreatePetProfile = () => {
   const [currentStep, setCurrentStep] = React.useState(0);
@@ -44,7 +46,6 @@ export const CreatePetProfile = () => {
   const isWholeFormValid = PetProfileSchema.safeParse(values).success;
   const isFinalButtonDisabled = !isWholeFormValid || formState.isSubmitting;
 
-
   const changeStep = (step: number) => {
     if (step < 0 || step >= steps.length) return;
     setCurrentStep(step);
@@ -54,9 +55,9 @@ export const CreatePetProfile = () => {
     const ok = await methods.trigger(step.fields);
     if (!ok) return;
     changeStep(currentStep + 1);
+    scrollTop();
   };
 
-  
   const onSubmit = (data: PetProfileFormValues) => {
     console.log('FINAL SUBMIT', data);
   };
@@ -99,7 +100,9 @@ export const CreatePetProfile = () => {
                   onClick={next}
                   variant={!canGoNext ? 'lightDisabled' : 'primary'}
                   size='default'
-                  className='flex-1 lg:max-w-109.5'
+                  className={clsx('flex-1', {
+                    'lg:max-w-108': !isMobile && currentStep === 0,
+                  })}
                 >
                   Продовжити
                 </Button>

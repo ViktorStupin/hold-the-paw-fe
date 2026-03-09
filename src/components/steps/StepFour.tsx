@@ -21,7 +21,7 @@ export const StepFour = () => {
           id='story'
           {...register('story')}
         />
-        {errors.story && <InfoForm message={errors.story?.message} iconType='dangerAlert' />}
+        {errors.story && <InfoForm message={errors.story?.message} status='danger' />}
       </div>
       <div className='step-block'>
         <LabelForm name='about' defaultValue='Про тварину' />
@@ -32,7 +32,7 @@ export const StepFour = () => {
           id='about'
           {...register('about')}
         />
-        {errors.about && <InfoForm message={errors.about?.message} iconType='dangerAlert' />}{' '}
+        {errors.about && <InfoForm message={errors.about?.message} status='danger' />}
       </div>
     </div>
   );

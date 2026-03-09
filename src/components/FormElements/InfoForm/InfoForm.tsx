@@ -1,22 +1,25 @@
-import { Icon, type IconVariant } from '@/components/ui/icon';
+import { Icon } from '@/components/ui/icon';
 import { statusConfig, type Status } from '@/types/Status';
 import clsx from 'clsx';
+import { TriangleAlert } from 'lucide-react';
 
-type Props = {
+interface IInfoFormProps {
   message?: string;
   status?: Status;
-  iconType?: IconVariant;
-};
+  isIcon?: boolean;
+}
 
-export const InfoForm: React.FC<Props> = ({
+export const InfoForm: React.FC<IInfoFormProps> = ({
   message = 'Помилка',
-  iconType,
+  isIcon = true,
   status = 'danger',
 }) => {
   return (
     <div className='mt-2 flex items-center'>
-      {iconType && <Icon className='mr-1' variant={iconType} size='lg' />}
-      <span className={clsx('type-secondaty', statusConfig[status].color)}>{message}</span>
+      {isIcon && (
+        <Icon className='mr-1' icon={TriangleAlert} size={24} color={statusConfig[status].iconColor} />
+      )}
+      <span className={clsx('type-secondaty', statusConfig[status].textClass)}>{message}</span>
     </div>
   );
 };

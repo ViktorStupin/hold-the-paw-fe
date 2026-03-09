@@ -1,7 +1,7 @@
-import React from 'react';
 import clsx from 'clsx';
 import { Icon } from '@/components/ui/icon';
 import { PhotoPreview } from './PhotoPreview';
+import { CirclePlus, X } from 'lucide-react';
 
 const mainPhotoBadgeClassName = clsx(
   'absolute bottom-0 left-1/2 -translate-x-1/2',
@@ -10,14 +10,14 @@ const mainPhotoBadgeClassName = clsx(
   'border-t border-l border-r'
 );
 
-type PhotoSlotProps = {
+interface IPhotoSlotProps {
   file?: File;
   isMain: boolean;
   isAddButtonSlot: boolean;
   onAddClick: () => void;
   onMakeMain: () => void;
   onRemove: () => void;
-};
+}
 
 export const PhotoSlot = ({
   file,
@@ -26,7 +26,7 @@ export const PhotoSlot = ({
   onAddClick,
   onMakeMain,
   onRemove,
-}: PhotoSlotProps) => {
+}: IPhotoSlotProps) => {
   return (
     <div
       className={clsx('relative h-37 rounded-sm bg-gray-30 lg:h-66.75', {
@@ -37,11 +37,7 @@ export const PhotoSlot = ({
     >
       {file ? (
         <>
-          <button
-            type='button'
-            onClick={onMakeMain}
-            className='h-full w-full cursor-pointer'
-          >
+          <button type='button' onClick={onMakeMain} className='h-full w-full cursor-pointer'>
             <PhotoPreview
               file={file}
               alt={file.name}
@@ -55,7 +51,7 @@ export const PhotoSlot = ({
             className='absolute right-2 top-2 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-light-opacity backdrop-blur-[15px] focus:border focus:border-gray-0 lg:h-10 lg:w-10'
             aria-label='Видалити фото'
           >
-            <Icon variant='cross' size='lg' />
+            <Icon icon={X} size={24} color='var(--gray-0)' />
           </button>
 
           {isMain && (
@@ -78,7 +74,7 @@ export const PhotoSlot = ({
               className='flex h-full w-full cursor-pointer items-center justify-center'
               aria-label='Додати фото'
             >
-              <Icon variant='plus' size='xxl' />
+              <Icon icon={CirclePlus} size={32} color='--primary-40' />
             </button>
           )}
 

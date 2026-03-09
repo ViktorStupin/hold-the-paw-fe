@@ -1,15 +1,14 @@
-import React from 'react';
 import clsx from 'clsx';
 import { MAX_PHOTOS } from '@/schemas/pet.schema';
 import { PhotoSlot } from './PhotoSlot';
 
-type PhotoGridProps = {
+interface IPhotoGridProps {
   photos: File[];
   firstEmptyIndex: number;
   onAddClick: () => void;
   onMakeMain: (index: number) => void;
   onRemove: (index: number) => void;
-};
+}
 
 export const PhotoGrid = ({
   photos,
@@ -17,7 +16,7 @@ export const PhotoGrid = ({
   onAddClick,
   onMakeMain,
   onRemove,
-}: PhotoGridProps) => {
+}: IPhotoGridProps) => {
   return (
     <div className={clsx('grid grid-cols-3 gap-2 lg:grid-cols-6 lg:gap-6')}>
       {Array.from({ length: MAX_PHOTOS }).map((_, index) => {

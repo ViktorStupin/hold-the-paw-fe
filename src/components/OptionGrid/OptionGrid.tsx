@@ -3,7 +3,7 @@ import type { PetProfileFormValues } from '@/schemas/pet.schema';
 import { Button } from '../ui/button';
 import { LabelForm } from '../FormElements/LabelForm/LabelForm';
 import { InfoForm } from '../FormElements/InfoForm/InfoForm';
-interface OptionGridProps<T extends string | boolean> {
+interface IOptionGridProps<T extends string | boolean> {
   name: keyof PetProfileFormValues;
   options: readonly T[];
   labels: Record<string, string>;
@@ -15,7 +15,7 @@ export const OptionGrid = <T extends string | boolean>({
   options,
   labels,
   layout = 'grid-2',
-}: OptionGridProps<T>) => {
+}: IOptionGridProps<T>) => {
   const { control } = useFormContext<PetProfileFormValues>();
   const { field, fieldState } = useController({ name, control });
 
@@ -48,7 +48,7 @@ export const OptionGrid = <T extends string | boolean>({
         ))}
       </fieldset>
 
-      {fieldState.error && <InfoForm message={fieldState.error.message} iconType='dangerAlert' />}
+      {fieldState.error && <InfoForm message={fieldState.error.message} status='danger' />}
     </div>
   );
 };

@@ -1,13 +1,20 @@
 export type Status = 'danger' | 'warning' | 'success';
 
-export const statusConfig: Record<Status, { color: string }> = {
+export const statusConfig = {
   danger: {
-    color: 'text-error',
-  },
-  warning: {
-    color: 'text-warning',
+    iconColor: 'var(--error)',
+    textClass: 'text-[var(--error)]',
   },
   success: {
-    color: 'text-success',
+    iconColor: 'var(--success)',
+    textClass: 'text-[var(--success)]',
   },
-};
+  warning: {
+    iconColor: 'var(--warning)',
+    textClass: 'text-[var(--warning)]',
+  },
+  info: {
+    iconColor: 'var(--info)',
+    textClass: 'text-[var(--info)]',
+  },
+} as const;

@@ -3,11 +3,12 @@ import { useFormContext } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import type { PetProfileFormValues } from '@/schemas/pet.schema';
 import { InputGroup } from '@/components/ui/InputGroup';
-import { Icon } from '@/components/ui/icon';
 import { PhotoGrid } from './PhotoGrid';
 import { usePetPhotos } from './usePetPhotos';
 import { LabelForm } from '@/components/FormElements/LabelForm/LabelForm';
 import { InfoForm } from '@/components/FormElements/InfoForm/InfoForm';
+import { MapPin } from 'lucide-react';
+import { Icon } from '@/components/ui/icon';
 
 export const StepOne = () => {
   const inputRef = React.useRef<HTMLInputElement | null>(null);
@@ -17,14 +18,8 @@ export const StepOne = () => {
     formState: { errors },
   } = useFormContext<PetProfileFormValues>();
 
-  const {
-    photos,
-    photosHint,
-    firstEmptyIndex,
-    addPhotos,
-    makeMainPhoto,
-    removePhoto,
-  } = usePetPhotos();
+  const { photos, photosHint, firstEmptyIndex, addPhotos, makeMainPhoto, removePhoto } =
+    usePetPhotos();
 
   return (
     <div className='step-block'>
@@ -39,15 +34,13 @@ export const StepOne = () => {
             placeholder='Наприклад: Зірочка'
             {...register('name')}
           />
-          {errors.name && (
-            <InfoForm message={errors.name.message} iconType='dangerAlert' />
-          )}
+          {errors.name && <InfoForm message={errors.name.message} status='danger' />}
         </div>
 
         <div>
           <LabelForm name='location' defaultValue='Локація' />
           <InputGroup
-            endIcon={<Icon variant='location' size='lg' />}
+            endIcon={<Icon icon={MapPin} size={24} color='var(--gray-80)'/>}
             inputProps={{
               id: 'location',
               placeholder: 'Локація',
@@ -56,9 +49,7 @@ export const StepOne = () => {
               ...register('location'),
             }}
           />
-          {errors.location && (
-            <InfoForm message={errors.location.message} iconType='dangerAlert' />
-          )}
+          {errors.location && <InfoForm message={errors.location.message} status='danger' />}
         </div>
       </div>
 
@@ -88,13 +79,9 @@ export const StepOne = () => {
           onRemove={removePhoto}
         />
 
-        {errors.photos && (
-          <InfoForm message={errors.photos.message} iconType='dangerAlert' />
-        )}
+        {errors.photos && <InfoForm message={errors.photos.message} status='danger' />}
 
-        {!errors.photos && photosHint && (
-          <InfoForm message={photosHint} status='warning' />
-        )}
+        {!errors.photos && photosHint && <InfoForm message={photosHint} status='warning' />}
       </div>
     </div>
   );

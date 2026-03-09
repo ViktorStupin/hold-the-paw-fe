@@ -1,47 +1,62 @@
 import { cva, type VariantProps } from 'class-variance-authority';
+import type { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const iconVariants = cva(
-  'block aspect-square bg-no-repeat bg-cover shrink-0 transition-transform',
-  {
-    variants: {
-      variant: {
-        check: "bg-[url('/src/assets/icons/check.svg')]",
-        location: "bg-[url('/src/assets/icons/location.svg')]",
-        dangerAlert: 'bg-[url("/src/assets/icons/danger-alert.svg")]',
-        plus: 'bg-[url("/src/assets/icons/plus.svg")]',
-        cross: 'bg-[url("/src/assets/icons/cross.svg")]',
-      },
-      size: {
-        sm: 'h-4 w-4',
-        md: 'h-5 w-5',
-        lg: 'h-6 w-6',
-        xxl: 'h-12 w-12',
-      },
-      rotate: {
-        '90': 'rotate-90',
-        '-90': '-rotate-90',
-        '180': 'rotate-180',
-        '-180': '-rotate-180',
-      },
-      hoverScale: {
-        true: 'hover:scale-110',
-        false: '',
-      },
+const iconVariants = cva('shrink-0 transition-transform', {
+  variants: {
+    rotate: {
+      0: '',
+      90: 'rotate-90',
+      '-90': '-rotate-90',
+      180: 'rotate-180',
+      '-180': '-rotate-180',
     },
-    defaultVariants: {
-      size: 'md',
-      hoverScale: true,
+    scale: {
+      100: '',
+      110: 'scale-110',
+      125: 'scale-125',
     },
-  }
-);
+    hoverScale: {
+      true: 'hover:scale-110',
+      false: '',
+    },
+  },
+  defaultVariants: {
+    rotate: 0,
+    scale: 100,
+    hoverScale: false,
+  },
+});
 
-export type IconVariant = NonNullable<VariantProps<typeof iconVariants>['variant']>;
+type IconSize = 16 | 20 | 24 | 32 | 48;
 
 type IconProps = VariantProps<typeof iconVariants> & {
+  icon: LucideIcon;
+  size?: IconSize;
+  color?: string;
+  strokeWidth?: number;
+  absoluteStrokeWidth?: boolean;
   className?: string;
 };
 
-export function Icon({ variant, size, rotate, hoverScale = false, className }: IconProps) {
-  return <span className={cn(iconVariants({ variant, size, rotate, hoverScale }), className)} />;
+export function Icon({
+  icon: LucideIcon,
+  size = 24,
+  color = 'var(--gray-0)',
+  strokeWidth = 2,
+  absoluteStrokeWidth,
+  rotate,
+  scale,
+  hoverScale,
+  className,
+}: IconProps) {
+  return (
+    <LucideIcon
+      size={size}
+      color={color}
+      strokeWidth={strokeWidth}
+      absoluteStrokeWidth={absoluteStrokeWidth}
+      className={cn(iconVariants({ rotate, scale, hoverScale }), className)}
+    />
+  );
 }

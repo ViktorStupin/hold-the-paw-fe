@@ -1,13 +1,13 @@
 // PhotoPreview.tsx
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-type PhotoPreviewProps = {
+interface IPhotoPreviewProps {
   file: File;
   alt?: string;
   className?: string;
-};
+}
 
-export const PhotoPreview = ({ file, alt, className }: PhotoPreviewProps) => {
+export const PhotoPreview = ({ file, alt, className }: IPhotoPreviewProps) => {
   const [src, setSrc] = useState('');
 
   useEffect(() => {
