@@ -4,8 +4,26 @@
   }
 
   .typo-h2 {
-    @apply font-sans font-bold text-[22px] leading-[120%] tracking-[2%] text-foreground;
+    @apply font-sans font-extrabold text-[20px] leading-[110%] text-foreground;
   }
 
-  /* додаси далі h3/h4/body/small... */
+  .typo-h3 {
+    @apply font-sans font-bold text-[18px] leading-[120%] text-foreground;
+  }
+
+  .type-main {
+    @apply font-sans font-medium text-[16px] leading-[138%] text-foreground;
+  }
+
+  .type-secondary {
+    @apply font-sans font-medium text-[14px] leading-[138%] text-foreground;
+  }
+
+  .type-button {
+    @apply font-sans font-medium text-[18px] leading-[100%] text-foreground;
+  }
+
+  .type-input {
+    @apply font-sans font-medium text-[16px] leading-[138%] text-foreground;
+  }
 }

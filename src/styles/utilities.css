@@ -1,16 +1,23 @@
-@layer utilities {
-  /* padding-inline mixin */
-  .u-content-padding {
-    @apply px-4 md:px-6 lg:px-8;
-  }
+@import 'tailwindcss';
 
-  /* page-grid mixin */
-  .u-page-grid {
-    @apply grid grid-cols-4 gap-4 md:grid-cols-12 md:gap-6 lg:grid-cols-24 lg:gap-4;
-  }
+@utility u-content-padding {
+  @apply px-4  lg:px-12;
+}
 
-  /* hover mixin (універсальний) */
-  .u-hover-opacity {
-    @apply transition-opacity duration-200 hover:opacity-80;
-  }
+@utility u-page-grid {
+  @apply grid grid-cols-4 gap-4 md:grid-cols-12 md:gap-6 lg:grid-cols-24 lg:gap-4;
+}
+
+@utility u-hover-opacity {
+  @apply transition-opacity duration-200 hover:opacity-80;
+}
+
+@utility u-container {
+  @apply u-content-padding box-border w-full lg:max-w-(--breakpoint-xl) mx-auto;
+}
+@utility hover-scale {
+  @apply hover:scale-110 transition-transform duration-200;
+}
+@utility step-block {
+  @apply rounded-md lg:shadow-default lg:px-6 lg:pt-4 lg:pb-6 lg:bg-nature;
 }
