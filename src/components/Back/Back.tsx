@@ -20,7 +20,7 @@ export const Back = ({ onBack, label = 'Назад' }: IBackProps) => {
   };
 
   return (
-    <div className='inline-flex gap-2 pt-3 items-start' onClick={handleClick}>
+    <div className='flex gap-2 pt-3 items-start w-fit' onClick={handleClick}>
       <Icon icon={ChevronLeft} size={24} color='var(--gray-80)'/>
       <span className='typo-main'>{label}</span>
     </div>
