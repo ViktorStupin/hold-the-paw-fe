@@ -6,16 +6,12 @@ import { MAX_PHOTOS, photoSchema } from '@/schemas/pet.schema';
 export const usePetPhotos = () => {
   const [photosHint, setPhotosHint] = React.useState('');
 
-  const {
-    setValue,
-    trigger,
-    watch,
-  } = useFormContext<PetProfileFormValues>();
+  const { setValue, watch } = useFormContext<PetProfileFormValues>();
 
   const photos = watch('photos') ?? [];
   const firstEmptyIndex = photos.length < MAX_PHOTOS ? photos.length : -1;
 
-  const syncPhotos = async (nextPhotos: File[]) => {
+  const syncPhotos = (nextPhotos: File[]) => {
     setPhotosHint('');
 
     setValue('photos', nextPhotos, {
@@ -23,11 +19,9 @@ export const usePetPhotos = () => {
       shouldTouch: true,
       shouldValidate: true,
     });
-
-    await trigger('photos');
   };
 
-  const addPhotos = async (incomingFiles: File[]) => {
+  const addPhotos = (incomingFiles: File[]) => {
     const remainingSlots = MAX_PHOTOS - photos.length;
 
     const validFiles: File[] = [];
@@ -45,7 +39,7 @@ export const usePetPhotos = () => {
 
     const nextPhotos = [...photos, ...validFiles].slice(0, MAX_PHOTOS);
 
-    await syncPhotos(nextPhotos);
+    syncPhotos(nextPhotos);
 
     if (invalidNames.length > 0 || incomingFiles.length > remainingSlots) {
       setPhotosHint(
@@ -54,18 +48,18 @@ export const usePetPhotos = () => {
     }
   };
 
-  const makeMainPhoto = async (index: number) => {
+  const makeMainPhoto = (index: number) => {
     if (index <= 0 || !photos[index]) return;
 
     const selected = photos[index];
     const reordered = [selected, ...photos.filter((_, i) => i !== index)];
 
-    await syncPhotos(reordered);
+    syncPhotos(reordered);
   };
 
-  const removePhoto = async (index: number) => {
+  const removePhoto = (index: number) => {
     const nextPhotos = photos.filter((_, i) => i !== index);
-    await syncPhotos(nextPhotos);
+    syncPhotos(nextPhotos);
   };
 
   return {

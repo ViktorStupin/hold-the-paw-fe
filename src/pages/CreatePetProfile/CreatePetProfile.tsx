@@ -9,11 +9,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ProgressBar } from '@/components/ProgressBar/ProgressBar';
 import clsx from 'clsx';
 import { scrollTop } from '@/services/layouts';
+import { Back } from '@/components/Back/Back';
 
 export const CreatePetProfile = () => {
   const [currentStep, setCurrentStep] = React.useState(0);
   const step = steps[currentStep];
   const isMobile = useIsMobile();
+  const StepComponent = step.component;
 
   const methods = useForm<PetProfileFormValues>({
     resolver: zodResolver(PetProfileSchema),
@@ -58,6 +60,12 @@ export const CreatePetProfile = () => {
     scrollTop();
   };
 
+  const previous = () => {
+    if (currentStep === 0) return;
+    changeStep(currentStep - 1);
+    scrollTop();
+  };
+
   const onSubmit = (data: PetProfileFormValues) => {
     console.log('FINAL SUBMIT', data);
   };
@@ -65,16 +73,17 @@ export const CreatePetProfile = () => {
   return (
     <FormProvider {...methods}>
       <div className='bg-nature u-container lg:bg-background'>
-        <section className='pt-1 pb-8 lg:pt-10 lg:pb-10 '>
+        <section className='pb-8 lg:pt-10 lg:pb-10 '>
+          {isMobile && <Back onBack={currentStep > 0 ? previous : undefined} />}
           <ProgressBar currentStep={currentStep} />
           <form onSubmit={methods.handleSubmit(onSubmit)}>
-            {React.createElement(step.component)}
+            <StepComponent />
 
             <div className='flex justify-center gap-10 mt-6 lg:max-w-4xl lg:mx-auto lg:mt-10'>
               {!isMobile && currentStep > 0 && (
                 <Button
                   type='button'
-                  onClick={() => changeStep(currentStep - 1)}
+                  onClick={() => previous()}
                   size='default'
                   variant='secondary'
                   className='flex-1'

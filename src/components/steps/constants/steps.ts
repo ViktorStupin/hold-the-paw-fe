@@ -4,10 +4,12 @@ import { StepFour } from '../StepFour';
 import { StepOne } from '../StepOne/StepOne';
 import { StepThree } from '../StepThree';
 import { StepTwo } from '../StepTwo';
-import type { ComponentType } from 'react';
+
+type StepComponent = React.FC;
+
 
 type Step = {
-  component: ComponentType;
+  component: StepComponent;
   title: string;
   fields: FieldPath<PetProfileFormValues>[];
 };

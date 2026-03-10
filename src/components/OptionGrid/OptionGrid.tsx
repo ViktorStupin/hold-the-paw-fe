@@ -34,6 +34,7 @@ export const OptionGrid = <T extends string | boolean>({
       <fieldset id={name} className={gridClass}>
         {options.map((option) => (
           <Button
+            role='radio'
             key={String(option)}
             type='button'
             size='default'
