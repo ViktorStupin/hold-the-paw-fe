@@ -40,7 +40,7 @@ export const StepOne = () => {
         <div>
           <LabelForm name='location' defaultValue='Локація' />
           <InputGroup
-            endIcon={<Icon icon={MapPin} size={24} color='var(--gray-80)'/>}
+            endIcon={<Icon icon={MapPin} size={24} color='var(--gray-80)' />}
             inputProps={{
               id: 'location',
               placeholder: 'Локація',
@@ -62,12 +62,12 @@ export const StepOne = () => {
           accept='image/jpeg,image/png,image/heic,image/heif'
           multiple
           className='hidden'
-          onChange={async (e) => {
+          onChange={(e) => {
             const input = e.currentTarget;
             const files = input.files ? Array.from(input.files) : [];
             input.value = '';
 
-            await addPhotos(files);
+            addPhotos(files);
           }}
         />
 
