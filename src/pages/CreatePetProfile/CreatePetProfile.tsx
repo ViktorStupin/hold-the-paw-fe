@@ -1,5 +1,5 @@
 import React from 'react';
-import { DevTool } from '@hookform/devtools';
+// import { DevTool } from '@hookform/devtools';
 import { steps } from '@/components/steps/constants/steps';
 import { Button } from '@/components/ui/button';
 import { PetProfileSchema, type PetProfileFormValues } from '@/schemas/pet.schema';
