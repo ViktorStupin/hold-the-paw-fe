@@ -8,7 +8,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ProgressBar } from '@/components/ProgressBar/ProgressBar';
 import clsx from 'clsx';
-import { scrollTop } from '@/services/layouts';
+import { scrollTop } from '@/utils/layouts/layouts';
 import { Back } from '@/components/Back/Back';
 
 export const CreatePetProfile = () => {
@@ -43,10 +43,7 @@ export const CreatePetProfile = () => {
   });
 
   const canGoNext = isStepValid && isStepReady && !formState.isSubmitting;
-
-  const values = methods.getValues();
-  const isWholeFormValid = PetProfileSchema.safeParse(values).success;
-  const isFinalButtonDisabled = !isWholeFormValid || formState.isSubmitting;
+  const isFinalButtonDisabled = !formState.isValid || formState.isSubmitting;
 
   const changeStep = (step: number) => {
     if (step < 0 || step >= steps.length) return;
@@ -72,11 +69,11 @@ export const CreatePetProfile = () => {
 
   return (
     <FormProvider {...methods}>
-      <div className='bg-nature u-container lg:bg-background'>
-        <section className='pb-8 lg:pt-10 lg:pb-10 '>
+      <div className='flex-1  flex flex-col bg-nature u-container lg:bg-background'>
+        <section className='flex flex-col flex-1 pb-8 lg:block lg:pt-10 lg:pb-10 '>
           {isMobile && <Back onBack={currentStep > 0 ? previous : undefined} />}
           <ProgressBar currentStep={currentStep} />
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <form className='flex-1 flex flex-col justify-between lg:block' onSubmit={methods.handleSubmit(onSubmit)}>
             <StepComponent />
 
             <div className='flex justify-center gap-10 mt-6 lg:max-w-4xl lg:mx-auto lg:mt-10'>

@@ -1,5 +1,5 @@
 
-import { LocalStorageError } from '@/services/Errors';
+import { LocalStorageError } from '@/utils/errors/Errors';
 import { useEffect, useState } from 'react';
 
 export function useLocalStorage<T>(key: string, initialValue: T) {

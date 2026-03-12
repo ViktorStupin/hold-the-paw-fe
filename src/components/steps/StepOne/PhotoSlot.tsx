@@ -29,7 +29,7 @@ export const PhotoSlot = ({
 }: IPhotoSlotProps) => {
   return (
     <div
-      className={clsx('relative h-37 rounded-sm bg-gray-30 lg:h-66.75', {
+      className={clsx('relative h-37 overflow-hidden rounded-sm bg-gray-30 lg:h-66.75', {
         'border-4 border-solid border-primary-40': isMain && file,
         'border-2 border-primary-40': isAddButtonSlot,
         'border border-transparent': !isMain && !isAddButtonSlot,
@@ -37,11 +37,11 @@ export const PhotoSlot = ({
     >
       {file ? (
         <>
-          <button type='button' onClick={onMakeMain} className='h-full w-full cursor-pointer'>
+          <button type='button' onClick={onMakeMain} className='block h-full w-full cursor-pointer'>
             <PhotoPreview
               file={file}
               alt={file.name}
-              className='h-full w-full rounded-sm object-cover'
+              className='block h-full w-full object-cover'
             />
           </button>
 
@@ -74,7 +74,7 @@ export const PhotoSlot = ({
               className='flex h-full w-full cursor-pointer items-center justify-center'
               aria-label='Додати фото'
             >
-              <Icon icon={CirclePlus} size={32} color='--primary-40' />
+              <Icon icon={CirclePlus} size={48} color='var(--primary-40)' strokeWidth={1} />
             </button>
           )}
 

@@ -1,9 +1,13 @@
 @layer base {
   #root {
-    @apply min-h-screen;
+    @apply min-h-dvh flex flex-col;
   }
 
   body {
     @apply bg-background text-foreground font-sans;
+  }
+
+  main {
+    @apply flex-1 flex flex-col;
   }
 }
