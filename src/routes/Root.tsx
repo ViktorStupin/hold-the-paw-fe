@@ -4,6 +4,8 @@ import App from '@/App';
 import { RoutePath } from './root.config';
 import { HomePage } from '@/pages/HomePage';
 import { CreatePetProfile } from '@/pages/CreatePetProfile/CreatePetProfile';
+import { SignUpForm } from '@/components/Auth/SignUpForm/SignUpForm';
+import { AuthPage } from '@/pages/AuthPage/AuthPage';
 
 export const Root = () => {
   return (
@@ -12,6 +14,10 @@ export const Root = () => {
         //TODO: protected routes
         <Route path={RoutePath.Default} element={<App />}>
           <Route index element={<HomePage />} />
+          <Route path='auth' element={<AuthPage />}>
+            <Route path='sign-up' element={<SignUpForm />} />
+            {/* <Route path='sign-in' element={<SignInForm />} /> */}
+          </Route>
           <Route path={RoutePath.Home} element={<Navigate to={RoutePath.Default} replace />} />
           <Route path={RoutePath.Pets} element={<div>Pets Page</div>} />
           <Route path={RoutePath.Pet} element={<div>Pet Detail Page</div>} />

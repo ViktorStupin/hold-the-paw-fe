@@ -16,7 +16,7 @@ export const StepTwo = () => {
 
   return (
     <div className='grid grid-cols-1 gap-8 lg:gap-6 lg:grid-cols-2'>
-      <div className='step-block grid gap-8 lg:gap-6 '>
+      <div className='step-block items-start justify-starts grid gap-8 lg:gap-6 '>
         <OptionGrid
           name='status'
           options={PET_STATUS}
@@ -26,7 +26,7 @@ export const StepTwo = () => {
         <OptionGrid name='sex' options={PET_SEX} labels={PET_SEX_LABEL_UA} layout='grid-2' />
         <OptionGrid name='age' options={PET_AGE} labels={PET_AGE_LABEL_UA} layout='grid-2' />
       </div>
-      <div className='step-block grid gap-8 lg:gap-6 '>
+      <div className='step-block items-start justify-starts grid gap-8 lg:gap-6 '>
         <OptionGrid
           name='breed'
           options={PET_BREED}

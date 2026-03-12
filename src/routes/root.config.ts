@@ -1,5 +1,8 @@
 export const RoutePath = {
   Default: '/',
+  Auth: 'auth',
+  SignUp: 'auth/sign-up',
+  SignIn: 'auth/sign-in',
   Home: '/home',
   Pets: '/pets',
   Pet: '/pets/:id',

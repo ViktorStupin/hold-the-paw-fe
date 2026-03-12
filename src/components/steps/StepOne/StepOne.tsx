@@ -2,13 +2,13 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import type { PetProfileFormValues } from '@/schemas/pet.schema';
-import { InputGroup } from '@/components/ui/InputGroup';
 import { PhotoGrid } from './PhotoGrid';
 import { usePetPhotos } from './usePetPhotos';
-import { LabelForm } from '@/components/FormElements/LabelForm/LabelForm';
-import { InfoForm } from '@/components/FormElements/InfoForm/InfoForm';
 import { MapPin } from 'lucide-react';
 import { Icon } from '@/components/ui/icon';
+import { PET_OPTION_LABELS_UA } from '@/constants/pet.labes';
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
+import { Field, FieldGroup, FieldLabel, FieldMessage } from '@/components/ui/field';
 
 export const StepOne = () => {
   const inputRef = React.useRef<HTMLInputElement | null>(null);
@@ -23,9 +23,14 @@ export const StepOne = () => {
 
   return (
     <div className='step-block'>
-      <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
-        <div>
-          <LabelForm name='name' defaultValue="Ім'я" />
+      <FieldGroup className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
+        <Field>
+          <FieldLabel
+            text={PET_OPTION_LABELS_UA['name']}
+            defaultValue="Ім'я"
+            htmlFor='name'
+            className='mb-2 typo-h3'
+          />
           <Input
             id='name'
             aria-invalid={!!errors.name}
@@ -34,27 +39,41 @@ export const StepOne = () => {
             placeholder='Наприклад: Зірочка'
             {...register('name')}
           />
-          {errors.name && <InfoForm message={errors.name.message} status='danger' />}
-        </div>
+          <FieldMessage message={errors.name?.message} status='danger' />
+        </Field>
 
-        <div>
-          <LabelForm name='location' defaultValue='Локація' />
-          <InputGroup
-            endIcon={<Icon icon={MapPin} size={24} color='var(--gray-80)' />}
-            inputProps={{
-              id: 'location',
-              placeholder: 'Локація',
-              bg: 'gray30',
-              'aria-invalid': !!errors.location,
-              ...register('location'),
-            }}
+        <Field>
+          <FieldLabel
+            text={PET_OPTION_LABELS_UA['location']}
+            defaultValue='Локація'
+            htmlFor='location'
+            className='mb-2 typo-h3'
           />
-          {errors.location && <InfoForm message={errors.location.message} status='danger' />}
-        </div>
-      </div>
 
-      <div className='mt-6'>
-        <LabelForm name='photos' defaultValue='Оберіть головне фото та 5 додаткових' />
+          <InputGroup>
+            <InputGroupInput
+              id='location'
+              {...register('location')}
+              type='text'
+              placeholder='Локація'
+              aria-invalid={!!errors.location}
+            />
+
+            <InputGroupAddon align='inline-end'>
+              <Icon icon={MapPin} size={24} color='var(--gray-80)' />
+            </InputGroupAddon>
+          </InputGroup>
+
+          <FieldMessage message={errors.location?.message} status='danger' />
+        </Field>
+      </FieldGroup>
+
+      <Field className='mt-6'>
+        <FieldLabel
+          text={PET_OPTION_LABELS_UA['photos']}
+          defaultValue='Оберіть головне фото та 5 додаткових'
+          className='mb-2 typo-h3'
+        />
 
         <input
           ref={inputRef}
@@ -79,10 +98,9 @@ export const StepOne = () => {
           onRemove={removePhoto}
         />
 
-        {errors.photos && <InfoForm message={errors.photos.message} status='danger' />}
-
-        {!errors.photos && photosHint && <InfoForm message={photosHint} status='warning' />}
-      </div>
+        <FieldMessage message={errors.photos?.message} status='danger' />
+        <FieldMessage message={photosHint} status='warning' />
+      </Field>
     </div>
   );
 };

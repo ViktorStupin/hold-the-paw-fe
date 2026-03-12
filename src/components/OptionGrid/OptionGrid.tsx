@@ -1,8 +1,8 @@
 import { useFormContext, useController } from 'react-hook-form';
 import type { PetProfileFormValues } from '@/schemas/pet.schema';
 import { Button } from '../ui/button';
-import { LabelForm } from '../FormElements/LabelForm/LabelForm';
-import { InfoForm } from '../FormElements/InfoForm/InfoForm';
+import { PET_OPTION_LABELS_UA } from '@/constants/pet.labes';
+import { Field, FieldLabel, FieldMessage, FieldSet } from '../ui/field';
 interface IOptionGridProps<T extends string | boolean> {
   name: keyof PetProfileFormValues;
   options: readonly T[];
@@ -29,9 +29,9 @@ export const OptionGrid = <T extends string | boolean>({
   }[layout];
 
   return (
-    <div>
-      <LabelForm name={name} />
-      <fieldset id={name} className={gridClass}>
+    <Field>
+      <FieldLabel className='mb-2 typo-h3' text={PET_OPTION_LABELS_UA[name]} htmlFor={name} />
+      <FieldSet id={name} className={gridClass}>
         {options.map((option) => (
           <Button
             role='radio'
@@ -47,9 +47,9 @@ export const OptionGrid = <T extends string | boolean>({
             {labels[String(option)]}
           </Button>
         ))}
-      </fieldset>
+      </FieldSet>
 
-      {fieldState.error && <InfoForm message={fieldState.error.message} status='danger' />}
-    </div>
+      <FieldMessage message={fieldState.error?.message} status='danger' />
+    </Field>
   );
 };
