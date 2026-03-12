@@ -100,7 +100,7 @@ export const PasswordField = ({
           aria-label='toggle password'
           onClick={() => setShowPassword((p) => !p)}
         >
-          <Icon icon={showPassword ? EyeClosed : Eye} color='var(--gray-80)' />
+          <Icon icon={showPassword ? Eye : EyeClosed} color='var(--gray-80)' />
         </InputGroupButton>
       </InputGroupAddon>
     </InputGroup>

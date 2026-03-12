@@ -3,6 +3,9 @@ import type { PetProfileFormValues } from '@/schemas/pet.schema';
 import { Button } from '../ui/button';
 import { PET_OPTION_LABELS_UA } from '@/constants/pet.labes';
 import { Field, FieldLabel, FieldMessage, FieldSet } from '../ui/field';
+
+export type LayoutType = 'single' | 'grid-2' | 'grid-3' | 'special-2';
+
 interface IOptionGridProps<T extends string | boolean> {
   name: keyof PetProfileFormValues;
   options: readonly T[];

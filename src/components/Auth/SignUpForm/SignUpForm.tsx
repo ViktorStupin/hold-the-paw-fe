@@ -16,6 +16,8 @@ import { Button } from '@/components/ui/button';
 import { USER_ROLE_LABEL_UA } from '@/constants/role.labes';
 import { normalizeEDRPOU, normalizeUaPhone } from '@/utils/helpers/helpers';
 import { Field, FieldGroup, FieldLabel, FieldMessage } from '@/components/ui/field';
+import { Link } from 'react-router-dom';
+import { RoutePath } from '@/routes/root.config';
 
 export function SignUpForm() {
   const methods = useForm<SignUpData>({
@@ -42,25 +44,15 @@ export function SignUpForm() {
   const role = watch('role');
 
   const onSubmit = async (data: SignUpData) => {
-    const payload =
-      data.role === 'personal'
-        ? {
-            role: data.role,
-            email: data.email,
-            password: data.password,
-            phone_number: data.phone_number,
-            full_name: data.full_name,
-          }
-        : {
-            role: data.role,
-            email: data.email,
-            password: data.password,
-            phone_number: data.phone_number,
-            company_name: data.company_name,
-            edrpou: data.edrpou,
-          };
-
-    console.log(payload);
+    if (data.role === 'personal') {
+      const { role, email, password, phone_number, full_name } = data;
+      const payload = { role, email, password, phone_number, full_name };
+      console.log(payload);
+    } else {
+      const { role, email, password, phone_number, company_name, edrpou } = data;
+      const payload = { role, email, password, phone_number, company_name, edrpou };
+      console.log(payload);
+    }
   };
 
   return (
@@ -84,27 +76,29 @@ export function SignUpForm() {
               size='switcher'
             />
 
-            <Field>
-              <FieldLabel htmlFor='email'>Пошта</FieldLabel>
-              <Input
-                id='email'
-                aria-invalid={!!errors.email}
-                size='md'
-                bg='gray30'
-                placeholder='Ваша пошта'
-                autoComplete='email'
-                {...register('email')}
-              />
-              <FieldMessage message={errors.email?.message} />
-            </Field>
+            <FieldGroup className='grid  gap-4 grid-cols-1 lg:grid-cols-2'>
+              <Field>
+                <FieldLabel htmlFor='email'>Пошта</FieldLabel>
+                <Input
+                  id='email'
+                  aria-invalid={!!errors.email}
+                  size='md'
+                  bg='gray30'
+                  placeholder='Ваша пошта'
+                  autoComplete='email'
+                  {...register('email')}
+                />
+                <FieldMessage message={errors.email?.message} />
+              </Field>
 
-            <Field>
-              <FieldLabel htmlFor='password'>Пароль</FieldLabel>
+              <Field>
+                <FieldLabel htmlFor='password'>Пароль</FieldLabel>
 
-              <PasswordField name='password' placeholder='Введіть пароль' id='password' />
+                <PasswordField name='password' placeholder='Введіть пароль' id='password' />
 
-              <FieldMessage message={errors.password?.message} />
-            </Field>
+                <FieldMessage message={errors.password?.message} />
+              </Field>
+            </FieldGroup>
 
             <Field>
               <FieldLabel htmlFor='phone_number'>Номер телефона</FieldLabel>
@@ -168,7 +162,7 @@ export function SignUpForm() {
               <Field orientation='horizontal' className='gap-2'>
                 <CheckBoxField name='terms_accepted' />
                 <FieldLabel htmlFor='terms_accepted' className='cursor-pointer'>
-                  Я приймаю умови угоди
+                  Я приймаю <Link to={RoutePath.TermsAndContitions}>умови угоди</Link>
                 </FieldLabel>
               </Field>
 
@@ -176,9 +170,21 @@ export function SignUpForm() {
             </div>
           </FieldGroup>
         </div>
-        <Button className='mt-15' type='submit' variant={isValid ? 'primary' : 'lightDisabled'}>
-          Зареєструватись
-        </Button>
+        <div>
+          <Button
+            className='mt-15 w-full'
+            type='submit'
+            variant={isValid ? 'primary' : 'lightDisabled'}
+          >
+            Зареєструватись
+          </Button>
+          <div className='mt-4 flex gap-2 items-center justify-center'>
+            <p className='typo-main text-gray-80'>Вже маєте акаунт?</p>
+            <Link className='p-3 text-gray-90' to={`../${RoutePath.SignIn}`}>
+              Увійти
+            </Link>
+          </div>
+        </div>
       </form>
     </FormProvider>
   );

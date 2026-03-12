@@ -221,7 +221,7 @@ const FieldMessage = ({
   const currentIconColor = iconColor ?? statusConfig[status].iconColor;
 
   return (
-    <div role='alert' className={cn('flex items-center gap-1 mt-2', className)} {...props}>
+    <div role='alert' className={cn('flex items-center gap-1', className)} {...props}>
       {IconComponent && (
         <Icon className='shrink-0' icon={IconComponent} size={24} color={currentIconColor} />
       )}

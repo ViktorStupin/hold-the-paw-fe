@@ -1,8 +1,8 @@
 export const RoutePath = {
   Default: '/',
-  Auth: 'auth',
-  SignUp: 'auth/sign-up',
-  SignIn: 'auth/sign-in',
+  Auth: '/auth',
+  SignUp: 'sign-up',
+  SignIn: 'sign-in',
   Home: '/home',
   Pets: '/pets',
   Pet: '/pets/:id',
@@ -10,6 +10,7 @@ export const RoutePath = {
   EditPetProfile: '/edit-pet-profile',
   Favorites: '/favorites',
   Profile: '/profile',
+  TermsAndContitions: '/term-and-contitions',
   NotFound: '*',
 } as const;
 

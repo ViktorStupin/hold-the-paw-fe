@@ -6,6 +6,7 @@ import { HomePage } from '@/pages/HomePage';
 import { CreatePetProfile } from '@/pages/CreatePetProfile/CreatePetProfile';
 import { SignUpForm } from '@/components/Auth/SignUpForm/SignUpForm';
 import { AuthPage } from '@/pages/AuthPage/AuthPage';
+import { SignInForm } from '@/components/Auth/SignInForm/SignInForm';
 
 export const Root = () => {
   return (
@@ -14,9 +15,11 @@ export const Root = () => {
         //TODO: protected routes
         <Route path={RoutePath.Default} element={<App />}>
           <Route index element={<HomePage />} />
-          <Route path='auth' element={<AuthPage />}>
-            <Route path='sign-up' element={<SignUpForm />} />
-            {/* <Route path='sign-in' element={<SignInForm />} /> */}
+          <Route path={RoutePath.Auth} element={<AuthPage />}>
+            <Route index element={<Navigate to={RoutePath.SignIn} replace />} />
+
+            <Route path={RoutePath.SignUp} element={<SignUpForm />} />
+            <Route path={RoutePath.SignIn} element={<SignInForm />} />
           </Route>
           <Route path={RoutePath.Home} element={<Navigate to={RoutePath.Default} replace />} />
           <Route path={RoutePath.Pets} element={<div>Pets Page</div>} />
