@@ -15,3 +15,9 @@ export const RoutePath = {
 } as const;
 
 export type RoutePath = (typeof RoutePath)[keyof typeof RoutePath];
+
+export const PROTECTED_ROUTES_CONFIG: Record<string, string> = {
+  [RoutePath.CreatePetProfile]: 'Для створення профілю тваринки потрібно бути авторизованим',
+  [RoutePath.EditPetProfile]: 'Для редагування профілю тваринки потрібно бути авторизованим',
+  [RoutePath.Profile]: 'Для перегляду профілю потрібно бути авторизованим',
+};

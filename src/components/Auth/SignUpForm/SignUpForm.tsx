@@ -14,12 +14,20 @@ import {
 } from '@/components/ui/field-structure';
 import { Button } from '@/components/ui/button';
 import { USER_ROLE_LABEL_UA } from '@/constants/role.labes';
-import { normalizeEDRPOU, normalizeUaPhone } from '@/utils/helpers/helpers';
+import { normalizeEDRPOU, normalizeUaPhone } from '@/utils/helpers/convertors/PhoneConvertors';
 import { Field, FieldGroup, FieldLabel, FieldMessage } from '@/components/ui/field';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { RoutePath } from '@/routes/root.config';
+import { authServices } from '@/utils/api/services/auth.services';
+import { setAuthLoading, setTokens, useAuthStore } from '@/store/auth.store';
+import { getServerErrorMessage } from '@/utils/errors/getServerErrorMessage';
+import { useEffect } from 'react';
+import { scrollTop } from '@/utils/helpers/layouts/layouts';
 
 export function SignUpForm() {
+  const navigate = useNavigate();
+  const { isLoading, returnURL, setReturnUrl } = useAuthStore();
+
   const methods = useForm<SignUpData>({
     resolver: zodResolver(signUpSchema),
     mode: 'onChange',
@@ -38,20 +46,56 @@ export function SignUpForm() {
     register,
     handleSubmit,
     watch,
+    setError,
+    clearErrors,
     formState: { errors, isValid },
   } = methods;
 
   const role = watch('role');
 
+  useEffect(() => {
+    const subscription = watch(() => {
+      if (errors.root) {
+        clearErrors('root');
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, errors.root, clearErrors]);
+
   const onSubmit = async (data: SignUpData) => {
-    if (data.role === 'personal') {
-      const { role, email, password, phone_number, full_name } = data;
-      const payload = { role, email, password, phone_number, full_name };
-      console.log(payload);
-    } else {
-      const { role, email, password, phone_number, company_name, edrpou } = data;
-      const payload = { role, email, password, phone_number, company_name, edrpou };
-      console.log(payload);
+    try {
+      setAuthLoading(true);
+      if (data.role === 'personal') {
+        await authServices.registerPersonal({
+          email: data.email,
+          password: data.password,
+          phone_number: data.phone_number,
+          first_name: data.full_name,
+          last_name: 'deprecated',
+        });
+      } else {
+        await authServices.registerShelter({
+          email: data.email,
+          password: data.password,
+          phone_number: data.phone_number,
+          tax_id: data.edrpou,
+          company_name: data.company_name,
+        });
+      }
+
+      const tokens = await authServices.login({
+        email: data.email,
+        password: data.password,
+      });
+
+      setTokens(tokens.access, tokens.refresh);
+      navigate(returnURL || RoutePath.Home);
+      setReturnUrl(null);
+      scrollTop();
+    } catch (error) {
+      setError('root', { message: getServerErrorMessage(error) });
+    } finally {
+      setAuthLoading(false);
     }
   };
 
@@ -76,29 +120,27 @@ export function SignUpForm() {
               size='switcher'
             />
 
-            <FieldGroup className='grid  gap-4 grid-cols-1 lg:grid-cols-2'>
-              <Field>
-                <FieldLabel htmlFor='email'>Пошта</FieldLabel>
-                <Input
-                  id='email'
-                  aria-invalid={!!errors.email}
-                  size='md'
-                  bg='gray30'
-                  placeholder='Ваша пошта'
-                  autoComplete='email'
-                  {...register('email')}
-                />
-                <FieldMessage message={errors.email?.message} />
-              </Field>
+            <Field>
+              <FieldLabel htmlFor='email'>Пошта</FieldLabel>
+              <Input
+                id='email'
+                aria-invalid={!!errors.email}
+                size='md'
+                bg='gray30'
+                placeholder='Ваша пошта'
+                autoComplete='email'
+                {...register('email')}
+              />
+              <FieldMessage message={errors.email?.message} />
+            </Field>
 
-              <Field>
-                <FieldLabel htmlFor='password'>Пароль</FieldLabel>
+            <Field>
+              <FieldLabel htmlFor='password'>Пароль</FieldLabel>
 
-                <PasswordField name='password' placeholder='Введіть пароль' id='password' />
+              <PasswordField name='password' placeholder='Введіть пароль' id='password' />
 
-                <FieldMessage message={errors.password?.message} />
-              </Field>
-            </FieldGroup>
+              <FieldMessage message={errors.password?.message} />
+            </Field>
 
             <Field>
               <FieldLabel htmlFor='phone_number'>Номер телефона</FieldLabel>
@@ -162,13 +204,17 @@ export function SignUpForm() {
               <Field orientation='horizontal' className='gap-2'>
                 <CheckBoxField name='terms_accepted' />
                 <FieldLabel htmlFor='terms_accepted' className='cursor-pointer'>
-                  Я приймаю <Link to={RoutePath.TermsAndContitions}>умови угоди</Link>
+                  Я приймаю{' '}
+                  <Link className='type-main type-link' to={RoutePath.TermsAndContitions}>
+                    умови угоди
+                  </Link>
                 </FieldLabel>
               </Field>
 
               <FieldMessage className='mt-2' message={errors.terms_accepted?.message} />
             </div>
           </FieldGroup>
+          {errors.root && <FieldMessage className='mt-2' message={errors.root.message} />}
         </div>
         <div>
           <Button
@@ -176,11 +222,11 @@ export function SignUpForm() {
             type='submit'
             variant={isValid ? 'primary' : 'lightDisabled'}
           >
-            Зареєструватись
+            {isLoading ? 'Реєстрація...' : 'Зареєструватись'}
           </Button>
           <div className='mt-4 flex gap-2 items-center justify-center'>
             <p className='typo-main text-gray-80'>Вже маєте акаунт?</p>
-            <Link className='p-3 text-gray-90' to={`../${RoutePath.SignIn}`}>
+            <Link className='type-main type-link' to={`../${RoutePath.SignIn}`}>
               Увійти
             </Link>
           </div>

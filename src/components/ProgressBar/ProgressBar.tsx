@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { useIsMobile } from '@/utils/hooks/useIsMobile';
+import { useIsMobile } from '@/utils/helpers/layouts/useIsMobile';
 import clsx from 'clsx';
 import React from 'react';
 import { steps } from '../steps/constants/steps';

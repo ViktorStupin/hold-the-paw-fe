@@ -9,7 +9,7 @@ import {
 } from '@/constants/pet.labes';
 import { OptionGrid, type LayoutType } from '../OptionGrid/OptionGrid';
 import { ANIMAL_TYPE, PET_AGE, PET_BREED, PET_SEX, PET_SIZE, PET_STATUS } from '@/types/PetFileds';
-import { useIsMobile } from '@/utils/hooks/useIsMobile';
+import { useIsMobile } from '@/utils/helpers/layouts/useIsMobile';
 import type { PetProfileFormValues } from '@/schemas/pet.schema';
 
 export const StepTwo = () => {

@@ -3,12 +3,12 @@ import React from 'react';
 import { steps } from '@/components/steps/constants/steps';
 import { Button } from '@/components/ui/button';
 import { PetProfileSchema, type PetProfileFormValues } from '@/schemas/pet.schema';
-import { useIsMobile } from '@/utils/hooks/useIsMobile';
+import { useIsMobile } from '@/utils/helpers/layouts/useIsMobile';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ProgressBar } from '@/components/ProgressBar/ProgressBar';
 import clsx from 'clsx';
-import { scrollTop } from '@/utils/layouts/layouts';
+import { scrollTop } from '@/utils/helpers/layouts/layouts';
 import { Back } from '@/components/Back/Back';
 
 export const CreatePetProfile = () => {

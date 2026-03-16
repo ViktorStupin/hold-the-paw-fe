@@ -5,7 +5,6 @@ export const normalizeUaPhone = (input: string) => {
 
   if (localDigits.startsWith('380')) {
     localDigits = localDigits.slice(3);
-    console.log(localDigits);
   }
 
   if (localDigits.length === 0) {

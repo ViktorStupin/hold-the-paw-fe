@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router-dom';
 // import { useCallback } from 'react';
 import { ChevronLeft } from 'lucide-react';
 import { Icon } from '../ui/icon';
+import { useGoBack } from '@/utils/helpers/routing/useGoBack';
 
 interface IBackProps {
   onBack?: () => void;
@@ -9,13 +9,13 @@ interface IBackProps {
 }
 
 export const Back = ({ onBack, label = 'Назад' }: IBackProps) => {
-  const navigate = useNavigate();
-
+  const goBack = useGoBack();
+  
   const handleClick = () => {
     if (onBack) {
       onBack();
     } else {
-      navigate(-1);
+      goBack();
     }
   };
 
