@@ -33,6 +33,7 @@ export const Root = () => {
           <Route path={RoutePath.Home} element={<Navigate to={RoutePath.Default} replace />} />
 
           <Route path={RoutePath.Pets} element={<div>Pets Page</div>} />
+          <Route path={RoutePath.MyPets} element={<div>Мої тваринки</div>} />
           <Route path={RoutePath.Pet} element={<div>Pet Detail Page</div>} />
 
           <Route element={<PublicOnlyRoute />}>

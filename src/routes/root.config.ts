@@ -5,6 +5,7 @@ export const RoutePath = {
   SignIn: 'sign-in',
   Home: '/home',
   Pets: '/pets',
+  MyPets: '/my-pets',
   Pet: '/pets/:id',
   CreatePetProfile: '/create-pet-profile',
   EditPetProfile: '/edit-pet-profile/:id',
