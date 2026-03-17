@@ -1,6 +1,6 @@
 import { PET_BOOLEAN_FIELDS, PET_COLOR } from '@/types/PetFileds';
 import { OptionGrid } from '../OptionGrid/OptionGrid';
-import { useIsMobile } from '@/utils/hooks/useIsMobile';
+import { useIsMobile } from '@/utils/helpers/layouts/useIsMobile';
 import {
   PET_COLOR_LABEL_UA,
   PET_HAS_PASSPORT_LABEL_UA,

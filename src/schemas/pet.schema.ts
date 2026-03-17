@@ -32,14 +32,14 @@ function optionalStringWithMin(min: number, message: string) {
 const nameSchema = z
   .string()
   .trim()
-  .min(2, 'Введіть мінмум 2 символи')
+  .min(2, 'Введіть мінімум 2 символи')
   .max(32, 'Максимум 32 символи')
   .regex(NAME_REGEX, 'Лише літери, пробіли, дефіс або апостроф');
 
 const locationSchema = z
   .string()
   .trim()
-  .min(2, 'Мінімум 2 символи')
+  .min(2, 'Введіть мінімум 2 символи')
   .max(32, 'Максимум 32 символи');
 
 export const photoSchema = z
@@ -69,8 +69,8 @@ export const PetProfileSchema = z.object({
   has_passport: z.boolean({ message: 'Оберіть чи є паспорт' }),
   is_vaccinated: z.boolean({ message: 'Оберіть чи вакцинована' }),
 
-  story: optionalStringWithMin(2, 'Мінімум 2 символи'),
-  about: optionalStringWithMin(2, 'Мінімум 2 символи'),
+  story: optionalStringWithMin(2, 'Введіть мінімум 2 символи'),
+  about: optionalStringWithMin(2, 'Введіть мінімум 2 символи'),
 });
 
 export type PetProfileFormValues = z.infer<typeof PetProfileSchema>;

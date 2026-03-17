@@ -21,17 +21,17 @@ const buttonVariants = cva(
         lightDisabled: 'bg-gray-50 text-gray-0 border-none',
         transparent:
           'border-none bg-transparent shadow-none hover:bg-transparent active:bg-transparent focus-visible:ring-0 focus-visible:border-transparent',
+        round:
+          'bg-light-opacity text-gray-0 border-none shadow-default hover:border hover:border-gray-90 active:bg-gray-30',
       },
       size: {
         default: 'h-12.5 px-4 has-[>svg]:px-3',
         xs: "h-6 gap-1 rounded-md px-2 text-xs has-[>svg]:px-1.5 [&_svg:not([class*='size-'])]:size-3",
         sm: 'h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5',
         lg: 'h-10 rounded-md px-6 has-[>svg]:px-4',
-        icon: 'size-9',
-        'icon-xs': "size-6 rounded-md [&_svg:not([class*='size-'])]:size-3",
-        'icon-sm': 'size-8',
-        'icon-lg': 'size-10',
         auto: 'h-auto w-auto p-0',
+        'round-md': 'size-8 rounded-full',
+        'round-lg': 'size-10 rounded-full',
       },
     },
     defaultVariants: {
