@@ -18,7 +18,7 @@ export const ProtectedRoute = ({ onAuthRequired }: IProtectedRouteProps) => {
   useEffect(() => {
     if (!isAuthenticated) {
       const message =
-        PROTECTED_ROUTES_CONFIG[location.pathname] ?? 'Щоб продовжити авторизуйтесь';
+        PROTECTED_ROUTES_CONFIG[location.pathname] ?? 'Авторизуйтесь, щоб продовжити';
       setReturnUrl(location.pathname);
       onAuthRequired(message);
       goBack();

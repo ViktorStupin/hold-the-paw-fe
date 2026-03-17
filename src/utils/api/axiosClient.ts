@@ -58,14 +58,12 @@ export const client = {
     return response.data;
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async post<T>(url: string, data: any) {
+ async post<T, D = unknown>(url: string, data: D) {
     const response = await instance.post<T>(url, data);
     return response.data;
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async patch<T>(url: string, data: any) {
+  async patch<T, D = unknown>(url: string, data: D) {
     const response = await instance.patch<T>(url, data);
     return response.data;
   },
