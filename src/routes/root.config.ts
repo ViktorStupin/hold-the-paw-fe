@@ -8,7 +8,7 @@ export const RoutePath = {
   Pet: '/pets/:id',
   CreatePetProfile: '/create-pet-profile',
   EditPetProfile: '/edit-pet-profile/:id',
-  Favorites: '/favorites',
+  MyPets: '/my-pets',
   Profile: '/profile',
   TermsAndContitions: '/term-and-contitions',
   NotFound: '*',
@@ -19,5 +19,11 @@ export type RoutePath = (typeof RoutePath)[keyof typeof RoutePath];
 export const PROTECTED_ROUTES_CONFIG: Record<string, string> = {
   [RoutePath.CreatePetProfile]: 'Для створення профіля тваринки потрібно  бути авторизованим',
   [RoutePath.EditPetProfile]: 'Для редагування профіля тваринки потрібно  бути авторизованим',
+  [RoutePath.MyPets]: 'Для перегляду ваших тваринок потрібно бути авторизованим',
   [RoutePath.Profile]: 'Для перегляду профілю потрібно бути авторизованим',
+};
+
+export const getPath = {
+  editPetProfile: (id: number | string) => `/edit-pet-profile/${id}`,
+  pet: (id: number | string) => `/pets/${id}`,
 };

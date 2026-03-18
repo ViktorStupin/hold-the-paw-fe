@@ -36,6 +36,7 @@ export type ICreateEditPetResponse = ICreateEditPetRequest<string> & { id: numbe
 
 export interface IPetProfile extends IPetBase {
   id: number;
+  is_active: boolean;
   images: string[];
   author: {
     id: number;
@@ -52,12 +53,14 @@ export interface IPetCard {
   gender: PetGender;
   age: PetAge;
   main_image: string;
+  is_active: boolean;
 }
 
 export interface IMyPetCard {
   id: number;
   name: string;
   main_image: string;
-  status: PetStatus;
   location: string;
+  is_active: boolean;
+  status: PetStatus;
 }

@@ -37,4 +37,7 @@ const petsStore: StateCreator<
 
 const usePetsStore = create<IPetsState>()(immer(devtools(petsStore)));
 
+export const getPetsState = () => usePetsStore.getState();
+
+
 export { usePetsStore };
