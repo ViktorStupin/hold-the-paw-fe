@@ -4,9 +4,9 @@ import { Header } from './layouts/Header';
 
 function App() {
   return (
-    <div className='relative flex min-h-dvh flex-col'>
+    <div className='flex min-h-dvh flex-col'>
       <Header />
-      <main>
+      <main className='flex-1'>
         <Outlet />
       </main>
       <Footer />

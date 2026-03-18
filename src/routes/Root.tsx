@@ -2,8 +2,6 @@ import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { NotFoundPage } from '../pages/NotFoundPage';
 import App from '@/App';
 import { RoutePath } from './root.config';
-import { HomePage } from '@/pages/HomePage';
-import { CreatePetProfile } from '@/pages/CreatePetProfile/CreatePetProfile';
 import { SignUpForm } from '@/components/Auth/SignUpForm/SignUpForm';
 import { AuthPage } from '@/pages/AuthPage/AuthPage';
 import { SignInForm } from '@/components/Auth/SignInForm/SignInForm';
@@ -29,11 +27,10 @@ export const Root = () => {
     <HashRouter>
       <Routes>
         <Route path={RoutePath.Default} element={<App />}>
-          <Route index element={<HomePage />} />
+          <Route index element={<div />} />
           <Route path={RoutePath.Home} element={<Navigate to={RoutePath.Default} replace />} />
 
           <Route path={RoutePath.Pets} element={<div>Pets Page</div>} />
-          <Route path={RoutePath.MyPets} element={<div>Мої тваринки</div>} />
           <Route path={RoutePath.Pet} element={<div>Pet Detail Page</div>} />
 
           <Route element={<PublicOnlyRoute />}>
@@ -44,8 +41,8 @@ export const Root = () => {
             </Route>
           </Route>
           <Route element={<ProtectedRoute onAuthRequired={handleAuthRequired} />}>
-            <Route path={RoutePath.CreatePetProfile} element={<CreatePetProfile />} />
-            <Route path={RoutePath.EditPetProfile} element={<EditPetProfile />} />
+            <Route path={RoutePath.CreatePetProfile} element={<EditPetProfile />} />
+            <Route path={RoutePath.EditPetProfile} element={<EditPetProfile/>} />
             <Route path={RoutePath.MyPets} element={<MyPetPage />} />
 
             <Route path={RoutePath.Profile} element={<Profile variant='view' />} />
