@@ -38,10 +38,10 @@ export const MyPetCard = ({
   const stats = (
     <div className='flex items-center gap-4'>
       <div className='flex items-center gap-1'>
-        <Icon icon={Eye} color='var(--gray-80)' /> <span>0</span>
+        <Icon icon={Eye} color='var(--gray-80)' /> <span className='text-gray-80'>0</span>
       </div>
       <div className='flex items-center gap-1'>
-        <Icon icon={Phone} color='var(--gray-80)' /> <span>0</span>
+        <Icon icon={Phone} color='var(--gray-80)' /> <span className='text-gray-80'>0</span>
       </div>
     </div>
   );
