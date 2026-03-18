@@ -143,7 +143,7 @@ export function SignUpForm() {
             </Field>
 
             <Field>
-              <FieldLabel htmlFor='phone_number'>Номер телефона</FieldLabel>
+              <FieldLabel htmlFor='phone_number'>Номер телефону</FieldLabel>
               <NormalizedInputField
                 name='phone_number'
                 normalize={normalizeUaPhone}
@@ -222,7 +222,7 @@ export function SignUpForm() {
             type='submit'
             variant={isValid ? 'primary' : 'lightDisabled'}
           >
-            {isLoading ? 'Реєстрація...' : 'Зареєструватись'}
+            {isLoading ? 'Реєстрація...' : 'Зареєструватися'}
           </Button>
           <div className='mt-4 flex gap-2 items-center justify-center'>
             <p className='typo-main text-gray-80'>Вже маєте акаунт?</p>

@@ -14,7 +14,7 @@ export const ProgressBar: React.FC<IProgressBarProps> = ({ currentStep }) => {
   const isMobile = useIsMobile();
 
   return (
-    <div className='flex items-center px-6 mt-2 mb-6 lg:max-w-276 lg:mx-auto lg:mt-0 lg:px-16 lg:mb-20'>
+    <div className='flex items-center px-6 mb-6 lg:max-w-276 lg:mx-auto lg:mt-0 lg:px-16 lg:mb-20'>
       {steps.map((step, index) => {
         const isActive = index <= currentStep;
         const isCompleted = index < currentStep;

@@ -3,16 +3,17 @@ import { useFormContext } from 'react-hook-form';
 import { Textarea } from '../ui/textarea';
 import { PET_OPTION_LABELS_UA } from '@/constants/pet.labes';
 import { Field, FieldLabel, FieldMessage } from '../ui/field';
+import clsx from 'clsx';
 
-export const StepFour = () => {
+export const StepFour = ({ isEdit = false }: { isEdit?: boolean }) => {
   const {
     register,
     formState: { errors },
   } = useFormContext<PetProfileFormValues>();
 
   return (
-    <div className='grid grid-cols-1 gap-8 lg:gap-6 lg:grid-cols-2'>
-      <div className='step-block'>
+    <div className={clsx('grid grid-cols-1 gap-6 lg:gap-6 lg:grid-cols-2', { 'lg:gap-x-18': isEdit })}>
+      <div className={clsx({ 'step-block': !isEdit })}>
         <Field>
           <FieldLabel
             className='mb-2 typo-h3'
@@ -30,7 +31,7 @@ export const StepFour = () => {
           <FieldMessage message={errors.story?.message} status='danger' />{' '}
         </Field>
       </div>
-      <div className='step-block'>
+      <div className={clsx({ 'step-block': !isEdit })}>
         <Field>
           <FieldLabel
             className='mb-2 typo-h3'

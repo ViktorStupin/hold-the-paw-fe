@@ -1,6 +1,6 @@
 // Step2.tsx приклад
 import {
-  ANIMAL_TYPE_LABEL_UA,
+  PET_TYPE_LABEL_UA,
   PET_AGE_LABEL_UA,
   PET_BREED_LABEL_UA,
   PET_SEX_LABEL_UA,
@@ -8,11 +8,13 @@ import {
   PET_STATUS_LABEL_UA,
 } from '@/constants/pet.labes';
 import { OptionGrid, type LayoutType } from '../OptionGrid/OptionGrid';
-import { ANIMAL_TYPE, PET_AGE, PET_BREED, PET_SEX, PET_SIZE, PET_STATUS } from '@/types/PetFileds';
+import { PET_TYPE, PET_AGE, PET_BREED, PET_GENDER, PET_SIZE, PET_STATUS } from '@/types/PetFileds';
 import { useIsMobile } from '@/utils/helpers/layouts/useIsMobile';
 import type { PetProfileFormValues } from '@/schemas/pet.schema';
 
-export const StepTwo = () => {
+import clsx from 'clsx';
+
+export const StepTwo = ({ isEdit = false }: { isEdit?: boolean }) => {
   const isMobile = useIsMobile();
 
   const LEFT_GRIDS = [
@@ -23,8 +25,8 @@ export const StepTwo = () => {
       layout: isMobile ? 'single' : ('grid-2' as LayoutType),
     },
     {
-      name: 'sex' as keyof PetProfileFormValues,
-      options: PET_SEX,
+      name: 'gender' as keyof PetProfileFormValues,
+      options: PET_GENDER,
       labels: PET_SEX_LABEL_UA,
       layout: 'grid-2' as LayoutType,
     },
@@ -50,21 +52,21 @@ export const StepTwo = () => {
       layout: isMobile ? 'special-2' : ('grid-3' as LayoutType),
     },
     {
-      name: 'animalType' as keyof PetProfileFormValues,
-      options: ANIMAL_TYPE,
-      labels: ANIMAL_TYPE_LABEL_UA,
+      name: 'pet_type' as keyof PetProfileFormValues,
+      options: PET_TYPE,
+      labels: PET_TYPE_LABEL_UA,
       layout: 'grid-3' as LayoutType,
     },
   ];
 
   return (
-    <div className='grid grid-cols-1 gap-8 lg:gap-6 lg:grid-cols-2'>
-      <div className='step-block items-start grid gap-8 lg:gap-6'>
+    <div className={clsx('grid grid-cols-1 gap-6 lg:gap-6 lg:grid-cols-2', { 'lg:gap-x-18': isEdit })}>
+      <div className={clsx({ 'step-block': !isEdit }, 'items-start grid gap-8 lg:gap-6')}>
         {LEFT_GRIDS.map((grid) => (
           <OptionGrid key={grid.name} {...grid} />
         ))}
       </div>
-      <div className='step-block items-start grid gap-8 lg:gap-6'>
+      <div className={clsx({ 'step-block': !isEdit }, 'items-start grid gap-8 lg:gap-6')}>
         {RIGHT_GRIDS.map((grid) => (
           <OptionGrid key={grid.name} {...grid} />
         ))}

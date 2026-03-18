@@ -1,11 +1,13 @@
 import { create, type StateCreator } from 'zustand';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
+import { jwtDecode } from 'jwt-decode';
 
 interface IInitialState {
   accessToken: string | null;
   refreshToken: string | null;
   refreshTokenExpiresAt: number | null;
+  userId: number | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   returnURL: string | null;
@@ -22,12 +24,17 @@ interface IAuthState extends IInitialState, IActionsState {}
 
 const initialState: IInitialState = {
   accessToken: null,
+  userId: null,
   refreshToken: null,
   refreshTokenExpiresAt: null,
   isAuthenticated: false,
   isLoading: false,
   returnURL: null,
 };
+
+interface IJwtPayload {
+  user_id: number;
+}
 
 const authStore: StateCreator<
   IAuthState,
@@ -38,6 +45,8 @@ const authStore: StateCreator<
   setTokens: (access, refresh) =>
     set(
       (state) => {
+        const { user_id } = jwtDecode<IJwtPayload>(access);
+        state.userId = Number(user_id);
         state.accessToken = access;
         state.refreshToken = refresh;
         state.isAuthenticated = true;
@@ -70,6 +79,7 @@ const authStore: StateCreator<
         state.refreshToken = null;
         state.isAuthenticated = false;
         state.refreshTokenExpiresAt = null;
+        state.userId = null;
       },
       false,
       'auth/logout'
@@ -87,6 +97,7 @@ const useAuthStore = create<IAuthState>()(
           refreshToken: state.refreshToken,
           refreshTokenExpiresAt: state.refreshTokenExpiresAt,
           isAuthenticated: state.isAuthenticated,
+          userId: state.userId,
         }),
       })
     )

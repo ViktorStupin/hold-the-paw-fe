@@ -110,9 +110,9 @@ export function SignInForm() {
             {isLoading ? 'Вхід...' : 'Увійти'}
           </Button>
           <div className='mt-4 flex gap-2 items-center justify-center'>
-            <p className='typo-main text-gray-80'>Не маєте акаунт?</p>
+            <p className='typo-main text-gray-80'>Не маєте акаунта?</p>
             <Link className='type-main type-link' to={`../${RoutePath.SignUp}`}>
-              Зарєеструватися
+              Зареєструватися
             </Link>
           </div>
         </div>
