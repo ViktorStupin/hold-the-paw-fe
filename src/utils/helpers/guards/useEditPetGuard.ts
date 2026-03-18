@@ -41,6 +41,8 @@ export const useEditPetGuard = () => {
 
         setPetFormValues({
           ...petData,
+          about: petData.about || '',
+          story: petData.story || '',
           photos: [],
           // photos,
         });
