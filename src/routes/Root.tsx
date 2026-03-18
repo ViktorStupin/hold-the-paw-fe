@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { ProtectedRoute } from './ProtectedRoute';
 import { AuthRequiredModal } from '@/components/Auth/AuthRequiredModal/AuthRequiredModal';
 import { PublicOnlyRoute } from './PublicOnlyRoute';
+import { EditPetProfile } from '@/pages/EditPetProfile/EditPetProfile';
 
 export const Root = () => {
   const [authModal, setAuthModal] = useState<{ isOpen: boolean; message: string }>({
@@ -41,7 +42,7 @@ export const Root = () => {
           </Route>
           <Route element={<ProtectedRoute onAuthRequired={handleAuthRequired} />}>
             <Route path={RoutePath.CreatePetProfile} element={<CreatePetProfile />} />
-            <Route path={RoutePath.EditPetProfile} element={<div>Edit Profile Page</div>} />
+            <Route path={RoutePath.EditPetProfile} element={<EditPetProfile/>} />
             <Route path={RoutePath.Favorites} element={<div>Favorites Page</div>} />
             <Route path={RoutePath.Profile} element={<div>Profile Page</div>} />
           </Route>

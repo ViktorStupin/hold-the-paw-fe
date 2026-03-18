@@ -13,11 +13,6 @@ interface IAuthRequiredModalProps {
 export const AuthRequiredModal = ({ message, isOpen, onClose }: IAuthRequiredModalProps) => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-
-  // const handleSignUp = () => {
-  //   onClose();
-  //   navigate(`${RoutePath.Auth}/${RoutePath.SignUp}`);
-  // };
   const handleSignIn = () => {
     onClose();
     navigate(`${RoutePath.Auth}/${RoutePath.SignIn}`);
@@ -32,14 +27,8 @@ export const AuthRequiredModal = ({ message, isOpen, onClose }: IAuthRequiredMod
         <DialogTitle className='text-center typo-h3'>{message}</DialogTitle>
 
         <Button variant='primary' className='w-full' onClick={handleSignIn}>
-          Авторизація
+          Авторизивуватися
         </Button>
-
-        {/* <div className='flex gap-4'>
-          <Button variant='secondary' className='flex-1' onClick={handleSignUp}>
-            Реєстрація
-          </Button>
-        </div> */}
       </DialogContent>
     </Dialog>
   );

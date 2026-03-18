@@ -16,7 +16,7 @@ type Step = {
 
 export const steps: Step[] = [
   { component: StepOne, title: "Основне", fields: ["name", "location", "photos"] },
-  { component: StepTwo, title: "Параметри", fields: ["status", "sex", "age", "breed", "size", "animalType"] },
+  { component: StepTwo, title: "Параметри", fields: ["status", "gender", "age", "breed", "size", "pet_type"] },
   { component: StepThree, title: "Деталі", fields: ["color", "special_needs", "has_passport", "is_vaccinated"] },
   { component: StepFour, title: "Опис", fields: ["story", "about"] },
 ];

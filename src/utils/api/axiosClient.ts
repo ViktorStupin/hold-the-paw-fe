@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getAuthState, setTokens, logout } from '@/store/auth.store';
+import { authServices } from './services/auth.services';
 
 const BASE_URL = '/';
 
@@ -11,6 +12,7 @@ export const instance = axios.create({
 
 instance.interceptors.request.use((config) => {
   const { accessToken } = getAuthState();
+
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
@@ -21,7 +23,6 @@ instance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const original = error.config;
-
     if (error.response?.status === 401 && !original._retry) {
       original._retry = true;
 
@@ -33,12 +34,10 @@ instance.interceptors.response.use(
       }
 
       try {
-        const { data } = await axios.post(`${BASE_URL}api/v1/token/refresh/`, {
-          refresh: refreshToken,
-        });
+        const { access, refresh } = await authServices.refreshToken({ refresh: refreshToken });
 
-        setTokens(data.access, data.refresh);
-        original.headers.Authorization = `Bearer ${data.access}`;
+        setTokens(access, refresh);
+        original.headers.Authorization = `Bearer ${access}`;
         return instance(original);
       } catch {
         logout();
@@ -58,7 +57,7 @@ export const client = {
     return response.data;
   },
 
- async post<T, D = unknown>(url: string, data: D) {
+  async post<T, D = unknown>(url: string, data: D) {
     const response = await instance.post<T>(url, data);
     return response.data;
   },

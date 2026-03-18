@@ -1,10 +1,10 @@
 import { z } from 'zod';
 import {
-  ANIMAL_TYPE,
+  PET_TYPE,
   PET_AGE,
   PET_BREED,
   PET_COLOR,
-  PET_SEX,
+  PET_GENDER,
   PET_SIZE,
   PET_STATUS,
 } from '../types/PetFileds';
@@ -41,6 +41,7 @@ const locationSchema = z
   .trim()
   .min(2, 'Введіть мінімум 2 символи')
   .max(32, 'Максимум 32 символи');
+  
 
 export const photoSchema = z
   .instanceof(File)
@@ -58,11 +59,11 @@ export const PetProfileSchema = z.object({
   photos: photosSchema,
 
   status: z.enum(PET_STATUS, { message: 'Оберіть статус' }),
-  sex: z.enum(PET_SEX, { message: 'Оберіть стать' }),
+  gender: z.enum(PET_GENDER, { message: 'Оберіть стать' }),
   age: z.enum(PET_AGE, { message: 'Оберіть вік' }),
   breed: z.enum(PET_BREED, { message: 'Оберіть породу' }),
   size: z.enum(PET_SIZE, { message: 'Оберіть розмір' }),
-  animalType: z.enum(ANIMAL_TYPE, { message: 'Оберіть тип тварини' }),
+  pet_type: z.enum(PET_TYPE, { message: 'Оберіть тип тварини' }),
 
   color: z.enum(PET_COLOR, { message: 'Оберіть окрас' }),
   special_needs: z.boolean({ message: 'Оберіть чи є особливі потреби' }),

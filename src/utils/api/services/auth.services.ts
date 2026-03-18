@@ -33,18 +33,32 @@ interface ILoginPayload {
   password: string;
 }
 
+interface IRefreshTokenPayload {
+  refresh: string;
+}
+
 export const authServices = {
   registerShelter: async (payload: IRegisterShelterPayload) => {
     // await wait(5000);
-    return client.post<IRegisterResponse, IRegisterShelterPayload>('/api/v1/users/register/shelter/', payload);
+    return client.post<IRegisterResponse, IRegisterShelterPayload>(
+      '/api/v1/users/register/shelter/',
+      payload
+    );
   },
 
   registerPersonal: (payload: IRegisterPersonalPayload) => {
-    return client.post<IRegisterResponse, IRegisterPersonalPayload>('/api/v1/users/register/personal/', payload);
+    return client.post<IRegisterResponse, IRegisterPersonalPayload>(
+      '/api/v1/users/register/personal/',
+      payload
+    );
   },
 
   login: async (payload: ILoginPayload) => {
     // await wait(5000);
     return client.post<ITokenResponse, ILoginPayload>('/api/v1/token/', payload);
+  },
+
+  refreshToken: (payload: IRefreshTokenPayload) => {
+    return client.post<ITokenResponse, IRefreshTokenPayload>('/api/v1/token/refresh/', payload)
   },
 };
