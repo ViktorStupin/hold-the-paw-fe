@@ -6,6 +6,7 @@ import type {
 } from '@/types/Pet';
 import { client } from '../axiosClient';
 import { toFormData } from '@/utils/helpers/convertors/toFormData';
+// import { wait } from '@/utils/helpers/api/wait';
 
 export const petsServices = {
   createPet: (payload: ICreateEditPetRequest) => {
@@ -22,7 +23,8 @@ export const petsServices = {
     );
   },
 
-  getMyPets: () => {
+  getMyPets:  async() => {
+    // await wait(3000)
     return client.get<IMyPetCard[]>('/api/v1/pets/my_listings/');
   },
 

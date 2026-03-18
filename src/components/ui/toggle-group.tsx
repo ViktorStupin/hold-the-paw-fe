@@ -70,16 +70,16 @@ function ToggleGroupItem({
   );
 }
 
-interface IToggleSwitcherProps<T extends string> extends ToggleVariantProps {
+interface IToggleSwitcherProps<T extends string | boolean> extends ToggleVariantProps {
   value?: T;
   onChange?: (value: T) => void;
   options: readonly T[];
-  labels: Record<string, string>;
+  labels?: Record<string, string>;
   className?: string;
   itemClassName?: string;
 }
 
-function ToggleSwitcher<T extends string>({
+function ToggleSwitcher<T extends string | boolean>({
   value,
   onChange,
   options,
@@ -92,7 +92,7 @@ function ToggleSwitcher<T extends string>({
   return (
     <ToggleGroup
       type='single'
-      value={value}
+      value={String(value)}
       variant={variant}
       size={size}
       onValueChange={(val) => {
@@ -102,11 +102,11 @@ function ToggleSwitcher<T extends string>({
     >
       {options.map((option) => (
         <ToggleGroupItem
-          key={option}
-          value={option}
+          key={String(option)}
+          value={String(option)}
           className={cn('data-[state=off]:cursor-pointer', itemClassName)}
         >
-          {labels[option]}
+          {labels?.[String(option)] ?? option}
         </ToggleGroupItem>
       ))}
     </ToggleGroup>
