@@ -19,6 +19,10 @@
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   --header-bg: rgba(243, 243, 243, 0.15);
+  --header-height-mobile: 50px;
+  --header-height-desktop: 76px;
+  --header-height: var(--header-height-mobile);
+  --spacing-header: var(--header-height);
 
   --primary-100: #a300dd;
   --primary-80: #c03fee;
