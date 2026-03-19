@@ -1,14 +1,18 @@
 import type { IMyPetCard } from '@/types/Pet';
+import { petsServices } from '@/utils/api/services/pets.services';
+import { getServerErrorMessage } from '@/utils/errors/getServerErrorMessage';
 import { create, type StateCreator } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
 interface IInitialState {
   myPets: IMyPetCard[];
+  isLoading: boolean;
+  error: string;
 }
 
 interface IActionsState {
-  setMyPets: (myPets: IMyPetCard[]) => void;
+  fetchMyPets: () => Promise<void>;
   clearMyPets: () => void;
 }
 
@@ -16,6 +20,8 @@ interface IPetsState extends IInitialState, IActionsState {}
 
 const initialState: IInitialState = {
   myPets: [],
+  isLoading: false,
+  error: '',
 };
 
 const petsStore: StateCreator<
@@ -24,10 +30,26 @@ const petsStore: StateCreator<
 > = (set) => ({
   ...initialState,
 
-  setMyPets: (myPets) =>
+  fetchMyPets: async () => {
     set((state) => {
-      state.myPets = myPets;
-    }),
+      state.isLoading = true;
+      state.error = '';
+    });
+    try {
+      const data = await petsServices.getMyPets();
+      set((state) => {
+        state.myPets = data;
+      });
+    } catch (error) {
+      set((state) => {
+        state.error = getServerErrorMessage(error);
+      });
+    } finally {
+      set((state) => {
+        state.isLoading = false;
+      });
+    }
+  },
 
   clearMyPets: () =>
     set((state) => {
@@ -38,6 +60,4 @@ const petsStore: StateCreator<
 const usePetsStore = create<IPetsState>()(immer(devtools(petsStore)));
 
 export const getPetsState = () => usePetsStore.getState();
-
-
 export { usePetsStore };

@@ -70,8 +70,8 @@ export const PetProfileSchema = z.object({
   has_passport: z.boolean({ message: 'Оберіть чи є паспорт' }),
   is_vaccinated: z.boolean({ message: 'Оберіть чи вакцинована' }),
 
-  story: optionalStringWithMin(2, 'Введіть мінімум 2 символи'),
-  about: optionalStringWithMin(2, 'Введіть мінімум 2 символи'),
+  story: optionalStringWithMin(20, 'Введіть мінімум 20 символи'),
+  about: optionalStringWithMin(20, 'Введіть мінімум 20 символи'),
 });
 
 export type PetProfileFormValues = z.infer<typeof PetProfileSchema>;

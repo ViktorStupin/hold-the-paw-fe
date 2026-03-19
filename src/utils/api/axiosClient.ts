@@ -35,7 +35,6 @@ instance.interceptors.response.use(
 
       try {
         const { access, refresh } = await authServices.refreshToken({ refresh: refreshToken });
-
         setTokens(access, refresh);
         original.headers.Authorization = `Bearer ${access}`;
         return instance(original);

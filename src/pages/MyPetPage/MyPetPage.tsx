@@ -2,9 +2,7 @@ import { Back } from '@/components/Back/Back';
 import { MyPetCard } from '@/components/PetsCards/MyPetCard';
 import { FieldMessage } from '@/components/ui/field';
 import { ToggleSwitcher } from '@/components/ui/toggle-group';
-import type { IMyPetCard } from '@/types/Pet';
-import { petsServices } from '@/utils/api/services/pets.services';
-import { getServerErrorMessage } from '@/utils/errors/getServerErrorMessage';
+import { usePetsStore } from '@/store/myPets.store';
 import { useIsMobile } from '@/utils/helpers/layouts/useIsMobile';
 import { Loader } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -25,31 +23,15 @@ const ACTIVE_LABELS_MOBILE: Record<ActiveState, string> = {
 export const MyPetPage = () => {
   const isMobile = useIsMobile();
   const [activeState, setActiveState] = useState<ActiveState>('active');
-  const [myPets, setMyPets] = useState<IMyPetCard[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const { myPets, isLoading, error, fetchMyPets } = usePetsStore();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setError('');
-        setIsLoading(true);
-        const data = await petsServices.getMyPets();
-        setMyPets(data);
-      } catch (error) {
-        setError(getServerErrorMessage(error));
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
+    fetchMyPets();
   }, []);
 
   const isActive = activeState === 'active';
-
-  const filteredPets = [...myPets];
   // const filteredPets = myPets.filter((pet) => pet.is_active === isActive);
+  const filteredPets = [...myPets];
 
   const plug = (
     <div className='flex-1 flex flex-col justify-center items-center'>
@@ -83,7 +65,7 @@ export const MyPetPage = () => {
       {filteredPets.length === 0 ? (
         <>{plug}</>
       ) : (
-        <ul className='grid gap-6 grid-cols-1 lg:grid-cols-2 '>
+        <ul className='grid gap-6 grid-cols-1 lg:grid-cols-2'>
           {filteredPets.map((pet) => (
             <li key={pet.id}>
               <MyPetCard pet={pet} />
