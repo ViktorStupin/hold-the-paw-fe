@@ -37,7 +37,7 @@ export function SignUpForm() {
       password: '',
       phone_number: '',
       company_name: '',
-      edrpou: '',
+      tax_id: '',
       terms_accepted: false,
     },
   });
@@ -78,7 +78,7 @@ export function SignUpForm() {
           email: data.email,
           password: data.password,
           phone_number: data.phone_number,
-          tax_id: data.edrpou,
+          tax_id: data.tax_id,
           company_name: data.company_name,
         });
       }
@@ -195,7 +195,7 @@ export function SignUpForm() {
                     normalize={normalizeEDRPOU}
                     placeholder='12345678'
                   />
-                  <FieldMessage message={'edrpou' in errors ? errors.edrpou?.message : undefined} />
+                  <FieldMessage message={'tax_id' in errors ? errors.tax_id?.message : undefined} />
                 </Field>
               </>
             )}

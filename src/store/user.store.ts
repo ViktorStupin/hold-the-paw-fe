@@ -14,6 +14,7 @@ interface IInitialState {
 interface IActionsState {
   fetchMe: () => Promise<void>;
   clearMyPets: () => void;
+  updateMe: (data: TUser) => Promise<void>;
 }
 
 interface IUserState extends IInitialState, IActionsState {}
@@ -55,6 +56,27 @@ const userStore: StateCreator<
     set((state) => {
       state.user = null;
     }),
+
+  updateMe: async (data: TUser) => {
+    set((state) => {
+      state.isLoading = true;
+      state.error = '';
+    });
+    try {
+      const updated = await profileServices.updateMe(data);
+      set((state) => {
+        state.user = updated;
+      });
+    } catch (error) {
+      set((state) => {
+        state.error = getServerErrorMessage(error);
+      });
+    } finally {
+      set((state) => {
+        state.isLoading = false;
+      });
+    }
+  },
 });
 
 const useUserStore = create<IUserState>()(immer(devtools(userStore)));

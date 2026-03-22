@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Field, FieldGroup, FieldLabel, FieldMessage } from '@/components/ui/field';
 import { Link, useNavigate } from 'react-router-dom';
 import { RoutePath } from '@/routes/root.config';
-import { signInSchema, type SignInData } from '@/schemas/signIn';
+import { signInSchema, type SignInData } from '@/schemas/signIn.shema';
 import { logout, setAuthLoading, setTokens, useAuthStore } from '@/store/auth.store';
 import { getServerErrorMessage } from '@/utils/errors/getServerErrorMessage';
 import { authServices } from '@/utils/api/services/auth.services';

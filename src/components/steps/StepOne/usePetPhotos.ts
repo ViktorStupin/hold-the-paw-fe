@@ -1,7 +1,8 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import type { PetProfileFormValues } from '@/schemas/pet.schema';
-import { MAX_PHOTOS, photoSchema } from '@/schemas/pet.schema';
+import { MAX_PHOTOS } from '@/schemas/pet.schema';
+import { photoSchema } from '@/schemas/primitives.schema';
 
 export const usePetPhotos = () => {
   const [photosHint, setPhotosHint] = React.useState('');

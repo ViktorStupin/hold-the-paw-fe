@@ -13,8 +13,7 @@ import { AuthRequiredModal } from '@/components/Auth/AuthRequiredModal/AuthRequi
 import { PublicOnlyRoute } from './PublicOnlyRoute';
 import { EditPetProfile } from '@/pages/EditPetProfile/EditPetProfile';
 import { MyPetPage } from '@/pages/MyPetPage/MyPetPage';
-import { ProfilePage } from '@/pages/ProfilePage/ProfilePage';
-import { EditProfile } from '@/pages/ProfilePage/EditProfile';
+import { Profile } from '@/pages/ProfilePage/Profile';
 
 export const Root = () => {
   const [authModal, setAuthModal] = useState<{ isOpen: boolean; message: string }>({
@@ -47,8 +46,9 @@ export const Root = () => {
             <Route path={RoutePath.CreatePetProfile} element={<CreatePetProfile />} />
             <Route path={RoutePath.EditPetProfile} element={<EditPetProfile />} />
             <Route path={RoutePath.MyPets} element={<MyPetPage />} />
-            <Route path={RoutePath.Profile} element={<ProfilePage />} />
-            <Route path={RoutePath.EditProfile} element={<EditProfile />} />
+
+            <Route path={RoutePath.Profile} element={<Profile variant='view' />} />
+            <Route path={RoutePath.EditProfile} element={<Profile variant='edit' />} />
           </Route>
 
           <Route path={RoutePath.NotFound} element={<NotFoundPage />} />
