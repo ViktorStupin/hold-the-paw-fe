@@ -111,7 +111,7 @@ export const Header = ({ user }: HeaderProps) => {
               {isMenuOpen && (
                 <nav
                   id='mobile-menu'
-                  className='fixed left-0 right-0 rounded-b-[24px] bg-gray-30 px-4 pt-4 pb-8 shadow-[0_12px_24px_rgba(0,0,0,0.2)]'
+                  className='fixed left-0 right-0 rounded-b-3xl bg-gray-30 px-4 pt-4 pb-8 shadow-[0_12px_24px_rgba(0,0,0,0.2)]'
                   style={{ top: mobileMenuTop }}
                 >
                   <div className='mb-4 flex items-center gap-3'>
