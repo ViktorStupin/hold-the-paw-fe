@@ -1,13 +1,12 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import type { PetProfileFormValues } from '@/schemas/pet.schema';
-import { MAX_PHOTOS } from '@/schemas/pet.schema';
 import { photoSchema } from '@/schemas/primitives.schema';
+import { MAX_PHOTOS, type TCreatePet } from '@/schemas/pet/pet.create.shema';
 
 export const usePetPhotos = () => {
   const [photosHint, setPhotosHint] = React.useState('');
 
-  const { setValue, watch } = useFormContext<PetProfileFormValues>();
+  const { setValue, watch } = useFormContext<TCreatePet>();
 
   const photos = watch('photos') ?? [];
   const firstEmptyIndex = photos.length < MAX_PHOTOS ? photos.length : -1;

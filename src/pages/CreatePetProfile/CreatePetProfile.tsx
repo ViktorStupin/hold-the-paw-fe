@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 // import { DevTool } from '@hookform/devtools';
 import { steps } from '@/components/steps/constants/steps';
 import { Button } from '@/components/ui/button';
-import { PetProfileSchema, type PetProfileFormValues } from '@/schemas/pet.schema';
 import { useIsMobile } from '@/utils/helpers/layouts/useIsMobile';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,15 +13,19 @@ import { petsServices } from '@/utils/api/services/pets.services';
 import { Loader } from 'lucide-react';
 import { getServerErrorMessage } from '@/utils/errors/getServerErrorMessage';
 import { FieldMessage } from '@/components/ui/field';
+import { createPetShema, type TCreatePet } from '@/schemas/pet/pet.create.shema';
+import { useNavigate } from 'react-router-dom';
+import { RoutePath } from '@/routes/root.config';
 
 export const CreatePetProfile = () => {
   const isMobile = useIsMobile();
   const [currentStep, setCurrentStep] = React.useState(0);
   const step = steps[currentStep];
   const StepComponent = step.component;
+  const navigate = useNavigate();
 
-  const methods = useForm<PetProfileFormValues>({
-    resolver: zodResolver(PetProfileSchema),
+  const methods = useForm<TCreatePet>({
+    resolver: zodResolver(createPetShema),
     mode: 'onChange',
     shouldUnregister: false,
     defaultValues: {
@@ -67,7 +70,7 @@ export const CreatePetProfile = () => {
     scrollTop();
   };
 
-  const onSubmit = async (data: PetProfileFormValues) => {
+  const onSubmit = async (data: TCreatePet) => {
     try {
       const { photos, ...rest } = data;
 
@@ -77,6 +80,8 @@ export const CreatePetProfile = () => {
         main_image: photos[0],
         additional_images: photos.slice(1),
       });
+
+      navigate(RoutePath.MyPets);
     } catch (error) {
       setError('root', { message: getServerErrorMessage(error) });
     }

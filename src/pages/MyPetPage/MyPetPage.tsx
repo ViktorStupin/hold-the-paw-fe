@@ -30,17 +30,17 @@ export const MyPetPage = () => {
   }, []);
 
   const isActive = activeState === 'active';
-  // const filteredPets = myPets.filter((pet) => pet.is_active === isActive);
-  const filteredPets = [...myPets];
+  const filteredPets = myPets.filter((pet) => pet.is_active === isActive);
+  // const filteredPets = [...myPets];
 
   const plug = (
     <div className='flex-1 flex flex-col justify-center items-center'>
-      <h3 className='typo-h3'>
+      <h3 className='typo-h3 text-center'>
         {isActive
           ? 'Активовані профілі тваринок будуть відображатись тут після їх створення'
           : 'Деактивовані профілі тваринок будуть відображатись тут'}
       </h3>
-      <p className='typo-main'>
+      <p className='typo-main text-center'>
         {isActive
           ? 'Ці профілі доступні всім. Ви зможете в будь-який момент їх деактивувати.'
           : 'Ці профілі приховані від інших користувачів.'}

@@ -8,20 +8,20 @@ import { Button } from '@/components/ui/button';
 import { Field, FieldGroup, FieldLabel, FieldMessage } from '@/components/ui/field';
 import { Link, useNavigate } from 'react-router-dom';
 import { RoutePath } from '@/routes/root.config';
-import { signInSchema, type SignInData } from '@/schemas/signIn.shema';
 import { logout, setAuthLoading, setTokens, useAuthStore } from '@/store/auth.store';
 import { getServerErrorMessage } from '@/utils/errors/getServerErrorMessage';
 import { authServices } from '@/utils/api/services/auth.services';
 import { Spinner } from '@/components/ui/spinner';
 import { useEffect } from 'react';
 import { scrollTop } from '@/utils/helpers/layouts/layouts';
+import { credentialsSchema, type TCredentials } from '@/schemas/auth/credentials.shema';
 
 export function SignInForm() {
   const navigate = useNavigate();
   const { isLoading, returnURL, setReturnUrl } = useAuthStore();
 
-  const methods = useForm<SignInData>({
-    resolver: zodResolver(signInSchema),
+  const methods = useForm<TCredentials>({
+    resolver: zodResolver(credentialsSchema),
     mode: 'onChange',
     defaultValues: {
       email: '',
@@ -47,7 +47,7 @@ export function SignInForm() {
     return () => subscription.unsubscribe();
   }, [watch, errors.root, clearErrors]);
 
-  const onSubmit = async (data: SignInData) => {
+  const onSubmit = async (data: TCredentials) => {
     try {
       logout();
       setAuthLoading(true);
@@ -111,7 +111,7 @@ export function SignInForm() {
           </Button>
           <div className='mt-4 flex gap-2 items-center justify-center'>
             <p className='typo-main text-gray-80'>Не маєте акаунта?</p>
-            <Link className='type-main type-link' to={`../${RoutePath.SignUp}`}>
+            <Link className='typo-main typo-link' to={`../${RoutePath.SignUp}`}>
               Зареєструватися
             </Link>
           </div>

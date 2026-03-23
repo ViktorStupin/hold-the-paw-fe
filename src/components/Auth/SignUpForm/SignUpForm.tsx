@@ -2,7 +2,6 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { signUpSchema, type SignUpData } from '@/schemas/signUp.schema';
 import { ROLE_OPTIONS, USER_ROLE } from '@/types/UserRole';
 
 import { Input } from '@/components/ui/input';
@@ -14,7 +13,7 @@ import {
 } from '@/components/ui/field-structure';
 import { Button } from '@/components/ui/button';
 import { USER_ROLE_LABEL_UA } from '@/constants/role.labes';
-import { normalizeEDRPOU, normalizeUaPhone } from '@/utils/helpers/convertors/PhoneConvertors';
+import { normalizeEDRPOU, normalizeUaPhone } from '@/utils/helpers/convertors/fieldsConvertors';
 import { Field, FieldGroup, FieldLabel, FieldMessage } from '@/components/ui/field';
 import { Link, useNavigate } from 'react-router-dom';
 import { RoutePath } from '@/routes/root.config';
@@ -23,12 +22,13 @@ import { setAuthLoading, setTokens, useAuthStore } from '@/store/auth.store';
 import { getServerErrorMessage } from '@/utils/errors/getServerErrorMessage';
 import { useEffect } from 'react';
 import { scrollTop } from '@/utils/helpers/layouts/layouts';
+import { signUpSchema, type TSignUpFields } from '@/schemas/auth/register/payload.schema';
 
 export function SignUpForm() {
   const navigate = useNavigate();
   const { isLoading, returnURL, setReturnUrl } = useAuthStore();
 
-  const methods = useForm<SignUpData>({
+  const methods = useForm<TSignUpFields>({
     resolver: zodResolver(signUpSchema),
     mode: 'onChange',
     defaultValues: {
@@ -62,27 +62,10 @@ export function SignUpForm() {
     return () => subscription.unsubscribe();
   }, [watch, errors.root, clearErrors]);
 
-  const onSubmit = async (data: SignUpData) => {
+  const onSubmit = async (data: TSignUpFields) => {
     try {
       setAuthLoading(true);
-      if (data.role === 'personal') {
-        await authServices.registerPersonal({
-          email: data.email,
-          password: data.password,
-          phone_number: data.phone_number,
-          first_name: data.full_name,
-          last_name: 'deprecated',
-        });
-      } else {
-        await authServices.registerShelter({
-          email: data.email,
-          password: data.password,
-          phone_number: data.phone_number,
-          tax_id: data.tax_id,
-          company_name: data.company_name,
-        });
-      }
-
+      await authServices.register(data);
       const tokens = await authServices.login({
         email: data.email,
         password: data.password,
@@ -188,10 +171,10 @@ export function SignUpForm() {
                 </Field>
 
                 <Field>
-                  <FieldLabel htmlFor='edrpou'>ЄДРПОУ</FieldLabel>
+                  <FieldLabel htmlFor='tax_id'>ЄДРПОУ</FieldLabel>
 
                   <NormalizedInputField
-                    name='edrpou'
+                    name='tax_id'
                     normalize={normalizeEDRPOU}
                     placeholder='12345678'
                   />
@@ -205,7 +188,7 @@ export function SignUpForm() {
                 <CheckBoxField name='terms_accepted' />
                 <FieldLabel htmlFor='terms_accepted' className='cursor-pointer'>
                   Я приймаю{' '}
-                  <Link className='type-main type-link' to={RoutePath.TermsAndContitions}>
+                  <Link className='typo-main typo-link' to={RoutePath.TermsAndContitions}>
                     умови угоди
                   </Link>
                 </FieldLabel>
@@ -226,7 +209,7 @@ export function SignUpForm() {
           </Button>
           <div className='mt-4 flex gap-2 items-center justify-center'>
             <p className='typo-main text-gray-80'>Вже маєте акаунт?</p>
-            <Link className='type-main type-link' to={`../${RoutePath.SignIn}`}>
+            <Link className='typo-main typo-link' to={`../${RoutePath.SignIn}`}>
               Увійти
             </Link>
           </div>

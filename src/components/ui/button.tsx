@@ -17,7 +17,7 @@ const buttonVariants = cva(
         tertiary:
           'bg-light-opacity text-gray-0 hover:border-gray-0 hover:shadow-[-4px_4px_10px_0px_#0000001A] active:text-gray-50 active:border-gray-50 disabled:border-gray-70 disabled:text-gray-70',
         choise:
-          'type-main bg-gray-30 text-gray-90 border-none hover:text-primary-60 hover:border-1 hover:border-solid active:bg-primary-20 active:border-primary-60 active:border-1 active: border-solid disabled:bg-gray-30 disabled:text-gray-50 disabled:border-gray-50 disabled: border-1 disabled: border-solid',
+          'typo-main bg-gray-30 text-gray-90 border-none hover:text-primary-60 hover:border-1 hover:border-solid active:bg-primary-20 active:border-primary-60 active:border-1 active: border-solid disabled:bg-gray-30 disabled:text-gray-50 disabled:border-gray-50 disabled: border-1 disabled: border-solid',
         lightDisabled: 'bg-gray-50 text-gray-0 border-none',
         transparent:
           'border-none bg-transparent shadow-none hover:bg-transparent active:bg-transparent focus-visible:ring-0 focus-visible:border-transparent',

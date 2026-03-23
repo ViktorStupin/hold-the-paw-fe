@@ -1,4 +1,5 @@
-import type { TUser } from '@/types/User';
+import type { TUserRequest } from '@/schemas/user/user.request.shema';
+import type { TUser } from '@/schemas/user/user.form.schema';
 import { profileServices } from '@/utils/api/services/profile.services';
 import { getServerErrorMessage } from '@/utils/errors/getServerErrorMessage';
 import { create, type StateCreator } from 'zustand';
@@ -14,7 +15,7 @@ interface IInitialState {
 interface IActionsState {
   fetchMe: () => Promise<void>;
   clearMyPets: () => void;
-  updateMe: (data: TUser) => Promise<void>;
+  updateMe: (data: TUserRequest) => Promise<void>;
 }
 
 interface IUserState extends IInitialState, IActionsState {}
@@ -57,13 +58,15 @@ const userStore: StateCreator<
       state.user = null;
     }),
 
-  updateMe: async (data: TUser) => {
+  updateMe: async (data: Partial<TUserRequest>) => {
     set((state) => {
       state.isLoading = true;
       state.error = '';
     });
     try {
       const updated = await profileServices.updateMe(data);
+      console.log(updated)
+
       set((state) => {
         state.user = updated;
       });

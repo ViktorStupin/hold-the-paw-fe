@@ -21,6 +21,14 @@ export function optionalStringWithMin(min: number, message: string) {
     .pipe(z.string().min(min, message).max(1024, 'Максимум 1024').optional());
 }
 
+export function optionalNormalizedSchema(schema: z.ZodString) {
+  return z
+    .string()
+    .optional()
+    .transform((val) => (val === '' ? undefined : val))
+    .pipe(schema.optional());
+}
+
 export const nameSchema = z
   .string()
   .trim()
@@ -42,5 +50,4 @@ export const photoSchema = z
   )
   .refine((f) => f.size <= MAX_20MB, 'Максимальний розмір 20MB');
 
-
-  export const erdpouShema = z.string().regex(/^\d{8}$/, 'ЄДРПОУ повинен містити 8 цифр');
+export const erdpouShema = z.string().regex(/^\d{8}$/, 'ЄДРПОУ повинен містити 8 цифр');

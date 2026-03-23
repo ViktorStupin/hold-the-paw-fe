@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 // import { DevTool } from '@hookform/devtools';
 import { Button } from '@/components/ui/button';
-import { PetProfileSchema, type PetProfileFormValues } from '@/schemas/pet.schema';
 import { useIsMobile } from '@/utils/helpers/layouts/useIsMobile';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,21 +16,23 @@ import { StepThree } from '@/components/steps/StepThree';
 import { StepFour } from '@/components/steps/StepFour';
 import { Separator } from '@/components/ui/separator';
 import { steps } from '@/components/steps/constants/steps';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEditPetGuard } from '@/utils/helpers/guards/useEditPetGuard';
 import { useGoBack } from '@/utils/helpers/routing/useGoBack';
 import { cn } from '@/lib/utils';
+import { createPetShema, type TCreatePet } from '@/schemas/pet/pet.create.shema';
+import { RoutePath } from '@/routes/root.config';
 
 export const EditPetProfile = () => {
   const isMobile = useIsMobile();
   const goBack = useGoBack();
   const { id } = useParams<{ id: string }>();
   const { petFormValues, isLoading, error: guardError } = useEditPetGuard();
-
   const [activeStep, setActiveStep] = useState(0);
+  const navigate = useNavigate();
 
-  const methods = useForm<PetProfileFormValues>({
-    resolver: zodResolver(PetProfileSchema),
+  const methods = useForm<TCreatePet>({
+    resolver: zodResolver(createPetShema),
     mode: 'onChange',
     shouldUnregister: false,
     defaultValues: {
@@ -63,7 +64,7 @@ export const EditPetProfile = () => {
     methods.handleSubmit(onSubmit)();
   };
 
-  const onSubmit = async (data: PetProfileFormValues) => {
+  const onSubmit = async (data: TCreatePet) => {
     try {
       const { photos, ...rest } = data;
 
@@ -76,6 +77,7 @@ export const EditPetProfile = () => {
         },
         Number(id)
       );
+      navigate(RoutePath.MyPets);
     } catch (error) {
       setError('root', { message: getServerErrorMessage(error) });
     }

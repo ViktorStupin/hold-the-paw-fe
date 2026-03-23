@@ -1,5 +1,5 @@
 // pet.labels.ts
-import type { PetProfileFormValues } from '@/schemas/pet.schema';
+import type { TCreatePet } from '@/schemas/pet/pet.create.shema';
 import type {
   PetType,
   PetAge,
@@ -78,7 +78,7 @@ export const PET_SPECIAL_NEEDS_LABEL_UA: Record<string, string> = {
   false: 'Немає потреб',
 };
 
-export const PET_OPTION_LABELS_UA: Record<keyof PetProfileFormValues, string> = {
+export const PET_OPTION_LABELS_UA: Record<keyof TCreatePet, string> = {
   status: 'Статус',
   gender: 'Стать',
   age: 'Вік',

@@ -1,6 +1,6 @@
 import clsx from 'clsx';
-import { MAX_PHOTOS } from '@/schemas/pet.schema';
 import { PhotoSlot } from './PhotoSlot';
+import { MAX_PHOTOS } from '@/schemas/pet/pet.create.shema';
 
 interface IPhotoGridProps {
   photos: File[];

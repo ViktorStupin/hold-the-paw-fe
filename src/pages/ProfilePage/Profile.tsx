@@ -11,33 +11,66 @@ import { RoutePath } from '@/routes/root.config';
 import { logout } from '@/store/auth.store';
 import { PencilLine } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ProfileInfoSection } from './ProfileInfoSection';
-import { contactsFields, mainFields } from './ProfileFields.config';
+import { contactsFields, mainFields } from './viewFields.config';
 import { useGoBack } from '@/utils/helpers/routing/useGoBack';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  editProfileSchema,
-  type TEditableFieldName,
-  type TEditProfileFields,
-} from '@/schemas/editProfile.schema';
-import { isPersonalUser, isShelterUser } from '@/utils/helpers/guards/userType';
-import { profileServices } from '@/utils/api/services/profile.services';
 import { getServerErrorMessage } from '@/utils/errors/getServerErrorMessage';
-import type { TUser } from '@/types/User';
+import { userSchema, type TUser } from '@/schemas/user/user.form.schema';
+import { ProfileInfoSectionForm } from './ProfileInfoSectionForm';
+import { ProfileInfoSectionView } from './ProfileInfoSectionView';
+import { mapUserToForm } from '@/utils/helpers/mappers/mapUserToForm';
+import { mapUserToRequest } from '@/utils/helpers/mappers/mapUserToRequest';
 
 type IProfileProps = {
   variant: 'view' | 'edit';
 };
 
 export const Profile = ({ variant }: IProfileProps) => {
-  const { fetchMe, user, isLoading, error } = useUserStore();
+  const { fetchMe, user, isLoading, error, updateMe } = useUserStore();
   const navigate = useNavigate();
   const goBack = useGoBack();
+  const methods = useForm<TUser>({
+    resolver: zodResolver(userSchema),
+    mode: 'onChange',
+  });
+
+  const { handleSubmit, setError, formState, watch, clearErrors } = methods;
+  const { isValid } = formState;
+
+  const isLightDisabled = isLoading || !isValid;
 
   useEffect(() => {
     fetchMe();
-  }, [fetchMe]);
+  }, []);
+
+  useEffect(() => {
+    if (!user) return;
+    methods.reset(mapUserToForm(user));
+  }, [user]);
+
+  useEffect(() => {
+    const subscription = watch(() => {
+      if (formState.errors.root) {
+        clearErrors('root');
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, formState.errors.root, clearErrors]);
+
+  const onClickSubmit = async () => {
+    const isValid = await methods.trigger();
+    if (!isValid) return;
+    handleSubmit(onSubmit)();
+  };
+
+  const onSubmit = async (data: TUser) => {
+    try {
+      await updateMe(mapUserToRequest(data));
+    } catch (error) {
+      setError('root', { message: getServerErrorMessage(error) });
+    }
+  };
 
   if (isLoading || !user) {
     return (
@@ -55,80 +88,26 @@ export const Profile = ({ variant }: IProfileProps) => {
     );
   }
 
-  const methods = useForm<TEditProfileFields>({
-    resolver: zodResolver(editProfileSchema),
-    defaultValues: {
-      role: user.role,
-      phone_number: user?.phone_number ?? '',
-      viber_phone_number: user?.viber_phone_number ?? '',
-      telegram_nickname: user?.telegram_nickname ?? '',
-      ...(isPersonalUser(user!)
-        ? { full_name: user.full_name }
-        : { company_name: user!.company_name, tax_id: user!.tax_id }),
-    },
-  });
-
-  const { handleSubmit, setError, formState, watch, clearErrors } = methods;
-  const { isSubmitting, isValid } = formState;
-
-  const isLightDisabled = isSubmitting || isValid;
-
-  useEffect(() => {
-    const subscription = watch(() => {
-      if (formState.errors.root) {
-        clearErrors('root');
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [watch, formState.errors.root, clearErrors]);
-
-  const onClickSubmit = async () => {
-    const isValid = await methods.trigger();
-    if (!isValid) return;
-    handleSubmit(onSubmit)();
-  };
-
-  const onSubmit = async (data: TEditProfileFields) => {
-    try {
-      const payload: Partial<TUser> = {
-        phone_number: data.phone_number,
-        viber_phone_number: data.viber_phone_number,
-        telegram_nickname: data.telegram_nickname,
-      };
-
-      if (isShelterUser(data)) {
-        payload.company_name = data.company_name;
-        payload.tax_id = data.tax_id;
-      } else {
-        payload.full_name = data.full_name;
-      }
-      await profileServices.updateMe(payload);
-    } catch (error) {
-      setError('root', { message: getServerErrorMessage(error) });
-    }
-  };
-
   const viewContent = (
-    <>
-      <ProfileInfoSection title='Головна інформація' user={user} fields={mainFields} />
-      <ProfileInfoSection title='Контактні дані' user={user} fields={contactsFields} />
-    </>
+    <div className='flex flex-col gap-6'>
+      <ProfileInfoSectionView
+        key='Головна інформація'
+        title='Головна інформація'
+        user={user}
+        fields={mainFields}
+      />
+      <ProfileInfoSectionView
+        key='Контактні дані'
+        title='Контактні дані'
+        user={user}
+        fields={contactsFields}
+      />
+    </div>
   );
   const editContent = (
     <FormProvider {...methods}>
-      <form onSubmit={onClickSubmit}>
-        <ProfileInfoSection
-          title='Головна інформація'
-          user={user}
-          fields={mainFields}
-          isEdit={true}
-        />
-        <ProfileInfoSection
-          title='Контактні дані'
-          user={user}
-          fields={contactsFields}
-          isEdit={true}
-        />
+      <form className='flex flex-col gap-6' onSubmit={handleSubmit(onSubmit)}>
+        <ProfileInfoSectionForm user={user} />
       </form>
     </FormProvider>
   );
@@ -155,10 +134,10 @@ export const Profile = ({ variant }: IProfileProps) => {
 
   const editButtons = (
     <>
-      <Button
-        variant={isLightDisabled ? 'lightDisabled' : 'primary'}
-        onClick={onClickSubmit}
-      ></Button>
+      <Button variant={isLightDisabled ? 'lightDisabled' : 'primary'} onClick={onClickSubmit}>
+        {isLoading && <Spinner />}
+        {isLoading ? 'Збереження' : 'Зберегти'}
+      </Button>
       <Button
         onClick={() => {
           goBack();
@@ -173,9 +152,7 @@ export const Profile = ({ variant }: IProfileProps) => {
 
   return (
     <div className='flex-1 flex flex-col items-center justify-between gap-10 pt-8 pb-43 lg:py-10 u-container'>
-      <div className='flex flex-col gap-6 w-full lg:max-w-165'>
-        {variant === 'view' ? viewContent : editContent}
-      </div>
+      <div className='w-full lg:max-w-165'>{variant === 'view' ? viewContent : editContent}</div>
 
       <div className='grid gap-4 w-full fixed bottom-6 inset-x-0 px-4 lg:static lg:px-0 lg:mx-auto lg:max-w-108'>
         {variant === 'view' ? viewButtons : editButtons}
