@@ -6,8 +6,8 @@ import { toast } from 'sonner';
 export const usePetActions = () => {
   const toggleActive = async (id: number, is_active: boolean) => {
     try {
-      const data = await petsServices.toggleActive(is_active, id);
-      console.log(data)
+      const data = await petsServices.editPet({ is_active }, id);
+      console.log(data);
     } catch (err) {
       const message = getServerErrorMessage(err);
       toast.error(message);
@@ -17,7 +17,7 @@ export const usePetActions = () => {
 
   const setHelped = async (id: number, is_helped: boolean) => {
     try {
-      await petsServices.toggleHelped(is_helped, id);
+      await petsServices.editPet({ is_helped }, id);
     } catch (err) {
       const message = getServerErrorMessage(err);
       toast.error(message);

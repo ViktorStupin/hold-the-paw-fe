@@ -20,6 +20,8 @@ export const ReqeustPetShema = basePetSchema.extend({
   main_image: photoSchema,
   additional_images: z.array(photoSchema).default([]),
   is_sterilized: z.boolean(),
+  is_active: z.boolean(),
+  is_helped: z.boolean(),
 });
 
 export type TRequestPet = z.infer<typeof ReqeustPetShema>;

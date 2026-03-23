@@ -33,11 +33,4 @@ export const petsServices = {
     //   updatePetSchema
     // );
   },
-
-  toggleActive: async (status: boolean, id: number) => {
-    return client.patch(`/api/v1/pets/listings/${id}/`, { is_active: status });
-  },
-  toggleHelped: async (status: boolean, id: number) => {
-    return client.patch(`/api/v1/pets/listings/${id}/`, { is_helped: status });
-  },
 };
