@@ -19,10 +19,18 @@
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   --header-bg: rgba(243, 243, 243, 0.15);
+  --header-bg-wt: rgba(255, 255, 255, 0.664);
+  --header-shadow: 0 4px 4px rgba(31, 32, 34, 0.05);
+  --header-logo-width: 44px;
+  --header-logo-height: 42px;
+
   --header-height-mobile: 50px;
   --header-height-desktop: 76px;
-  --header-height: var(--header-height-mobile);
-  --spacing-header: var(--header-height);
+  --find-filters-width-md: 206px;
+  --find-filters-width-lg: 260px;
+  --find-location-width: 240px;
+  --find-card-width: 240px;
+  --find-card-height: 322px;
 
   --primary-100: #a300dd;
   --primary-80: #c03fee;
@@ -62,6 +70,17 @@
   --color-foreground: var(--foreground);
 
   --spacing-header: var(--header-height);
+  --spacing-header-logo-width: var(--header-logo-width);
+  --spacing-header-logo-height: var(--header-logo-height);
+  --spacing-find-filters-width-md: var(--find-filters-width-md);
+  --spacing-find-filters-width-lg: var(--find-filters-width-lg);
+  --spacing-find-location-width: var(--find-location-width);
+  --spacing-find-card-width: var(--find-card-width);
+  --spacing-find-card-height: var(--find-card-height);
+
+  --color-header-bg: var(--header-bg);
+  --color-header-bg-wt: var(--header-bg-wt);
+  --shadow-header: var(--header-shadow);
 
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);

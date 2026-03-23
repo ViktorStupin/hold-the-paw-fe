@@ -9,7 +9,6 @@ export const RoutePath = {
   Pet: '/pets/:id',
   CreatePetProfile: '/create-pet-profile',
   EditPetProfile: '/edit-pet-profile/:id',
-  MyPets: '/my-pets',
   Profile: '/profile',
   EditProfile: '/profile/edit',
   TermsAndContitions: '/term-and-contitions',

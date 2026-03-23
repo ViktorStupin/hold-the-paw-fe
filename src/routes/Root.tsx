@@ -9,7 +9,9 @@ import { useState } from 'react';
 import { ProtectedRoute } from './ProtectedRoute';
 import { AuthRequiredModal } from '@/components/Auth/AuthRequiredModal/AuthRequiredModal';
 import { PublicOnlyRoute } from './PublicOnlyRoute';
+import { CreatePetProfile } from '@/pages/CreatePetProfile/CreatePetProfile';
 import { EditPetProfile } from '@/pages/EditPetProfile/EditPetProfile';
+import { FindPage } from '@/pages/FindPage/FindPage';
 import { MyPetPage } from '@/pages/MyPetPage/MyPetPage';
 import { Profile } from '@/pages/ProfilePage/Profile';
 
@@ -30,7 +32,7 @@ export const Root = () => {
           <Route index element={<div />} />
           <Route path={RoutePath.Home} element={<Navigate to={RoutePath.Default} replace />} />
 
-          <Route path={RoutePath.Pets} element={<div>Pets Page</div>} />
+          <Route path={RoutePath.Pets} element={<FindPage />} />
           <Route path={RoutePath.Pet} element={<div>Pet Detail Page</div>} />
 
           <Route element={<PublicOnlyRoute />}>
@@ -41,7 +43,7 @@ export const Root = () => {
             </Route>
           </Route>
           <Route element={<ProtectedRoute onAuthRequired={handleAuthRequired} />}>
-            <Route path={RoutePath.CreatePetProfile} element={<EditPetProfile />} />
+            <Route path={RoutePath.CreatePetProfile} element={<CreatePetProfile />} />
             <Route path={RoutePath.EditPetProfile} element={<EditPetProfile/>} />
             <Route path={RoutePath.MyPets} element={<MyPetPage />} />
 
