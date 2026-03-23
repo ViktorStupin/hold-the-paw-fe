@@ -11,7 +11,7 @@ export const initAuth = async () => {
   }
 
   try {
-    const { access, refresh } = await authServices.refreshToken({ refresh: refreshToken });
+    const { access, refresh } = await authServices.refreshToken(refreshToken);
     setTokens(access, refresh);
   } catch {
     logout();

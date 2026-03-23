@@ -34,8 +34,7 @@ instance.interceptors.response.use(
       }
 
       try {
-        const { access, refresh } = await authServices.refreshToken({ refresh: refreshToken });
-
+        const { access, refresh } = await authServices.refreshToken(refreshToken);
         setTokens(access, refresh);
         original.headers.Authorization = `Bearer ${access}`;
         return instance(original);
@@ -48,8 +47,6 @@ instance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-// --- Client ---
 
 export const client = {
   async get<T>(url: string) {
@@ -64,6 +61,11 @@ export const client = {
 
   async patch<T, D = unknown>(url: string, data: D) {
     const response = await instance.patch<T>(url, data);
+    return response.data;
+  },
+
+  async put<T, D = unknown>(url: string, data: D) {
+    const response = await instance.put<T>(url, data);
     return response.data;
   },
 

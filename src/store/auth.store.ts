@@ -11,6 +11,7 @@ interface IInitialState {
   isAuthenticated: boolean;
   isLoading: boolean;
   returnURL: string | null;
+  isLoggingOut: boolean;
 }
 
 interface IActionsState {
@@ -30,6 +31,7 @@ const initialState: IInitialState = {
   isAuthenticated: false,
   isLoading: false,
   returnURL: null,
+  isLoggingOut: false,
 };
 
 interface IJwtPayload {
@@ -47,6 +49,7 @@ const authStore: StateCreator<
       (state) => {
         const { user_id } = jwtDecode<IJwtPayload>(access);
         state.userId = Number(user_id);
+        state.isLoading = false;
         state.accessToken = access;
         state.refreshToken = refresh;
         state.isAuthenticated = true;
@@ -75,6 +78,7 @@ const authStore: StateCreator<
   logout: () => {
     set(
       (state) => {
+        state.isLoggingOut = true;
         state.accessToken = null;
         state.refreshToken = null;
         state.isAuthenticated = false;

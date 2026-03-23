@@ -1,64 +1,41 @@
-// import { wait } from '@/utils/helpers/api/wait';
+import type { TSignUpFields } from '@/schemas/auth/register/payload.schema';
 import { client } from '../axiosClient';
 
-interface ITokenResponse {
-  access: string;
-  refresh: string;
-}
+import { tokenSchema, type TTokenResponse } from '@/schemas/auth/token.schema';
 
-interface IRegisterResponse {
-  id: number;
-  email: string;
-  phone_number: string;
-}
-
-interface IRegisterPersonalPayload {
-  email: string;
-  password: string;
-  phone_number: string;
-  first_name: string;
-  last_name: string;
-}
-
-interface IRegisterShelterPayload {
-  email: string;
-  password: string;
-  phone_number: string;
-  tax_id: string;
-  company_name: string;
-}
-
-interface ILoginPayload {
-  email: string;
-  password: string;
-}
-
-interface IRefreshTokenPayload {
-  refresh: string;
-}
+import { USER_ROLE } from '@/types/UserRole';
+import { safeRequest } from '@/utils/helpers/api/safeRequest';
+import type { TCredentials } from '@/schemas/auth/credentials.shema';
+import { mapSignUpToRequest } from '@/utils/helpers/mappers/mapSignUpToReqeust';
+import type {
+  TRegisterPersonalResponse,
+  TRegisterShelterResponse,
+} from '@/schemas/auth/register/response.schema';
 
 export const authServices = {
-  registerShelter: async (payload: IRegisterShelterPayload) => {
-    // await wait(5000);
-    return client.post<IRegisterResponse, IRegisterShelterPayload>(
-      '/api/v1/users/register/shelter/',
-      payload
-    );
+  register: (data: TSignUpFields) => {
+    const payload = mapSignUpToRequest(data);
+
+    if (data.role === USER_ROLE.personal) {
+      return client.post<TRegisterPersonalResponse>('/api/v1/users/register/personal/', payload);
+      // return safeRequest(
+      //   client.post('/api/v1/users/register/personal/', payload),
+      //   registerPersonalResponseSchema
+      // );
+    }
+    return client.post<TRegisterShelterResponse>('/api/v1/users/register/shelter/', payload);
+    // return safeRequest(
+    //   client.post('/api/v1/users/register/shelter/', payload),
+    //   registerShelterResponseSchema
+    // );
   },
 
-  registerPersonal: (payload: IRegisterPersonalPayload) => {
-    return client.post<IRegisterResponse, IRegisterPersonalPayload>(
-      '/api/v1/users/register/personal/',
-      payload
-    );
+  login: (payload: TCredentials) => {
+    return safeRequest(client.post('/api/v1/token/', payload), tokenSchema);
   },
 
-  login: async (payload: ILoginPayload) => {
-    // await wait(5000);
-    return client.post<ITokenResponse, ILoginPayload>('/api/v1/token/', payload);
-  },
-
-  refreshToken: (payload: IRefreshTokenPayload) => {
-    return client.post<ITokenResponse, IRefreshTokenPayload>('/api/v1/token/refresh/', payload)
+  refreshToken: (refresh: string) => {
+    return client.post<TTokenResponse>('/api/v1/token/refresh/', { refresh });
+    // return safeRequest(client.post('/api/v1/token/refresh/', { refresh }), tokenSchema);
   },
 };

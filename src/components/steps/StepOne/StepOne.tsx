@@ -1,7 +1,6 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
-import type { PetProfileFormValues } from '@/schemas/pet.schema';
 import { PhotoGrid } from './PhotoGrid';
 import { usePetPhotos } from './usePetPhotos';
 import { MapPin } from 'lucide-react';
@@ -11,6 +10,7 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/in
 import { Field, FieldGroup, FieldLabel, FieldMessage } from '@/components/ui/field';
 
 import clsx from 'clsx';
+import type { TCreatePet } from '@/schemas/pet/pet.create.shema';
 
 export const StepOne = ({ isEdit = false }: { isEdit?: boolean }) => {
   const inputRef = React.useRef<HTMLInputElement | null>(null);
@@ -18,7 +18,7 @@ export const StepOne = ({ isEdit = false }: { isEdit?: boolean }) => {
   const {
     register,
     formState: { errors },
-  } = useFormContext<PetProfileFormValues>();
+  } = useFormContext<TCreatePet>();
 
   const { photos, photosHint, firstEmptyIndex, addPhotos, makeMainPhoto, removePhoto } =
     usePetPhotos();

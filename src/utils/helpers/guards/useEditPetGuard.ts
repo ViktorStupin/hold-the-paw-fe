@@ -5,15 +5,15 @@ import { petsServices } from '@/utils/api/services/pets.services';
 import { getServerErrorMessage } from '@/utils/errors/getServerErrorMessage';
 import { useAuthStore } from '@/store/auth.store';
 import { RoutePath } from '@/routes/root.config';
+import type { TCreatePet } from '@/schemas/pet/pet.create.shema';
 // import { urlToFile } from '../convertors/urlToFile';
-import type { PetProfileFormValues } from '@/schemas/pet.schema';
 
 export const useEditPetGuard = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const userId = useAuthStore((s) => s.userId);
 
-  const [petFormValues, setPetFormValues] = useState<PetProfileFormValues | null>(null);
+  const [petFormValues, setPetFormValues] = useState<TCreatePet | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,6 +38,8 @@ export const useEditPetGuard = () => {
         }
 
         // const photos = await Promise.all(petData.images.map(urlToFile));
+
+        // console.log(photos)
 
         setPetFormValues({
           ...petData,

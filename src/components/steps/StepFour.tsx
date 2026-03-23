@@ -1,15 +1,15 @@
-import type { PetProfileFormValues } from '@/schemas/pet.schema';
 import { useFormContext } from 'react-hook-form';
 import { Textarea } from '../ui/textarea';
 import { PET_OPTION_LABELS_UA } from '@/constants/pet.labes';
 import { Field, FieldLabel, FieldMessage } from '../ui/field';
 import clsx from 'clsx';
+import type { TCreatePet } from '@/schemas/pet/pet.create.shema';
 
 export const StepFour = ({ isEdit = false }: { isEdit?: boolean }) => {
   const {
     register,
     formState: { errors },
-  } = useFormContext<PetProfileFormValues>();
+  } = useFormContext<TCreatePet>();
 
   return (
     <div className={clsx('grid grid-cols-1 gap-6 lg:gap-6 lg:grid-cols-2', { 'lg:gap-x-18': isEdit })}>
