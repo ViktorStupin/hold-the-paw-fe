@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { Icon } from '@/components/ui/icon';
 import { PhotoPreview } from './PhotoPreview';
 import { CirclePlus, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const mainPhotoBadgeClassName = clsx(
   'absolute bottom-0 left-1/2 -translate-x-1/2',
@@ -45,14 +46,16 @@ export const PhotoSlot = ({
             />
           </button>
 
-          <button
+          <Button
             type='button'
+            variant='round'
+            size='round-md'
             onClick={onRemove}
-            className='absolute right-2 top-2 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-light-opacity backdrop-blur-[15px] focus:border focus:border-gray-0 lg:h-10 lg:w-10'
+            className='absolute right-2 top-2 lg:size-10'
             aria-label='Видалити фото'
           >
             <Icon icon={X} size={24} color='var(--gray-0)' />
-          </button>
+          </Button>
 
           {isMain && (
             <div

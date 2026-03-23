@@ -116,5 +116,15 @@ export const CheckBoxField = ({ name, id }: ICheckBoxFieldProps) => {
   const { control } = useFormContext();
   const { field, fieldState } = useController({ name, control });
 
-  return <Checkbox aria-invalid={!!fieldState.error} id={id ?? name} {...field} />;
+  return (
+    <Checkbox
+      aria-invalid={!!fieldState.error}
+      id={id ?? name}
+      checked={field.value}
+      onCheckedChange={field.onChange}
+      ref={field.ref}
+      name={field.name}
+      onBlur={field.onBlur}
+    />
+  );
 };

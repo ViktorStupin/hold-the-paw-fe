@@ -1,11 +1,11 @@
 // pet.labels.ts
-import type { PetProfileFormValues } from '@/schemas/pet.schema';
+import type { TCreatePet } from '@/schemas/pet/pet.create.shema';
 import type {
-  AnimalType,
+  PetType,
   PetAge,
   PetBreed,
   PetColor,
-  PetSex,
+  PetGender,
   PetSize,
   PetStatus,
 } from '../types/PetFileds';
@@ -15,7 +15,7 @@ export const PET_STATUS_LABEL_UA: Record<PetStatus, string> = {
   help_needed: 'Потребує допомогу',
 };
 
-export const PET_SEX_LABEL_UA: Record<PetSex, string> = {
+export const PET_SEX_LABEL_UA: Record<PetGender, string> = {
   male: 'Хлопчик',
   female: 'Дівчинка',
 };
@@ -39,7 +39,7 @@ export const PET_SIZE_LABEL_UA: Record<PetSize, string> = {
   l: 'Великий',
 };
 
-export const ANIMAL_TYPE_LABEL_UA: Record<AnimalType, string> = {
+export const PET_TYPE_LABEL_UA: Record<PetType, string> = {
   dog: 'Собака',
   cat: 'Кіт',
   hamster: 'Гризун',
@@ -78,19 +78,19 @@ export const PET_SPECIAL_NEEDS_LABEL_UA: Record<string, string> = {
   false: 'Немає потреб',
 };
 
-export const PET_OPTION_LABELS_UA: Record<keyof PetProfileFormValues, string> = {
+export const PET_OPTION_LABELS_UA: Record<keyof TCreatePet, string> = {
   status: 'Статус',
-  sex: 'Стать',
+  gender: 'Стать',
   age: 'Вік',
   breed: 'Порода',
   size: 'Розмір',
   color: 'Окрас',
-  animalType: 'Тип тварини',
+  pet_type: 'Тип тварини',
   special_needs: 'Особливі потреби',
   has_passport: 'Паспорт',
   is_vaccinated: 'Вакцина',
-  story: 'Опис тваринки',
-  about: 'Історія тваринки',
+  story: 'Історія тваринки',
+  about: 'Опис тваринки',
   name: "Ім'я",
   location: 'Локація',
   photos: 'Оберіть головне фото та до 5 додаткових',

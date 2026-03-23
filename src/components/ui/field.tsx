@@ -117,7 +117,7 @@ const FieldLabel = ({
   const content = children ?? text ?? defaultValue;
 
   return (
-    <Label className={cn('typo-main', className)} {...props}>
+    <Label className={cn(className)} {...props}>
       {content}
     </Label>
   );
@@ -225,7 +225,7 @@ const FieldMessage = ({
       {IconComponent && (
         <Icon className='shrink-0' icon={IconComponent} size={24} color={currentIconColor} />
       )}
-      <span className={cn('type-secondary', statusConfig[status].textClass)}>{content}</span>
+      <span className={cn('typo-secondary', statusConfig[status].textClass)}>{content}</span>
     </div>
   );
 };

@@ -6,13 +6,22 @@ import { Input } from '@/components/ui/input';
 import { PasswordField } from '@/components/ui/field-structure';
 import { Button } from '@/components/ui/button';
 import { Field, FieldGroup, FieldLabel, FieldMessage } from '@/components/ui/field';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { RoutePath } from '@/routes/root.config';
-import { signInSchema, type SignInData } from '@/schemas/signIn';
+import { logout, setAuthLoading, setTokens, useAuthStore } from '@/store/auth.store';
+import { getServerErrorMessage } from '@/utils/errors/getServerErrorMessage';
+import { authServices } from '@/utils/api/services/auth.services';
+import { Spinner } from '@/components/ui/spinner';
+import { useEffect } from 'react';
+import { scrollTop } from '@/utils/helpers/layouts/layouts';
+import { credentialsSchema, type TCredentials } from '@/schemas/auth/credentials.shema';
 
 export function SignInForm() {
-  const methods = useForm<SignInData>({
-    resolver: zodResolver(signInSchema),
+  const navigate = useNavigate();
+  const { isLoading, returnURL, setReturnUrl } = useAuthStore();
+
+  const methods = useForm<TCredentials>({
+    resolver: zodResolver(credentialsSchema),
     mode: 'onChange',
     defaultValues: {
       email: '',
@@ -23,11 +32,35 @@ export function SignInForm() {
   const {
     register,
     handleSubmit,
+    setError,
+    watch,
+    clearErrors,
     formState: { errors, isValid },
   } = methods;
 
-  const onSubmit = async (data: SignInData) => {
-    console.log(data);
+  useEffect(() => {
+    const subscription = watch(() => {
+      if (errors.root) {
+        clearErrors('root');
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, errors.root, clearErrors]);
+
+  const onSubmit = async (data: TCredentials) => {
+    try {
+      logout();
+      setAuthLoading(true);
+      const tokens = await authServices.login({ ...data });
+      setTokens(tokens.access, tokens.refresh);
+      navigate(returnURL || RoutePath.Home);
+      setReturnUrl(null);
+      scrollTop();
+    } catch (error) {
+      setError('root', { message: getServerErrorMessage(error) });
+    } finally {
+      setAuthLoading(false);
+    }
   };
 
   return (
@@ -64,19 +97,22 @@ export function SignInForm() {
               <FieldMessage message={errors.password?.message} />
             </Field>
           </FieldGroup>
+          {errors.root && <FieldMessage className='mt-2' message={errors.root.message} />}
         </div>
+
         <div>
           <Button
             className='mt-15 w-full'
             type='submit'
             variant={isValid ? 'primary' : 'lightDisabled'}
           >
-            Увійти
+            {isLoading && <Spinner />}
+            {isLoading ? 'Вхід...' : 'Увійти'}
           </Button>
           <div className='mt-4 flex gap-2 items-center justify-center'>
-            <p className='typo-main text-gray-80'>Не маєте акаунт?</p>
-            <Link className='p-3 text-gray-90'to={`../${RoutePath.SignUp}`}>
-              Зарєеструватися
+            <p className='typo-main text-gray-80'>Не маєте акаунта?</p>
+            <Link className='typo-main typo-link' to={`../${RoutePath.SignUp}`}>
+              Зареєструватися
             </Link>
           </div>
         </div>

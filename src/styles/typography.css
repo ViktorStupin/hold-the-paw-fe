@@ -11,19 +11,30 @@
     @apply font-sans font-bold text-[18px] leading-[120%] text-foreground;
   }
 
-  .type-main {
+  .typo-main {
     @apply font-sans font-medium text-[16px] leading-[138%] text-foreground;
   }
 
-  .type-secondary {
+  .typo-secondary {
     @apply font-sans font-medium text-[14px] leading-[138%] text-foreground;
   }
 
-  .type-button {
+  .typo-link {
+    @apply relative inline-block text-gray-90 cursor-pointer transition-colors duration-200
+
+  after:content-[''] after:absolute after:left-0 after:bottom-0
+  after:w-full after:h-px after:bg-gray-90
+  after:transition-colors after:duration-200
+
+  hover:text-primary-40
+  hover:after:bg-primary-40;
+  }
+
+  .typo-button {
     @apply font-sans font-medium text-[18px] leading-[100%] text-foreground;
   }
 
-  .type-input {
+  .typo-input {
     @apply font-sans font-medium text-[16px] leading-[138%] text-foreground;
   }
 }

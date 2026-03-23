@@ -1,13 +1,13 @@
 import { useFormContext, useController } from 'react-hook-form';
-import type { PetProfileFormValues } from '@/schemas/pet.schema';
 import { Button } from '../ui/button';
 import { PET_OPTION_LABELS_UA } from '@/constants/pet.labes';
 import { Field, FieldLabel, FieldMessage, FieldSet } from '../ui/field';
+import type { TCreatePet } from '@/schemas/pet/pet.create.shema';
 
 export type LayoutType = 'single' | 'grid-2' | 'grid-3' | 'special-2';
 
 interface IOptionGridProps<T extends string | boolean> {
-  name: keyof PetProfileFormValues;
+  name: keyof TCreatePet;
   options: readonly T[];
   labels: Record<string, string>;
   layout?: 'single' | 'grid-2' | 'grid-3' | 'special-2';
@@ -19,7 +19,7 @@ export const OptionGrid = <T extends string | boolean>({
   labels,
   layout = 'grid-2',
 }: IOptionGridProps<T>) => {
-  const { control } = useFormContext<PetProfileFormValues>();
+  const { control } = useFormContext<TCreatePet>();
   const { field, fieldState } = useController({ name, control });
 
   const isSelected = (value: T) => field.value === value;
