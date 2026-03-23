@@ -14,8 +14,7 @@ interface IInitialState {
 interface IActionsState {
   fetchMyPets: () => Promise<void>;
   clearMyPets: () => void;
-  toggleActive: (id: number) => Promise<void>;
-  setHelped: (id: number, status: boolean) => Promise<void>;
+  setPets: (updater: (prev: TMyPetCard[]) => TMyPetCard[]) => void;
 }
 
 interface IPetsState extends IInitialState, IActionsState {}
@@ -58,60 +57,13 @@ const petsStore: StateCreator<
       state.myPets = [];
     }),
 
-  toggleActive: async (id: number) => {
-    const pet = usePetsStore.getState().myPets.find((p) => p.id === id);
-    if (!pet) return;
-
+  setPets: (updater) =>
     set((state) => {
-      const target = state.myPets.find((p) => p.id === id);
-      if (!target) return;
-      target.is_active = !target.is_active;
-      if (target.is_active) {
-        target.is_helped = false;
-      }
-    });
-
-    try {
-      await petsServices.toggleActive(pet.is_active, id);
-    } catch (error) {
-      set((state) => {
-        const target = state.myPets.find((p) => p.id === id);
-        if (!target) return;
-        target.is_active = pet.is_active;
-        target.is_helped = pet.is_helped;
-      });
-      set((state) => {
-        state.error = getServerErrorMessage(error);
-      });
-    }
-  },
-
-  setHelped: async (id: number, status: boolean) => {
-    const pet = usePetsStore.getState().myPets.find((p) => p.id === id);
-    if (!pet) return;
-
-    set((state) => {
-      const target = state.myPets.find((p) => p.id === id);
-      if (!target) return;
-      target.is_helped = status;
-    });
-
-    try {
-      await petsServices.toggleHelped(status, id);
-    } catch (error) {
-      set((state) => {
-        const target = state.myPets.find((p) => p.id === id);
-        if (!target) return;
-        target.is_helped = pet.is_helped;
-      });
-      set((state) => {
-        state.error = getServerErrorMessage(error);
-      });
-    }
-  },
+      state.myPets = updater(state.myPets);
+    }),
 });
 
-const usePetsStore = create<IPetsState>()(immer(devtools(petsStore)));
+const useMyPetsStore = create<IPetsState>()(immer(devtools(petsStore)));
 
-export const getPetsState = () => usePetsStore.getState();
-export { usePetsStore };
+export const getPetsState = () => useMyPetsStore.getState();
+export { useMyPetsStore as usePetsStore };
