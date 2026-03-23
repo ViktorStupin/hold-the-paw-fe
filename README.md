@@ -1,73 +1,68 @@
-# React + TypeScript + Vite
+# Pet Adoption Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive web application for publishing, managing, and discovering pet profiles for adoption or help.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Pet Adoption Platform is a frontend web application that helps shelters, companies, and individual users create pet profiles, manage their own listings, and help people find animals through search and filters.
 
-## React Compiler
+The app includes authentication, personal account management, pet profile creation, editing flows, and a public catalog with detailed pet pages.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## Features
 
-## Expanding the ESLint configuration
+- User registration and login
+- Role-based accounts: Individual or Company / Shelter
+- Personal profile management
+- Change email and password
+- Create, edit, deactivate, and delete pet profiles
+- Multi-step pet creation form
+- Pet catalog with search, filters, and sorting
+- Favorites functionality
+- Responsive layout for mobile and desktop
+- Protected actions for authorized users only
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- React
+- TypeScript
+- React Router
+- React Hook Form
+- Zod
+- shadcn
+- Tailwind CSS / SCSS
+- Axios or Fetch API
+- JWT Authentication
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Pages
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Home / Catalog
+- Login / Registration modal
+- User Profile
+- My Pets
+- Create Pet Profile
+- Edit Pet Profile
+- Pet Details
+- Favorites
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Main Functionality
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Authentication
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Users can sign up and log in through modal windows. The system supports access and refresh token flow, password recovery, and protected access to private pages and actions.
+
+### User Profile
+
+Authorized users can manage their personal information depending on their role. They can also update contact data, email, and password.
+
+### Pet Management
+
+Users can create pet profiles through a multi-step form, upload photos, edit existing profiles, deactivate them, or mark them as helped.
+
+### Catalog
+
+The platform provides a public pet catalog with search, filtering, sorting, and navigation to detailed pet pages.
+
+## Responsive Design
+
+The application is fully responsive and optimized for both desktop and mobile devices. It includes a sticky header and mobile tab bar navigation.
+
