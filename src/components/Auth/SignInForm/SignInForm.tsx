@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Field, FieldGroup, FieldLabel, FieldMessage } from '@/components/ui/field';
 import { Link, useNavigate } from 'react-router-dom';
 import { RoutePath } from '@/routes/root.config';
-import { logout, setAuthLoading, setTokens, useAuthStore } from '@/store/auth.store';
+import { logout, setLoading, setTokens, useAuthStore } from '@/store/auth.store';
 import { getServerErrorMessage } from '@/utils/errors/getServerErrorMessage';
 import { authServices } from '@/utils/api/services/auth.services';
 import { Spinner } from '@/components/ui/spinner';
@@ -50,7 +50,7 @@ export function SignInForm() {
   const onSubmit = async (data: TCredentials) => {
     try {
       logout();
-      setAuthLoading(true);
+      setLoading(true);
       const tokens = await authServices.login({ ...data });
       setTokens(tokens.access, tokens.refresh);
       navigate(returnURL || RoutePath.Home);
@@ -59,7 +59,7 @@ export function SignInForm() {
     } catch (error) {
       setError('root', { message: getServerErrorMessage(error) });
     } finally {
-      setAuthLoading(false);
+      setLoading(false);
     }
   };
 

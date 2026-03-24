@@ -18,7 +18,7 @@ import { Field, FieldGroup, FieldLabel, FieldMessage } from '@/components/ui/fie
 import { Link, useNavigate } from 'react-router-dom';
 import { RoutePath } from '@/routes/root.config';
 import { authServices } from '@/utils/api/services/auth.services';
-import { setAuthLoading, setTokens, useAuthStore } from '@/store/auth.store';
+import { setLoading, setTokens, useAuthStore } from '@/store/auth.store';
 import { getServerErrorMessage } from '@/utils/errors/getServerErrorMessage';
 import { useEffect } from 'react';
 import { scrollTop } from '@/utils/helpers/layouts/layouts';
@@ -64,7 +64,7 @@ export function SignUpForm() {
 
   const onSubmit = async (data: TSignUpFields) => {
     try {
-      setAuthLoading(true);
+      setLoading(true);
       await authServices.register(data);
       const tokens = await authServices.login({
         email: data.email,
@@ -78,7 +78,7 @@ export function SignUpForm() {
     } catch (error) {
       setError('root', { message: getServerErrorMessage(error) });
     } finally {
-      setAuthLoading(false);
+      setLoading(false);
     }
   };
 

@@ -1,3 +1,4 @@
+// store/auth.store.ts
 import { create, type StateCreator } from 'zustand';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
@@ -11,7 +12,6 @@ interface IInitialState {
   isAuthenticated: boolean;
   isLoading: boolean;
   returnURL: string | null;
-  isLoggingOut: boolean;
 }
 
 interface IActionsState {
@@ -25,13 +25,12 @@ interface IAuthState extends IInitialState, IActionsState {}
 
 const initialState: IInitialState = {
   accessToken: null,
-  userId: null,
   refreshToken: null,
   refreshTokenExpiresAt: null,
+  userId: null,
   isAuthenticated: false,
   isLoading: false,
   returnURL: null,
-  isLoggingOut: false,
 };
 
 interface IJwtPayload {
@@ -45,53 +44,38 @@ const authStore: StateCreator<
   ...initialState,
 
   setTokens: (access, refresh) =>
-    set(
-      (state) => {
-        const { user_id } = jwtDecode<IJwtPayload>(access);
-        state.userId = Number(user_id);
-        state.isLoading = false;
-        state.accessToken = access;
-        state.refreshToken = refresh;
-        state.isAuthenticated = true;
-        state.refreshTokenExpiresAt = Date.now() + 7 * 60 * 60 * 1000;
-      },
-      false,
-      'auth/setTokens'
-    ),
-  setLoading: (value) =>
-    set(
-      (state) => {
-        state.isLoading = value;
-      },
-      false,
-      'auth/setLoading'
-    ),
-  setReturnUrl: (url) =>
-    set(
-      (state) => {
-        state.returnURL = url;
-      },
-      false,
-      'auth/setReturnUrl'
-    ),
+    set((state) => {
+      const { user_id } = jwtDecode<IJwtPayload>(access);
+      state.userId = Number(user_id);
+      state.accessToken = access;
+      state.refreshToken = refresh;
+      state.isAuthenticated = true;
+      state.isLoading = false;
+      state.refreshTokenExpiresAt = Date.now() + 7 * 60 * 60 * 1000;
+    }),
 
-  logout: () => {
-    set(
-      (state) => {
-        state.isLoggingOut = true;
-        state.accessToken = null;
-        state.refreshToken = null;
-        state.isAuthenticated = false;
-        state.refreshTokenExpiresAt = null;
-        state.userId = null;
-      },
-      false,
-      'auth/logout'
-    );
-  },
+  setLoading: (value) =>
+    set((state) => {
+      state.isLoading = value;
+    }),
+
+  setReturnUrl: (url) =>
+    set((state) => {
+      state.returnURL = url;
+    }),
+
+  logout: () =>
+    set((state) => {
+      state.accessToken = null;
+      state.refreshToken = null;
+      state.isAuthenticated = false;
+      state.refreshTokenExpiresAt = null;
+      state.userId = null;
+      state.returnURL = null;
+    }),
 });
 
-const useAuthStore = create<IAuthState>()(
+export const useAuthStore = create<IAuthState>()(
   immer(
     devtools(
       persist(authStore, {
@@ -109,12 +93,7 @@ const useAuthStore = create<IAuthState>()(
 );
 
 export const useIsAuthenticated = () => useAuthStore((s) => s.isAuthenticated);
-export const useAuthIsLoading = () => useAuthStore((s) => s.isLoading);
-
 export const getAuthState = () => useAuthStore.getState();
-export const setTokens = (access: string, refresh: string) =>
-  useAuthStore.getState().setTokens(access, refresh);
-export const setAuthLoading = (value: boolean) => useAuthStore.getState().setLoading(value);
+export const setTokens = (a: string, r: string) => useAuthStore.getState().setTokens(a, r);
 export const logout = () => useAuthStore.getState().logout();
-
-export { useAuthStore };
+export const setLoading = (value: boolean)=> useAuthStore.getState().setLoading(value);
