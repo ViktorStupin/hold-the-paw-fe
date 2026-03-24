@@ -14,7 +14,6 @@ interface IInitialState {
 interface IActionsState {
   fetchMyPets: () => Promise<void>;
   clearMyPets: () => void;
-  setPets: (updater: (prev: TMyPetCard[]) => TMyPetCard[]) => void;
 }
 
 interface IPetsState extends IInitialState, IActionsState {}
@@ -55,11 +54,6 @@ const petsStore: StateCreator<
   clearMyPets: () =>
     set((state) => {
       state.myPets = [];
-    }),
-
-  setPets: (updater) =>
-    set((state) => {
-      state.myPets = updater(state.myPets);
     }),
 });
 

@@ -9,6 +9,7 @@ import type { TMyPetCard } from '@/schemas/pet/pet.myCard.shema';
 import { useState } from 'react';
 import { ConfirmModal } from '../ConfirmModal/ConfirmModal';
 import { usePetActions } from './usePetActions';
+import { usePetsStore } from '@/store/myPets.store';
 export const MyPetCard = ({
   pet: { main_image, location, is_active, status, name, id },
 }: {
@@ -16,17 +17,27 @@ export const MyPetCard = ({
 }) => {
   const isMobile = useIsMobile();
   const { toggleActive, setHelped } = usePetActions();
+  const { fetchMyPets } = usePetsStore();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const handleConfirm = async () => {
     setIsConfirmOpen(false);
-    await toggleActive(id);
+    await toggleActive(id, false);
     await setHelped(id, true);
+    await fetchMyPets();
   };
+
   const handleDecline = async () => {
     setIsConfirmOpen(false);
-    await toggleActive(id);
+    await toggleActive(id, false);
+    await setHelped(id, false);
+    await fetchMyPets();
+  };
+
+  const handleActivate = async () => {
+    await toggleActive(id, true);
     await setHelped(id, false);
   };
+
   const image = (
     <div
       className={cn(
@@ -61,7 +72,7 @@ export const MyPetCard = ({
     <div className={isMobile ? 'grid gap-4' : 'grid grid-cols-2 gap-4'}>
       <Button
         variant='secondary'
-        onClick={() => (is_active ? setIsConfirmOpen(true) : handleDecline())}
+        onClick={() => (is_active ? setIsConfirmOpen(true) : handleActivate())}
       >
         {is_active ? 'Деактивувати' : 'Активувати'}
       </Button>

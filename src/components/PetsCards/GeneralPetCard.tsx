@@ -1,6 +1,7 @@
 import { X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { BASE_URL } from '@/constants/env';
 
 type GeneralPetCardGender = 'male' | 'female';
 
@@ -35,11 +36,11 @@ export const GeneralPetCard = ({ pet }: GeneralPetCardProps) => {
         <img
           src={image}
           alt={name}
-          className='h-full w-full rounded-[16px] object-cover'
+          className='h-full w-full rounded-2xl object-cover'
           loading='lazy'
         />
       ) : (
-        <div className='h-full w-full rounded-[16px] bg-gray-50' />
+        <div className='h-full w-full rounded-2xl-gray-50' />
       )}
 
       {isHighlighted ? (
@@ -52,19 +53,19 @@ export const GeneralPetCard = ({ pet }: GeneralPetCardProps) => {
         </button>
       ) : null}
 
-      <div className='pointer-events-none absolute inset-x-1 bottom-1 rounded-b-[16px] bg-gradient-to-t from-gray-100/75 via-gray-100/35 to-transparent px-4 pt-10 pb-4 text-gray-0'>
+      <div className='pointer-events-none absolute inset-x-1 bottom-1 rounded-b-2xl bg-linear-to-t from-gray-100/75 via-gray-100/35 to-transparent px-4 pt-10 pb-4 text-gray-0'>
         <h3 className='typo-h3 flex items-center gap-1 text-gray-0'>
           <span>{name}</span>
           <img src={genderIconSrc} alt='' aria-hidden='true' className='size-4 object-contain' />
         </h3>
 
         <div className='mt-2 flex items-center gap-1.5 text-[13px] leading-[130%] text-gray-0/95'>
-          <img src={locationIconSrc} alt='' aria-hidden='true' className='size-[14px] object-contain' />
+          <img src={locationIconSrc} alt='' aria-hidden='true' className='size-3.5 object-contain' />
           <span>{location}</span>
         </div>
 
         <div className='mt-1 flex items-center gap-1.5 text-[13px] leading-[130%] text-gray-0/95'>
-          <img src={calendarIconSrc} alt='' aria-hidden='true' className='size-[14px] object-contain' />
+          <img src={calendarIconSrc} alt='' aria-hidden='true' className='size-3.5 object-contain' />
           <span>{ageLabel}</span>
         </div>
       </div>

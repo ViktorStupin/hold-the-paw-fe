@@ -5,9 +5,15 @@ import { Menu, X } from 'lucide-react';
 
 import logo from '@/assets/Logo.svg';
 import { BASE_URL } from '@/constants/env';
-import { RoutePath } from '@/routes/root.config';
+import { PROTECTED_ROUTES_CONFIG, RoutePath } from '@/routes/root.config';
 import { useClickOutside } from '@/utils/helpers/dom/useClickOutside';
 import { useIsMobile } from '@/utils/helpers/layouts/useIsMobile';
+import { ProtectedNavLink } from './ProtectedNavLink';
+
+export const PUBLIC_ROUTES = [RoutePath.Pets, RoutePath.Home, RoutePath.Default] as const;
+
+export const isPublicRoute = (path: string) =>
+  PUBLIC_ROUTES.includes(path as (typeof PUBLIC_ROUTES)[number]);
 
 export type HeaderUser = {
   name: string;
@@ -24,7 +30,10 @@ const COMMON_NAV_ITEMS = [
   { label: 'Мої тваринки', to: RoutePath.MyPets },
 ] as const;
 
-const MOBILE_MENU_ITEMS = [{ label: 'Профіль', to: RoutePath.Profile }, ...COMMON_NAV_ITEMS] as const;
+const MOBILE_MENU_ITEMS = [
+  { label: 'Профіль', to: RoutePath.Profile },
+  ...COMMON_NAV_ITEMS,
+] as const;
 
 export const Header = ({ user }: HeaderProps) => {
   const { pathname } = useLocation();
@@ -70,31 +79,40 @@ export const Header = ({ user }: HeaderProps) => {
         {!isMobile && (
           <nav className='col-span-8 hidden justify-center md:flex'>
             <ul className='flex items-center gap-14'>
-              {COMMON_NAV_ITEMS.map((item) => (
-                <li key={item.to}>
-                  <NavLink to={item.to} className={navLinkClass}>
-                    {item.label}
-                  </NavLink>
-                </li>
-              ))}
+              {COMMON_NAV_ITEMS.map((item) => {
+                const isPublic = isPublicRoute(item.to);
+                return (
+                  <li key={item.to}>
+                    <ProtectedNavLink
+                      authMessage={PROTECTED_ROUTES_CONFIG[item.to]}
+                      to={item.to}
+                      requireAuth={!isPublic}
+                      className={navLinkClass}
+                    >
+                      {item.label}
+                    </ProtectedNavLink>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
         )}
 
         <div className='col-span-2 flex justify-end md:col-span-2'>
           {!isMobile ? (
-            <NavLink
+            <ProtectedNavLink
               to={RoutePath.Profile}
+              authMessage={PROTECTED_ROUTES_CONFIG[RoutePath.Profile]}
+              requireAuth
               className={({ isActive }) =>
                 clsx('type-secondary whitespace-nowrap transition-colors duration-200', {
                   'text-primary-40': isActive,
                   'text-gray-90 hover:text-primary-40': !isActive,
                 })
               }
-              aria-label='Перейти в профіль'
             >
               Профіль
-            </NavLink>
+            </ProtectedNavLink>
           ) : (
             <div className='relative' ref={menuRef}>
               <button
@@ -111,7 +129,7 @@ export const Header = ({ user }: HeaderProps) => {
               {isMenuOpen && (
                 <nav
                   id='mobile-menu'
-                  className='fixed left-0 right-0 rounded-b-[24px] bg-gray-30 px-4 pt-4 pb-8 shadow-[0_12px_24px_rgba(0,0,0,0.2)]'
+                  className='fixed left-0 right-0 rounded-b-3xl bg-gray-30 px-4 pt-4 pb-8 shadow-[0_12px_24px_rgba(0,0,0,0.2)]'
                   style={{ top: mobileMenuTop }}
                 >
                   <div className='mb-4 flex items-center gap-3'>
@@ -129,25 +147,31 @@ export const Header = ({ user }: HeaderProps) => {
                   <div className='mb-4 border-b border-gray-70/35' />
 
                   <ul className='flex flex-col gap-4'>
-                    {MOBILE_MENU_ITEMS.map((item) => (
-                      <li key={item.to} className='flex gap-4'>
-                        <NavLink
-                          to={item.to}
-                          onClick={closeMenu}
-                          className={({ isActive }) =>
-                            clsx(
-                              'type-main block py-1 transition-colors duration-200 hover:text-primary-40',
-                              {
-                                'text-primary-40': isActive,
-                                'text-gray-90': !isActive,
-                              }
-                            )
-                          }
-                        >
-                          {item.label}
-                        </NavLink>
-                      </li>
-                    ))}
+                    {MOBILE_MENU_ITEMS.map((item) => {
+                      const isPublic = isPublicRoute(item.to);
+
+                      return (
+                        <li key={item.to} className='flex gap-4'>
+                          <ProtectedNavLink
+                            authMessage={PROTECTED_ROUTES_CONFIG[item.to]}
+                            to={item.to}
+                            requireAuth={!isPublic}
+                            onClick={closeMenu}
+                            className={({ isActive }) =>
+                              clsx(
+                                'type-main block py-1 transition-colors duration-200 hover:text-primary-40',
+                                {
+                                  'text-primary-40': isActive,
+                                  'text-gray-90': !isActive,
+                                }
+                              )
+                            }
+                          >
+                            {item.label}
+                          </ProtectedNavLink>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </nav>
               )}

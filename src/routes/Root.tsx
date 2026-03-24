@@ -5,7 +5,6 @@ import { RoutePath } from './root.config';
 import { SignUpForm } from '@/components/Auth/SignUpForm/SignUpForm';
 import { AuthPage } from '@/pages/AuthPage/AuthPage';
 import { SignInForm } from '@/components/Auth/SignInForm/SignInForm';
-import { useState } from 'react';
 import { ProtectedRoute } from './ProtectedRoute';
 import { AuthRequiredModal } from '@/components/Auth/AuthRequiredModal/AuthRequiredModal';
 import { PublicOnlyRoute } from './PublicOnlyRoute';
@@ -14,16 +13,11 @@ import { EditPetProfile } from '@/pages/EditPetProfile/EditPetProfile';
 import { FindPage } from '@/pages/FindPage/FindPage';
 import { MyPetPage } from '@/pages/MyPetPage/MyPetPage';
 import { Profile } from '@/pages/ProfilePage/Profile';
+import { useAuthModalStore } from '@/store/authModal.store';
 
 export const Root = () => {
-  const [authModal, setAuthModal] = useState<{ isOpen: boolean; message: string }>({
-    isOpen: false,
-    message: '',
-  });
+  const { isOpen, message, close } = useAuthModalStore();
 
-  const handleAuthRequired = (message: string) => {
-    setAuthModal({ isOpen: true, message });
-  };
 
   return (
     <HashRouter>
@@ -42,7 +36,7 @@ export const Root = () => {
               <Route path={RoutePath.SignIn} element={<SignInForm />} />
             </Route>
           </Route>
-          <Route element={<ProtectedRoute onAuthRequired={handleAuthRequired} />}>
+          <Route element={<ProtectedRoute/>}>
             <Route path={RoutePath.CreatePetProfile} element={<CreatePetProfile />} />
             <Route path={RoutePath.EditPetProfile} element={<EditPetProfile/>} />
             <Route path={RoutePath.MyPets} element={<MyPetPage />} />
@@ -56,9 +50,9 @@ export const Root = () => {
       </Routes>
 
       <AuthRequiredModal
-        message={authModal.message}
-        isOpen={authModal.isOpen}
-        onClose={() => setAuthModal({ isOpen: false, message: '' })}
+        message={message}
+        isOpen={isOpen}
+        onClose={close}
       />
     </HashRouter>
   );

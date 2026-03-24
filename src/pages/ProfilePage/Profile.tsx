@@ -21,6 +21,7 @@ import { ProfileInfoSectionForm } from './ProfileInfoSectionForm';
 import { ProfileInfoSectionView } from './ProfileInfoSectionView';
 import { mapUserToForm } from '@/utils/helpers/mappers/mapUserToForm';
 import { mapUserToRequest } from '@/utils/helpers/mappers/mapUserToRequest';
+import { scrollTop } from '@/utils/helpers/layouts/layouts';
 
 type IProfileProps = {
   variant: 'view' | 'edit';
@@ -70,6 +71,8 @@ export const Profile = ({ variant }: IProfileProps) => {
     } catch (error) {
       setError('root', { message: getServerErrorMessage(error) });
     }
+    scrollTop();
+    navigate(RoutePath.Profile);
   };
 
   if (isLoading || !user) {
@@ -114,14 +117,13 @@ export const Profile = ({ variant }: IProfileProps) => {
 
   const viewButtons = (
     <>
-      <Button asChild>
+      <Button asChild onClick={scrollTop}>
         <Link to={RoutePath.EditProfile}>
           Редагувати <Icon icon={PencilLine} size={24} />
         </Link>
       </Button>
       <Button
         onClick={() => {
-          navigate(RoutePath.Default, { replace: true });
           logout();
         }}
         variant='secondary'
