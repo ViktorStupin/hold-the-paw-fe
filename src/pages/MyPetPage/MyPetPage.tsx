@@ -3,8 +3,6 @@ import { MyPetCard } from '@/components/PetsCards/MyPetCard';
 import { ToggleSwitcher } from '@/components/ui/toggle-group';
 import { usePetsStore } from '@/store/myPets.store';
 import { Loader } from 'lucide-react';
-import { Back } from '@/components/Back/Back';
-import { useIsMobile } from '@/utils/helpers/layouts/useIsMobile';
 import { FieldMessage } from '@/components/ui/field';
 import { Toaster } from 'sonner';
 
@@ -12,7 +10,6 @@ const ACTIVE_STATES = ['active', 'inactive'] as const;
 type ActiveState = (typeof ACTIVE_STATES)[number];
 
 export const MyPetPage = () => {
-  const isMobile = useIsMobile();
   const [activeState, setActiveState] = useState<ActiveState>('active');
   const { myPets, isLoading, error, fetchMyPets } = usePetsStore();
 
@@ -63,7 +60,6 @@ export const MyPetPage = () => {
 
   return (
     <div className='flex-1 flex flex-col u-container'>
-      {isMobile && <Back />}
       <section className='flex flex-col pt-4 pb-6 lg:py-10'>
         <div className='flex justify-center mb-6 lg:mb-8'>
           <ToggleSwitcher

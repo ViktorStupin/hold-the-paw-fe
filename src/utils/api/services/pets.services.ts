@@ -3,13 +3,19 @@ import { toFormData } from '@/utils/helpers/convertors/toFormData';
 import { type TMyPetCard } from '@/schemas/pet/pet.myCard.shema';
 // import { safeRequest } from '@/utils/helpers/api/safeRequest';
 import { type TPetProfile } from '@/schemas/pet/pet.response.shema';
-import type { TRequestPet } from '@/schemas/pet/pet.create.shema';
+import type { TCreatePet, TRequestPet } from '@/schemas/pet/pet.create.shema';
 import type { TUpdatePet } from '@/schemas/pet/pet.update.shema';
+
+type TPetsListResponse = TPetProfile[] | { results: TPetProfile[] };
 
 export const petsServices = {
   getPet: async (id: number) => {
     return await client.get<TPetProfile>(`/api/v1/pets/listings/${id}/`);
     // return await safeRequest(client.get(`/api/v1/pets/listings/${id}/`), petResponseSchema);
+  },
+
+  getPets: async (): Promise<TPetsListResponse> => {
+    return await client.get<TPetsListResponse>('/api/v1/pets/listings/');
   },
 
   getMyPets: async (): Promise<TMyPetCard[]> => {
@@ -23,6 +29,19 @@ export const petsServices = {
     //   client.post(`/api/v1/pets/listings/`, toFormData(payload)),
     //   petResponseSchema
     // );
+  },
+
+  createPetProfile: async ({ photos, ...rest }: TCreatePet) => {
+    const payload: TRequestPet = {
+      ...rest,
+      is_sterilized: false,
+      is_helped: false,
+      is_active: true,
+      main_image: photos[0],
+      additional_images: photos.slice(1),
+    };
+
+    return petsServices.createPet(payload);
   },
 
   editPet: async (payload: TUpdatePet, id: number) => {

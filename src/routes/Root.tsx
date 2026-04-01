@@ -13,6 +13,7 @@ import { EditPetProfile } from '@/pages/EditPetProfile/EditPetProfile';
 import { FindPage } from '@/pages/FindPage/FindPage';
 import { MyPetPage } from '@/pages/MyPetPage/MyPetPage';
 import { Profile } from '@/pages/ProfilePage/Profile';
+import { PetPage } from '@/pages/PetPage/PetPage';
 import { useAuthModalStore } from '@/store/authModal.store';
 
 export const Root = () => {
@@ -27,7 +28,7 @@ export const Root = () => {
           <Route path={RoutePath.Home} element={<Navigate to={RoutePath.Default} replace />} />
 
           <Route path={RoutePath.Pets} element={<FindPage />} />
-          <Route path={RoutePath.Pet} element={<div>Pet Detail Page</div>} />
+          <Route path={RoutePath.Pet} element={<PetPage />} />
 
           <Route element={<PublicOnlyRoute />}>
             <Route path={RoutePath.Auth} element={<AuthPage />}>

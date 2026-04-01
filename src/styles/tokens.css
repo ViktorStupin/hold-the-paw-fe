@@ -19,7 +19,7 @@
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   --header-bg: rgba(243, 243, 243, 0.15);
-  --header-bg-wt: rgba(255, 255, 255, 0.664);
+  --header-bg-wt: #fff;
   --header-shadow: 0 4px 4px rgba(31, 32, 34, 0.05);
   --header-logo-width: 44px;
   --header-logo-height: 42px;
@@ -29,6 +29,8 @@
   --find-filters-width-md: 206px;
   --find-filters-width-lg: 260px;
   --find-location-width: 240px;
+  --find-card-width-mobile: 140px;
+  --find-card-height-mobile: 188px;
   --find-card-width: 240px;
   --find-card-height: 322px;
 
@@ -75,6 +77,8 @@
   --spacing-find-filters-width-md: var(--find-filters-width-md);
   --spacing-find-filters-width-lg: var(--find-filters-width-lg);
   --spacing-find-location-width: var(--find-location-width);
+  --spacing-find-card-width-mobile: var(--find-card-width-mobile);
+  --spacing-find-card-height-mobile: var(--find-card-height-mobile);
   --spacing-find-card-width: var(--find-card-width);
   --spacing-find-card-height: var(--find-card-height);
 
