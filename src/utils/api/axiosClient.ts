@@ -61,6 +61,7 @@ export const client = {
 
   async patch<T, D = unknown>(url: string, data: D) {
     const response = await instance.patch<T>(url, data);
+    console.log(response);
     return response.data;
   },
 

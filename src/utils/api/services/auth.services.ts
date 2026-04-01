@@ -15,6 +15,7 @@ import type {
 export const authServices = {
   register: (data: TSignUpFields) => {
     const payload = mapSignUpToRequest(data);
+    console.log(payload)
 
     if (data.role === USER_ROLE.personal) {
       return client.post<TRegisterPersonalResponse>('/api/v1/users/register/personal/', payload);

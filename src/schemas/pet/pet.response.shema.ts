@@ -7,7 +7,7 @@ export const petResponseSchema = basePetSchema.extend({
   id: z.number(),
   is_active: z.boolean(),
   is_helped: z.boolean(),
-  images: z.array(z.string()),
+  photos: z.array(z.string()),
   author: z.object({
     id: z.number(),
     email: z.string(),

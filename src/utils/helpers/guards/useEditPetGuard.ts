@@ -6,7 +6,7 @@ import { getServerErrorMessage } from '@/utils/errors/getServerErrorMessage';
 import { useAuthStore } from '@/store/auth.store';
 import { RoutePath } from '@/routes/root.config';
 import type { TCreatePet } from '@/schemas/pet/pet.create.shema';
-// import { urlToFile } from '../convertors/urlToFile';
+import { urlToFile } from '../convertors/urlToFile';
 
 export const useEditPetGuard = () => {
   const { id } = useParams<{ id: string }>();
@@ -36,17 +36,14 @@ export const useEditPetGuard = () => {
           navigate('/403', { replace: true });
           return;
         }
-
-        // const photos = await Promise.all(petData.images.map(urlToFile));
-
-        // console.log(photos)
+        const photos = await Promise.all(petData.photos.map(urlToFile));
 
         setPetFormValues({
           ...petData,
           about: petData.about || '',
           story: petData.story || '',
-          photos: [],
-          // photos,
+          // photos: [],
+          photos,
         });
       } catch (err) {
         setError(getServerErrorMessage(err));

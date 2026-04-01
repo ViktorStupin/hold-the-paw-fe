@@ -26,6 +26,8 @@ export const petsServices = {
   },
 
   editPet: async (payload: TUpdatePet, id: number) => {
+
+    console.log(payload)
     return client.patch<TPetProfile>(`/api/v1/pets/listings/${id}/`, toFormData(payload));
 
     // return await safeRequest(

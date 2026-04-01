@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { ConfirmModal } from '../ConfirmModal/ConfirmModal';
 import { usePetActions } from './usePetActions';
 import { usePetsStore } from '@/store/myPets.store';
+import { PET_STATUS_LABEL_UA } from '@/constants/pet.labes';
 export const MyPetCard = ({
   pet: { main_image, location, is_active, status, name, id },
 }: {
@@ -36,6 +37,7 @@ export const MyPetCard = ({
   const handleActivate = async () => {
     await toggleActive(id, true);
     await setHelped(id, false);
+    await fetchMyPets();
   };
 
   const image = (
@@ -50,7 +52,7 @@ export const MyPetCard = ({
   );
   const statusLabel = is_active ? (
     <div className='w-fit bg-primary-0 rounded-sm px-6 py-1 border border-solid border-primary-80'>
-      <p className='typo-main text-primary-80'>{status || 'Статус'}</p>
+      <p className='typo-main text-primary-80'>{PET_STATUS_LABEL_UA[status] || 'Статус'}</p>
     </div>
   ) : (
     <div className='w-fit bg-gray-30 rounded-sm px-6 py-1 border border-solid border-gray-70'>

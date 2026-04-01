@@ -65,7 +65,6 @@ const userStore: StateCreator<
     });
     try {
       const updated = await profileServices.updateMe(data);
-      console.log(updated)
 
       set((state) => {
         state.user = updated;

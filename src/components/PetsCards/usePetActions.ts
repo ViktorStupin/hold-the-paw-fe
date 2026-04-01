@@ -6,8 +6,8 @@ import { toast } from 'sonner';
 export const usePetActions = () => {
   const toggleActive = async (id: number, is_active: boolean) => {
     try {
-      const data = await petsServices.editPet({ is_active }, id);
-      console.log(data);
+      console.log(is_active)
+      await petsServices.editPet({ is_active }, id);
     } catch (err) {
       const message = getServerErrorMessage(err);
       toast.error(message);
