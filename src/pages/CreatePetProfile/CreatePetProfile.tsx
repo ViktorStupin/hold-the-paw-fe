@@ -78,6 +78,8 @@ export const CreatePetProfile = () => {
         ...rest,
         is_sterilized: false,
         main_image: photos[0],
+        is_helped: false,
+        is_active: true,
         additional_images: photos.slice(1),
       });
 
