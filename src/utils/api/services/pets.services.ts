@@ -31,19 +31,6 @@ export const petsServices = {
     // );
   },
 
-  createPetProfile: async ({ photos, ...rest }: TCreatePet) => {
-    const payload: TRequestPet = {
-      ...rest,
-      is_sterilized: false,
-      is_helped: false,
-      is_active: true,
-      main_image: photos[0],
-      additional_images: photos.slice(1),
-    };
-
-    return petsServices.createPet(payload);
-  },
-
   editPet: async (payload: TUpdatePet, id: number) => {
 
     console.log(payload)

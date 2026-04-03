@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { FieldMessage } from '@/components/ui/field';
 import { Spinner } from '@/components/ui/spinner';
 import { ToggleSwitcher } from '@/components/ui/toggle-group';
+import { Back } from '@/components/Back/Back';
 import { BASE_URL } from '@/constants/env';
 import {
   PET_AGE_LABEL_UA,
@@ -39,6 +40,7 @@ type TPetWithImageFields = TPetProfile & {
   additional_images?: unknown;
   images?: unknown;
   photos?: unknown;
+  is_sterilized?: boolean;
 };
 
 const imageFromUnknown = (value: unknown): string | null => {
@@ -139,12 +141,13 @@ export const PetPage = () => {
 
   const hasImages = images.length > 0;
   const hasCarousel = images.length > 1;
+  const isSterilized = Boolean((pet as TPetWithImageFields).is_sterilized);
 
   const mainRows = [
     ['Стать', PET_SEX_LABEL_UA[pet.gender]],
     ['Вік', PET_AGE_LABEL_UA[pet.age]],
     ['Тип тварини', PET_TYPE_LABEL_UA[pet.pet_type]],
-    ['Стерилізація', pet.is_sterilized ? 'Стерилізована' : 'Не стерилізована'],
+    ['Стерилізація', isSterilized ? 'Стерилізована' : 'Не стерилізована'],
     ['Окрас', PET_COLOR_LABEL_UA[pet.color]],
     ['Розмір', PET_SIZE_LABEL_UA[pet.size]],
     ['Вакцини', pet.is_vaccinated ? 'З вакциною' : 'Без вакцини'],
@@ -155,6 +158,9 @@ export const PetPage = () => {
 
   return (
     <section className='u-container py-3 md:py-8'>
+      <div className='mb-4 hidden md:block'>
+        <Back />
+      </div>
       <div className='grid gap-4 lg:grid-cols-[1fr_1fr]'>
         <div className='relative overflow-hidden rounded-[20px] border-[8px] border-gray-0 bg-gray-0 shadow-default'>
           {hasImages ? (

@@ -151,8 +151,15 @@ export const FindPage = () => {
   const mappedPets = useMemo<TMappedPet[]>(() => {
     return pets.map((pet) => {
       const detailedPet = petDetailsById[pet.id] ?? pet;
-      const maybeMainImage = (detailedPet as TPetProfile & { main_image?: string }).main_image;
-      const firstImage = maybeMainImage ?? detailedPet.images?.[0];
+      const petWithOptionalDetails = detailedPet as TPetProfile & {
+        main_image?: string;
+        images?: string[];
+        is_sterilized?: boolean;
+      };
+      const firstImage =
+        petWithOptionalDetails.main_image ??
+        petWithOptionalDetails.images?.[0] ??
+        detailedPet.photos?.[0];
       const imageUrl = firstImage
         ? firstImage.startsWith('http')
           ? firstImage
@@ -176,7 +183,7 @@ export const FindPage = () => {
         color: detailedPet.color,
         special_needs: detailedPet.special_needs,
         has_passport: detailedPet.has_passport,
-        is_sterilized: detailedPet.is_sterilized,
+        is_sterilized: Boolean(petWithOptionalDetails.is_sterilized),
         is_vaccinated: detailedPet.is_vaccinated,
         status: detailedPet.status,
         image: imageUrl,

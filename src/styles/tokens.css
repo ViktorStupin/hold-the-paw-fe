@@ -18,7 +18,7 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-  --header-bg: rgba(243, 243, 243, 0.15);
+  --header-bg: #f3f3f3;
   --header-bg-wt: #fff;
   --header-shadow: 0 4px 4px rgba(31, 32, 34, 0.05);
   --header-logo-width: 44px;

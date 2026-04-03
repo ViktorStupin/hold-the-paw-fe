@@ -30,7 +30,7 @@ function App() {
 
   return (
     <div className='flex min-h-dvh flex-col'>
-      <Header user={HEADER_USER} />
+      {!isAuthRoute && <Header user={HEADER_USER} />}
       <main>
         {shouldShowBack && (
           <div className='u-container pt-2 md:hidden'>
