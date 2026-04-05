@@ -37,6 +37,7 @@ const petsStore: StateCreator<
     });
     try {
       const data = await petsServices.getMyPets();
+      console.log(data);
       set((state) => {
         state.myPets = data;
       });

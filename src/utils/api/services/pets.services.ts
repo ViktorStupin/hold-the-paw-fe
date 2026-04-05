@@ -3,13 +3,19 @@ import { toFormData } from '@/utils/helpers/convertors/toFormData';
 import { type TMyPetCard } from '@/schemas/pet/pet.myCard.shema';
 // import { safeRequest } from '@/utils/helpers/api/safeRequest';
 import { type TPetProfile } from '@/schemas/pet/pet.response.shema';
-import type { TRequestPet } from '@/schemas/pet/pet.create.shema';
+import type { TCreatePet, TRequestPet } from '@/schemas/pet/pet.create.shema';
 import type { TUpdatePet } from '@/schemas/pet/pet.update.shema';
+
+type TPetsListResponse = TPetProfile[] | { results: TPetProfile[] };
 
 export const petsServices = {
   getPet: async (id: number) => {
     return await client.get<TPetProfile>(`/api/v1/pets/listings/${id}/`);
     // return await safeRequest(client.get(`/api/v1/pets/listings/${id}/`), petResponseSchema);
+  },
+
+  getPets: async (): Promise<TPetsListResponse> => {
+    return await client.get<TPetsListResponse>('/api/v1/pets/listings/');
   },
 
   getMyPets: async (): Promise<TMyPetCard[]> => {

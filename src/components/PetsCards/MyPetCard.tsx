@@ -50,6 +50,7 @@ export const MyPetCard = ({
       <img className='w-full h-full object-cover' src={main_image} alt={name} />
     </div>
   );
+  console.log(status);
   const statusLabel = is_active ? (
     <div className='w-fit bg-primary-0 rounded-sm px-6 py-1 border border-solid border-primary-80'>
       <p className='typo-main text-primary-80'>{PET_STATUS_LABEL_UA[status] || 'Статус'}</p>
