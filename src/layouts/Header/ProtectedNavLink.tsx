@@ -1,6 +1,7 @@
 // components/ProtectedNavLink.tsx
 import { NavLink, type NavLinkProps } from 'react-router-dom';
 import { useRequireAuth } from './useRequireAuth';
+import { scrollTop } from '@/utils/helpers/layouts/layouts';
 
 type Props = NavLinkProps & {
   requireAuth?: boolean;
@@ -24,7 +25,7 @@ export const ProtectedNavLink = ({
 
     e.preventDefault(); 
     checkAuth(to as string, authMessage);
-
+    scrollTop();
     onClick?.(e);
   };
 

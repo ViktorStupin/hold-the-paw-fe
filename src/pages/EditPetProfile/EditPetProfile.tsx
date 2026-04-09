@@ -5,7 +5,6 @@ import { useIsMobile } from '@/utils/helpers/layouts/useIsMobile';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { petsServices } from '@/utils/api/services/pets.services';
 import { Loader } from 'lucide-react';
 import { getServerErrorMessage } from '@/utils/errors/getServerErrorMessage';
 import { FieldMessage } from '@/components/ui/field';
@@ -22,6 +21,7 @@ import { useGoBack } from '@/utils/helpers/routing/useGoBack';
 import { cn } from '@/lib/utils';
 import { createPetShema, type TCreatePet } from '@/schemas/pet/pet.create.shema';
 import { RoutePath } from '@/routes/root.config';
+import { useEditPet } from '@/queries/pets/pets.mutations';
 
 export const EditPetProfile = () => {
   const isMobile = useIsMobile();
@@ -30,6 +30,7 @@ export const EditPetProfile = () => {
   const { petFormValues, isLoading, error: guardError } = useEditPetGuard();
   const [activeStep, setActiveStep] = useState(0);
   const navigate = useNavigate();
+  const editPet = useEditPet(Number(id));
 
   const methods = useForm<TCreatePet>({
     resolver: zodResolver(createPetShema),
@@ -44,7 +45,7 @@ export const EditPetProfile = () => {
     },
   });
 
-  const { formState, watch, clearErrors, setError, reset } = methods;
+  const { formState, clearErrors, setError, reset } = methods;
 
   const isFinalButtonDisabled = !formState.isValid || formState.isSubmitting;
 
@@ -68,15 +69,13 @@ export const EditPetProfile = () => {
     try {
       const { photos, ...rest } = data;
 
-      await petsServices.editPet(
-        {
-          ...rest,
-          is_sterilized: false,
-          main_image: photos[0],
-          additional_images: photos.slice(1),
-        },
-        Number(id)
-      );
+      await editPet.mutateAsync({
+        ...rest,
+        is_sterilized: false,
+        main_image: photos[0],
+        additional_images: photos.slice(1),
+      });
+      methods.reset();
       navigate(RoutePath.MyPets);
     } catch (error) {
       setError('root', { message: getServerErrorMessage(error) });
@@ -84,13 +83,8 @@ export const EditPetProfile = () => {
   };
 
   useEffect(() => {
-    const subscription = watch(() => {
-      if (formState.errors.root) {
-        clearErrors('root');
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [watch, formState.errors.root, clearErrors]);
+    clearErrors('root');
+  }, [clearErrors]);
 
   useEffect(() => {
     if (petFormValues) {
@@ -130,7 +124,7 @@ export const EditPetProfile = () => {
   let content = (
     <section className='relative flex-1 pb-24 lg:block lg:pt-10 lg:pb-10'>
       {isMobile && (
-        <div className='sticky top-0 z-10 bg-nature shadow-default -mx-4 px-4 flex justify-between'>
+        <div className='sticky top-12.5 z-10 bg-nature shadow-default -mx-4 px-4 flex justify-between'>
           {steps.map((step, index) => (
             <Button
               variant={'transparent'}

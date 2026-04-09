@@ -15,20 +15,12 @@ import type {
 export const authServices = {
   register: (data: TSignUpFields) => {
     const payload = mapSignUpToRequest(data);
-    console.log(payload)
+    console.log(payload);
 
     if (data.role === USER_ROLE.personal) {
       return client.post<TRegisterPersonalResponse>('/api/v1/users/register/personal/', payload);
-      // return safeRequest(
-      //   client.post('/api/v1/users/register/personal/', payload),
-      //   registerPersonalResponseSchema
-      // );
     }
     return client.post<TRegisterShelterResponse>('/api/v1/users/register/shelter/', payload);
-    // return safeRequest(
-    //   client.post('/api/v1/users/register/shelter/', payload),
-    //   registerShelterResponseSchema
-    // );
   },
 
   login: (payload: TCredentials) => {
@@ -37,6 +29,16 @@ export const authServices = {
 
   refreshToken: (refresh: string) => {
     return client.post<TTokenResponse>('/api/v1/token/refresh/', { refresh });
-    // return safeRequest(client.post('/api/v1/token/refresh/', { refresh }), tokenSchema);
   },
 };
+
+//TODO: ADD SAFE REQUEST
+//  return safeRequest(
+//   client.post('/api/v1/users/register/personal/', payload),
+//   registerPersonalResponseSchema
+// );
+// return safeRequest(
+//   client.post('/api/v1/users/register/shelter/', payload),
+//   registerShelterResponseSchema
+// );
+// return safeRequest(client.post('/api/v1/token/refresh/', { refresh }), tokenSchema);
