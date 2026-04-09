@@ -4,11 +4,12 @@ import clsx from 'clsx';
 import { Menu, X } from 'lucide-react';
 
 import logo from '@/assets/Logo.svg';
-import { BASE_URL } from '@/constants/env';
 import { PROTECTED_ROUTES_CONFIG, RoutePath } from '@/routes/root.config';
 import { useClickOutside } from '@/utils/helpers/dom/useClickOutside';
 import { useIsMobile } from '@/utils/helpers/layouts/useIsMobile';
 import { ProtectedNavLink } from './ProtectedNavLink';
+import { scrollTop } from '@/utils/helpers/layouts/layouts';
+// import { useMe } from '@/queries/user/user.queries';
 
 export const PUBLIC_ROUTES = [RoutePath.Pets, RoutePath.Home, RoutePath.Default] as const;
 
@@ -18,10 +19,6 @@ export const isPublicRoute = (path: string) =>
 export type HeaderUser = {
   name: string;
   type: string;
-};
-
-type HeaderProps = {
-  user: HeaderUser;
 };
 
 const COMMON_NAV_ITEMS = [
@@ -35,12 +32,14 @@ const MOBILE_MENU_ITEMS = [
   ...COMMON_NAV_ITEMS,
 ] as const;
 
-export const Header = ({ user }: HeaderProps) => {
+export const Header = () => {
   const { pathname } = useLocation();
   const isHomeRoute = pathname === RoutePath.Default || pathname === RoutePath.Home;
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  // const { data: user, isFetching, error } = useMe();
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
   const closeMenu = () => setIsMenuOpen(false);
@@ -67,7 +66,12 @@ export const Header = ({ user }: HeaderProps) => {
     >
       <div className='u-container grid h-full grid-cols-4 items-center gap-4 md:grid-cols-12 md:gap-6'>
         <div className='col-span-2 flex items-center md:col-span-2'>
-          <NavLink to={RoutePath.Home} className='flex items-center' aria-label='На головну'>
+          <NavLink
+            onClick={() => scrollTop()}
+            to={RoutePath.Home}
+            className='flex items-center'
+            aria-label='На головну'
+          >
             <img
               src={logo}
               alt='Hold The Paw'
@@ -132,20 +136,6 @@ export const Header = ({ user }: HeaderProps) => {
                   className='fixed left-0 right-0 rounded-b-3xl bg-gray-30 px-4 pt-4 pb-8 shadow-[0_12px_24px_rgba(0,0,0,0.2)]'
                   style={{ top: mobileMenuTop }}
                 >
-                  <div className='mb-4 flex items-center gap-3'>
-                    <img
-                      src={`${BASE_URL}photos/close-up-of-a-white-cat-with-blue-eyes.webp`}
-                      alt='Аватар користувача'
-                      className='size-12 rounded-full object-cover'
-                    />
-                    <div>
-                      <p className='typo-h3 text-gray-100'>{user.name}</p>
-                      <p className='type-main mt-1 text-gray-90'>{user.type}</p>
-                    </div>
-                  </div>
-
-                  <div className='mb-4 border-b border-gray-70/35' />
-
                   <ul className='flex flex-col gap-4'>
                     {MOBILE_MENU_ITEMS.map((item) => {
                       const isPublic = isPublicRoute(item.to);

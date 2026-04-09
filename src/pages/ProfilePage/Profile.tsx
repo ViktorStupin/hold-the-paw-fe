@@ -1,6 +1,3 @@
-// pages/ProfileLayout/ProfileLayout.tsx
-import { useUserStore } from '@/store/user.store';
-
 import { useEffect } from 'react';
 import { Spinner } from '@/components/ui/spinner';
 import { FieldMessage } from '@/components/ui/field';
@@ -15,20 +12,22 @@ import { contactsFields, mainFields } from './viewFields.config';
 import { useGoBack } from '@/utils/helpers/routing/useGoBack';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { getServerErrorMessage } from '@/utils/errors/getServerErrorMessage';
 import { userSchema, type TUser } from '@/schemas/user/user.form.schema';
 import { ProfileInfoSectionForm } from './ProfileInfoSectionForm';
 import { ProfileInfoSectionView } from './ProfileInfoSectionView';
 import { mapUserToForm } from '@/utils/helpers/mappers/mapUserToForm';
 import { mapUserToRequest } from '@/utils/helpers/mappers/mapUserToRequest';
 import { scrollTop } from '@/utils/helpers/layouts/layouts';
+import { useMe } from '@/queries/user/user.queries';
+import { useMutateMe } from '@/queries/user/user.mutations';
 
 type IProfileProps = {
   variant: 'view' | 'edit';
 };
 
 export const Profile = ({ variant }: IProfileProps) => {
-  const { fetchMe, user, isLoading, error, updateMe } = useUserStore();
+  const { data: user, isFetching, error } = useMe();
+  const updateMe = useMutateMe();
   const navigate = useNavigate();
   const goBack = useGoBack();
   const methods = useForm<TUser>({
@@ -36,46 +35,24 @@ export const Profile = ({ variant }: IProfileProps) => {
     mode: 'onChange',
   });
 
-  const { handleSubmit, setError, formState, watch, clearErrors } = methods;
+  const { handleSubmit, formState } = methods;
   const { isValid } = formState;
 
-  const isLightDisabled = isLoading || !isValid;
-
-  useEffect(() => {
-    fetchMe();
-  }, []);
+  const isLightDisabled = isFetching || !isValid || updateMe.isPending;
 
   useEffect(() => {
     if (!user) return;
     methods.reset(mapUserToForm(user));
   }, [user]);
 
-  useEffect(() => {
-    const subscription = watch(() => {
-      if (formState.errors.root) {
-        clearErrors('root');
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [watch, formState.errors.root, clearErrors]);
-
-  const onClickSubmit = async () => {
-    const isValid = await methods.trigger();
-    if (!isValid) return;
-    handleSubmit(onSubmit)();
-  };
-
   const onSubmit = async (data: TUser) => {
-    try {
-      await updateMe(mapUserToRequest(data));
-    } catch (error) {
-      setError('root', { message: getServerErrorMessage(error) });
-    }
+    await updateMe.mutateAsync(mapUserToRequest(data));
+    methods.reset();
     scrollTop();
     navigate(RoutePath.Profile);
   };
 
-  if (isLoading || !user) {
+  if (isFetching || !user) {
     return (
       <div className='flex-1 flex items-center justify-center u-container'>
         <Spinner />
@@ -86,7 +63,7 @@ export const Profile = ({ variant }: IProfileProps) => {
   if (error) {
     return (
       <div className='flex-1 flex items-center justify-center u-container'>
-        <FieldMessage message={error} />
+        <FieldMessage message={error.message} />
       </div>
     );
   }
@@ -136,9 +113,12 @@ export const Profile = ({ variant }: IProfileProps) => {
 
   const editButtons = (
     <>
-      <Button variant={isLightDisabled ? 'lightDisabled' : 'primary'} onClick={onClickSubmit}>
-        {isLoading && <Spinner />}
-        {isLoading ? 'Збереження' : 'Зберегти'}
+      <Button
+        variant={isLightDisabled ? 'lightDisabled' : 'primary'}
+        onClick={handleSubmit(onSubmit)}
+      >
+        {updateMe.isPending && <Spinner />}
+        {updateMe.isPending ? 'Збереження' : 'Зберегти'}
       </Button>
       <Button
         onClick={() => {

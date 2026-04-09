@@ -1,24 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { MyPetCard } from '@/components/PetsCards/MyPetCard';
 import { ToggleSwitcher } from '@/components/ui/toggle-group';
-import { usePetsStore } from '@/store/myPets.store';
 import { Loader } from 'lucide-react';
 import { FieldMessage } from '@/components/ui/field';
-import { Toaster } from 'sonner';
+import { useMyPets } from '@/queries/pets/pets.queries';
 
 const ACTIVE_STATES = ['active', 'inactive'] as const;
 type ActiveState = (typeof ACTIVE_STATES)[number];
 
 export const MyPetPage = () => {
   const [activeState, setActiveState] = useState<ActiveState>('active');
-  const { myPets, isLoading, error, fetchMyPets } = usePetsStore();
-
-  useEffect(() => {
-    fetchMyPets();
-  }, []);
-
   const isActive = activeState === 'active';
-  const filteredPets = myPets.filter((p) => p.is_active === isActive);
+
+  const { data: myPets = [], isFetching, error } = useMyPets(isActive);
 
   const plug = (
     <div className='flex-1 flex flex-col justify-center items-center'>
@@ -36,20 +30,20 @@ export const MyPetPage = () => {
   );
 
   let content;
-  if (isLoading) {
+  if (isFetching) {
     content = (
       <div className='flex flex-1 items-center justify-center'>
         <Loader className='animate-spin' />
       </div>
     );
   } else if (error) {
-    content = <FieldMessage message={error} />;
-  } else if (filteredPets.length === 0) {
+    content = <FieldMessage message={error.message} />;
+  } else if (myPets.length === 0) {
     content = plug;
   } else {
     content = (
       <ul className='grid gap-6 grid-cols-1 lg:grid-cols-2'>
-        {filteredPets.map((pet) => (
+        {myPets.map((pet) => (
           <li key={pet.id}>
             <MyPetCard pet={pet} />
           </li>
@@ -60,7 +54,7 @@ export const MyPetPage = () => {
 
   return (
     <div className='flex-1 flex flex-col u-container'>
-      <section className='flex flex-col pt-4 pb-6 lg:py-10'>
+      <section className='flex flex-1 flex-col pt-4 pb-6 lg:py-10'>
         <div className='flex justify-center mb-6 lg:mb-8'>
           <ToggleSwitcher
             className='w-full lg:max-w-165'
@@ -73,7 +67,6 @@ export const MyPetPage = () => {
           />
         </div>
         {content}
-        <Toaster position='top-right' richColors />
       </section>
     </div>
   );

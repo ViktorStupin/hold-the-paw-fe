@@ -63,7 +63,7 @@ export const ProfileInfoSectionForm = ({ user }: Props) => {
       </div>
 
       <div className='px-6 py-4 shadow-default bg-gray-0 rounded-md'>
-        <h2 className='typo-h2 mb-4'>Головна інформація</h2>
+        <h2 className='typo-h2 mb-4'>Контактні дані</h2>
 
         <FieldGroup className='py-2 lg:py-3'>
           <Field>
