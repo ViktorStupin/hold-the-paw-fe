@@ -11,6 +11,7 @@ import { PublicOnlyRoute } from './PublicOnlyRoute';
 import { CreatePetProfile } from '@/pages/CreatePetProfile/CreatePetProfile';
 import { EditPetProfile } from '@/pages/EditPetProfile/EditPetProfile';
 import { FindPage } from '@/pages/FindPage/FindPage';
+import { HomePage } from '@/pages/HomePage/HomePage';
 import { MyPetPage } from '@/pages/MyPetPage/MyPetPage';
 import { Profile } from '@/pages/ProfilePage/Profile';
 import { PetPage } from '@/pages/PetPage/PetPage';
@@ -24,7 +25,7 @@ export const Root = () => {
     <HashRouter>
       <Routes>
         <Route path={RoutePath.Default} element={<App />}>
-          <Route index element={<div />} />
+          <Route index element={<HomePage />} />
           <Route path={RoutePath.Home} element={<Navigate to={RoutePath.Default} replace />} />
 
           <Route path={RoutePath.Pets} element={<FindPage />} />

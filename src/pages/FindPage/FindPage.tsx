@@ -1,5 +1,6 @@
-import { Check, ChevronDown, MapPin, Menu, Search, X } from 'lucide-react';
+import { Check, ChevronDown, ChevronLeft, ChevronUp, MapPin, Search, SlidersHorizontal, X } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {
   PET_AGE_LABEL_UA,
@@ -9,15 +10,27 @@ import { BASE_URL } from '@/constants/env';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinner';
 import type { TPetProfile } from '@/schemas/pet/pet.response.shema';
-import { petsServices } from '@/utils/api/services/pets.services';
+import { RoutePath } from '@/routes/root.config';
+import {
+  PETS_LIST_ORDERING,
+  type TPetsListOrdering,
+  petsServices,
+} from '@/utils/api/services/pets.services';
 import { getServerErrorMessage } from '@/utils/errors/getServerErrorMessage';
 import { useDebounce } from '@/utils/helpers/dom/useDebounce';
+import { useIsMobile } from '@/utils/helpers/layouts/useIsMobile';
 import { FILTER_SECTIONS } from './findPage.mock';
 
 const PAGE_SIZE = 8;
 
+const SORT_OPTIONS: { value: TPetsListOrdering; label: string }[] = [
+  { value: PETS_LIST_ORDERING.newestFirst, label: 'Спочатку нові' },
+  { value: PETS_LIST_ORDERING.oldestFirst, label: 'Спочатку старі' },
+];
+
 type TFilterSectionKey =
   | 'gender'
+  | 'pet_type'
   | 'age'
   | 'breed'
   | 'size'
@@ -33,6 +46,7 @@ type TFilters = {
 };
 
 type TMappedPet = IGeneralPetCard & {
+  pet_type: string;
   breed: string;
   size: string;
   color: string;
@@ -45,6 +59,7 @@ type TMappedPet = IGeneralPetCard & {
 
 const INITIAL_FILTERS: TFilters = {
   gender: null,
+  pet_type: null,
   age: null,
   breed: null,
   size: null,
@@ -66,6 +81,8 @@ const toBoolean = (value: unknown) => {
 };
 
 export const FindPage = () => {
+  const navigate = useNavigate();
+  const isMobileViewport = useIsMobile();
   const [pets, setPets] = useState<TPetProfile[]>([]);
   const [petDetailsById, setPetDetailsById] = useState<Record<number, TPetProfile>>({});
   const [loading, setLoading] = useState(true);
@@ -76,8 +93,11 @@ export const FindPage = () => {
   const [search, setSearch] = useState('');
   const [location, setLocation] = useState('');
   const [filters, setFilters] = useState<TFilters>(INITIAL_FILTERS);
+  const [listOrdering, setListOrdering] = useState<TPetsListOrdering>(PETS_LIST_ORDERING.newestFirst);
+  const [sortMenuOpen, setSortMenuOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState<Record<TFilterSectionKey, boolean>>({
     gender: true,
+    pet_type: false,
     age: true,
     breed: false,
     size: false,
@@ -90,16 +110,16 @@ export const FindPage = () => {
   });
 
   const loaderRef = useRef<HTMLDivElement | null>(null);
+  const sortMenuRef = useRef<HTMLDivElement | null>(null);
   const debouncedSearch = useDebounce(search, 300);
   const debouncedLocation = useDebounce(location, 300);
 
-  // Fetch pets
   useEffect(() => {
     const fetchPets = async () => {
       try {
         setLoading(true);
         setError(null);
-        const data = await petsServices.getPets();
+        const data = await petsServices.getPets({ ordering: listOrdering });
         const normalizedData = Array.isArray(data) ? data : data.results;
         setPets(Array.isArray(normalizedData) ? normalizedData : []);
       } catch (err) {
@@ -109,7 +129,7 @@ export const FindPage = () => {
       }
     };
     fetchPets();
-  }, []);
+  }, [listOrdering]);
 
   useEffect(() => {
     if (!pets.length) return;
@@ -147,7 +167,6 @@ export const FindPage = () => {
     };
   }, [pets, petDetailsById]);
 
-  // Map pets for display
   const mappedPets = useMemo<TMappedPet[]>(() => {
     return pets.map((pet) => {
       const detailedPet = petDetailsById[pet.id] ?? pet;
@@ -178,6 +197,7 @@ export const FindPage = () => {
             ? '3-5 років'
             : PET_AGE_LABEL_UA[detailedPet.age],
         gender: detailedPet.gender,
+        pet_type: detailedPet.pet_type,
         breed: detailedPet.breed,
         size: detailedPet.size,
         color: detailedPet.color,
@@ -191,7 +211,6 @@ export const FindPage = () => {
     });
   }, [pets, petDetailsById]);
 
-  // Apply filters
   const filteredPets = useMemo(() => {
     const normalizedSearch = debouncedSearch.trim().toLowerCase();
     const normalizedLocation = debouncedLocation.trim().toLowerCase();
@@ -206,6 +225,9 @@ export const FindPage = () => {
 
       const genderMatch =
         !filters.gender || normalizeComparable(pet.gender) === normalizeComparable(filters.gender);
+      const petTypeMatch =
+        !filters.pet_type ||
+        normalizeComparable(pet.pet_type) === normalizeComparable(filters.pet_type);
       const breedMatch =
         !filters.breed || normalizeComparable(pet.breed) === normalizeComparable(filters.breed);
       const ageMatch = !filters.age || normalizeComparable(pet.age) === normalizeComparable(filters.age);
@@ -228,6 +250,7 @@ export const FindPage = () => {
         searchMatch &&
         locationMatch &&
         genderMatch &&
+        petTypeMatch &&
         breedMatch &&
         ageMatch &&
         sizeMatch &&
@@ -241,7 +264,6 @@ export const FindPage = () => {
     });
   }, [debouncedSearch, debouncedLocation, mappedPets, filters]);
 
-  // Infinite scroll
   useEffect(() => {
     const target = loaderRef.current;
     if (!target) return;
@@ -259,12 +281,30 @@ export const FindPage = () => {
     return () => observer.disconnect();
   }, [filteredPets.length]);
 
-  // Reset visible count on search/filter change
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [debouncedSearch, debouncedLocation, filters]);
+  }, [debouncedSearch, debouncedLocation, filters, listOrdering]);
 
-  // Lock scroll when mobile filters open
+  useEffect(() => {
+    if (!sortMenuOpen) return;
+
+    const onPointerDown = (e: MouseEvent) => {
+      if (sortMenuRef.current && !sortMenuRef.current.contains(e.target as Node)) {
+        setSortMenuOpen(false);
+      }
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSortMenuOpen(false);
+    };
+
+    document.addEventListener('mousedown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [sortMenuOpen]);
+
   useEffect(() => {
     if (!isMobileFiltersOpen) return;
     const prevOverflow = document.body.style.overflow;
@@ -274,7 +314,6 @@ export const FindPage = () => {
     };
   }, [isMobileFiltersOpen]);
 
-  // Handlers
   const handleFilterChange = (key: TFilterSectionKey, value: string | boolean) => {
     setFilters((prev) => ({
       ...prev,
@@ -290,6 +329,17 @@ export const FindPage = () => {
   };
 
   const resetFilters = () => setFilters(INITIAL_FILTERS);
+
+  const handleMobileBack = () => {
+    if (typeof window !== 'undefined' && window.history.length > 1) {
+      navigate(-1);
+      return;
+    }
+    navigate(RoutePath.Default);
+  };
+
+  const sortLabel =
+    SORT_OPTIONS.find((opt) => opt.value === listOrdering)?.label ?? SORT_OPTIONS[0].label;
 
   const visiblePets = filteredPets.slice(0, visibleCount);
 
@@ -349,7 +399,6 @@ export const FindPage = () => {
     </>
   );
 
-  // Render
   if (loading)
     return (
       <div className='u-container flex flex-1 items-center justify-center py-8'>
@@ -380,7 +429,6 @@ export const FindPage = () => {
   return (
     <section className='u-container py-3 md:py-8'>
       <div className='grid grid-cols-1 gap-4 md:grid-cols-[var(--find-filters-width-md)_1fr] lg:grid-cols-[var(--find-filters-width-lg)_1fr]'>
-        {/* Desktop Filters */}
         <aside className='hidden rounded-md bg-gray-0 p-4 shadow-default md:block'>
           <div className='mb-3 border-b border-gray-70/30 pb-3'>
             <h2 className='typo-h3 text-gray-100'>Фільтри</h2>
@@ -395,48 +443,108 @@ export const FindPage = () => {
           </button>
         </aside>
 
-        {/* Pet List */}
         <div>
-          <div className='grid grid-cols-1 gap-3 md:grid-cols-[1fr_var(--find-location-width)]'>
-            <div className='relative'>
-              <Input
-                size='sm'
-                bg='white'
-                className='type-main h-11 border-none pr-12 leading-[22px] text-gray-100 placeholder:text-gray-70 md:h-12'
-                placeholder="Пошук за ID чи ім'ям тваринки"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-              <Search size={20} className='pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-gray-80' />
-            </div>
-            <div className='grid grid-cols-[1fr_auto] gap-2 md:block'>
-              <div className='relative'>
+          <button
+            type='button'
+            className='mb-3 flex items-center gap-1 text-left type-secondary text-gray-90 md:hidden'
+            onClick={handleMobileBack}
+          >
+            <ChevronLeft size={20} strokeWidth={2} aria-hidden />
+            Назад
+          </button>
+
+          <div className='grid grid-cols-1 gap-3 md:grid-cols-[minmax(0,1fr)_var(--find-location-width)_minmax(180px,max-content)] md:items-stretch'>
+            <div className='flex min-w-0 gap-2 md:contents'>
+              <div className='relative min-w-0 flex-1'>
                 <Input
                   size='sm'
                   bg='white'
-                  className='type-main h-11 border-none pr-12 leading-[22px] text-gray-100 placeholder:text-gray-80 md:h-12'
-                  placeholder='Локація'
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
+                  className='type-main h-11 border-none pr-12 leading-[22px] text-gray-100 placeholder:text-gray-70 md:h-12'
+                  placeholder={
+                    isMobileViewport ? 'Пошук за ім\'ям' : 'Пошук за ID чи ім\'ям тваринки'
+                  }
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
-                <MapPin
-                  size={20}
-                  color='var(--gray-90)'
-                  className='pointer-events-none absolute top-1/2 right-4 -translate-y-1/2'
-                />
+                <Search size={20} className='pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-gray-80' />
               </div>
               <button
                 type='button'
-                className='inline-flex h-11 w-11 items-center justify-center rounded-full bg-gray-0 text-gray-80 shadow-default md:hidden'
+                className='inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-sm bg-gray-0 text-gray-80 shadow-default md:hidden'
                 aria-label='Відкрити фільтри'
                 onClick={() => setIsMobileFiltersOpen(true)}
               >
-                <Menu size={20} color='var(--gray-90)' strokeWidth={1.75} />
+                <SlidersHorizontal size={20} color='var(--gray-90)' strokeWidth={1.75} />
               </button>
+            </div>
+
+            <div className='relative min-w-0'>
+              <Input
+                size='sm'
+                bg='white'
+                className='type-main h-11 border-none pr-12 leading-[22px] text-gray-100 placeholder:text-gray-80 md:h-12'
+                placeholder='Локація'
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+              />
+              <MapPin
+                size={20}
+                color='var(--gray-90)'
+                className='pointer-events-none absolute top-1/2 right-4 -translate-y-1/2'
+              />
+            </div>
+
+            <div ref={sortMenuRef} className='relative z-20 min-w-0 md:min-w-[200px]'>
+              <button
+                type='button'
+                id='find-pets-sort-trigger'
+                aria-haspopup='listbox'
+                aria-expanded={sortMenuOpen}
+                aria-controls='find-pets-sort-listbox'
+                onClick={() => setSortMenuOpen((open) => !open)}
+                className='type-main flex h-11 w-full items-center justify-between gap-2 rounded-sm bg-gray-0 px-4 text-left text-[16px] leading-[22px] text-gray-100 outline-none ring-gray-70/40 transition-shadow hover:ring-1 focus-visible:ring-2 focus-visible:ring-primary-40 md:h-12'
+              >
+                <span className='min-w-0 truncate'>{sortLabel}</span>
+                {sortMenuOpen ? (
+                  <ChevronUp size={20} className='shrink-0 text-gray-90' aria-hidden />
+                ) : (
+                  <ChevronDown size={20} className='shrink-0 text-gray-90' aria-hidden />
+                )}
+              </button>
+
+              {sortMenuOpen ? (
+                <ul
+                  id='find-pets-sort-listbox'
+                  role='listbox'
+                  aria-labelledby='find-pets-sort-trigger'
+                  className='absolute top-full right-0 z-30 mt-1 w-full overflow-hidden rounded-none bg-gray-0/85 py-1 backdrop-blur-sm backdrop-saturate-150'
+                >
+                  {SORT_OPTIONS.map((opt) => {
+                    const selected = listOrdering === opt.value;
+                    return (
+                      <li key={opt.value} role='presentation'>
+                        <button
+                          type='button'
+                          role='option'
+                          aria-selected={selected}
+                          className={`type-main flex w-full px-4 py-2.5 text-left text-[16px] leading-[22px] transition-colors ${
+                            selected ? 'text-primary-60' : 'text-gray-90 hover:bg-gray-30/40'
+                          }`}
+                          onClick={() => {
+                            setListOrdering(opt.value);
+                            setSortMenuOpen(false);
+                          }}
+                        >
+                          {opt.label}
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : null}
             </div>
           </div>
 
-          {/* Pet Cards */}
           <ul className='mt-4 grid grid-cols-2 justify-between gap-2 md:gap-4 lg:grid-cols-[repeat(4,var(--find-card-width))]'>
             {visiblePets.map((pet) => (
               <li key={pet.id} className='flex justify-center lg:block'>
@@ -449,7 +557,6 @@ export const FindPage = () => {
         </div>
       </div>
 
-      {/* Mobile Filters */}
       {isMobileFiltersOpen && (
         <div
           className='fixed inset-0 z-50 bg-gray-100/25 backdrop-blur-[4px] md:hidden'

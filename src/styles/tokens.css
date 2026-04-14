@@ -34,6 +34,106 @@
   --find-card-width: 240px;
   --find-card-height: 322px;
 
+  --home-hero-radius: 50px;
+  --home-hero-radius-mobile: 30px;
+  --home-hero-height-mobile: 830px;
+  --home-hero-mobile-content-top: calc(var(--header-height-mobile) + 16px);
+  --home-hero-mobile-stats-width: 343px;
+  --home-hero-mobile-stats-radius: 20px;
+  --home-hero-mobile-stats-top: 595px;
+  --home-hero-mobile-stats-block-top: calc(var(--header-height-mobile) + var(--home-hero-mobile-stats-top));
+  --home-hero-mobile-stats-line-gap: 16px;
+  --home-hero-mobile-stats-divider-height: 121px;
+  --home-hero-mobile-desc-bottom: calc(
+    var(--home-hero-height-mobile) - var(--home-hero-mobile-stats-block-top) + 2 * var(--home-hero-mobile-stats-line-gap) + 1px
+  );
+  --home-hero-to-actions-gap-mobile: 42px;
+  --home-hero-bottom-space: 136px;
+
+  --home-photo-band-height: 789px;
+  --home-photo-band-radius: 20px;
+  --home-photo-band-image-top: 32px;
+  --home-photo-band-image-height: 283px;
+  --home-photo-band-heading-gap: 16px;
+  --home-photo-band-icon-inset: 16px;
+  --home-photo-band-icon-text-gap: 16px;
+  --home-photo-band-main-bottom: calc(
+    var(--home-photo-band-image-top) + var(--home-photo-band-image-height)
+  );
+  --home-photo-band-icon-1-top: calc(var(--home-photo-band-main-bottom) + 108px);
+  --home-photo-band-icon-2-top: calc(var(--home-photo-band-main-bottom) + 220px);
+  --home-photo-band-icon-3-top: calc(var(--home-photo-band-main-bottom) + 354px);
+  --home-photo-band-height-desktop: 651px;
+  --home-photo-band-image-inset-top-desktop: 88px;
+  --home-photo-band-text-image-gap-desktop: 24px;
+  --home-photo-band-image-inset-right-desktop: clamp(
+    var(--home-photo-band-text-image-gap-desktop),
+    22.5cqw,
+    162px
+  );
+  --home-photo-band-image-inset-bottom-desktop: 114px;
+  --home-photo-band-radius-desktop: 50px;
+  --home-photo-band-step-text-box-width: 267px;
+  --home-photo-band-step-text-box-height: 110px;
+  --home-photo-band-step-2-indent-from-1300: 128px;
+  --home-photo-band-step-1-3-from-left-1411: 162px;
+  --home-photo-band-step-2-from-left-1410-1485: 340px;
+  --home-photo-band-step-2-from-left-1411: 390px;
+  --home-photo-band-steps-gap-desktop: 24px;
+  --home-photo-band-cta-width-desktop: 190px;
+  --home-photo-band-cta-height-desktop: 50px;
+  --home-photo-band-step3-to-cta-desktop: 15px;
+  --home-photo-band-cta-from-left-desktop: 490px;
+  --home-actions-to-photo-band-gap: 40px;
+  --home-photo-band-to-cat-card-gap: 120px;
+  --home-cat-card-text-image-gap: 24px;
+  --home-cat-card-body-to-button-gap: 32px;
+  --home-cat-card-stack-gap: 48px;
+  --home-cat-card-mobile-shadow: 0 8px 24px rgba(31, 32, 34, 0.12);
+  --home-cat-card-image-radius-mobile: 30px;
+  --home-cat-card-image-radius-desktop: 50px;
+  --home-cat-card-desktop-image-width: 546px;
+  --home-cat-card-desktop-image-height: 571px;
+
+  --home-action-cards-gap: 24px;
+  --home-action-cards-gap-mobile: 16px;
+  --home-action-card-width: 660px;
+  --home-action-card-height: 395px;
+  --home-action-card-width-mobile: 343px;
+  --home-action-card-height-mobile: 396px;
+  --home-action-card-radius-mobile: 30px;
+  --home-action-card-radius: 50px;
+  --home-action-card-border-width: 10px;
+  --home-action-card-border-width-mobile: 5px;
+  --home-action-card-shadow: -4px 4px 10px 0px #0000001a;
+
+  --home-action-card-image-column-width: 319px;
+  --home-action-card-image-width: 360px;
+  --home-action-card-image-column-width-mobile: 128px;
+  --home-action-card-image-width-mobile: 182px;
+  --home-action-card-text-card-width: 446px;
+  --home-action-card-text-width: 288px;
+  --home-action-card-text-height: 161px;
+  --home-action-card-text-card-width-mobile: 236px;
+  --home-action-card-text-width-mobile: 182px;
+  --home-action-card-text-height-mobile: 190px;
+  --home-action-card-content-px: 32px;
+  --home-action-card-content-pt: 40px;
+  --home-action-card-content-pb: 32px;
+  --home-action-card-content-px-mobile: 20px;
+  --home-action-card-content-pt-mobile: 24px;
+  --home-action-card-content-pb-mobile: 20px;
+  --home-action-card-button-max-width: 288px;
+  --home-action-card-button-max-width-mobile: 208px;
+  --home-action-card-text-overlay-right: 41px;
+  --home-action-card-text-overlay-right-mobile: 21px;
+  --home-action-card-1-image-position-mobile: calc(50% + 30px) center;
+  --home-action-card-2-image-position-mobile: calc(50% + 10px) center;
+  --home-action-card-1-image-position-desktop: calc(50% - 5px) center;
+  --home-action-card-2-image-position-desktop: calc(50% - 40px) center;
+  --home-action-card-1-image-position: var(--home-action-card-1-image-position-mobile);
+  --home-action-card-2-image-position: var(--home-action-card-2-image-position-mobile);
+
   --primary-100: #a300dd;
   --primary-80: #c03fee;
   --primary-60: #da5dfe;
@@ -60,6 +160,19 @@
   --font-sans: 'SF Pro Rounded', ui-sans-serif, system-ui, sans-serif;
 }
 
+@media (min-width: 1025px) and (max-width: 1069px) {
+  :root {
+    --home-photo-band-image-inset-right-desktop: 47px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --home-action-card-1-image-position: var(--home-action-card-1-image-position-desktop);
+    --home-action-card-2-image-position: var(--home-action-card-2-image-position-desktop);
+  }
+}
+
 @theme {
   /* radius */
   --radius-sm: 10px;
@@ -81,6 +194,21 @@
   --spacing-find-card-height-mobile: var(--find-card-height-mobile);
   --spacing-find-card-width: var(--find-card-width);
   --spacing-find-card-height: var(--find-card-height);
+  --spacing-home-hero-bottom-space: var(--home-hero-bottom-space);
+  --spacing-home-action-cards-gap: var(--home-action-cards-gap);
+  --spacing-home-action-card-width: var(--home-action-card-width);
+  --spacing-home-action-card-height: var(--home-action-card-height);
+  --spacing-home-action-card-image-column-width: var(--home-action-card-image-column-width);
+  --spacing-home-action-card-image-width: var(--home-action-card-image-width);
+  --spacing-home-action-card-text-card-width: var(--home-action-card-text-card-width);
+  --spacing-home-action-card-text-width: var(--home-action-card-text-width);
+  --spacing-home-action-card-text-height: var(--home-action-card-text-height);
+  --spacing-home-action-card-content-px: var(--home-action-card-content-px);
+  --spacing-home-action-card-content-pt: var(--home-action-card-content-pt);
+  --spacing-home-action-card-content-pb: var(--home-action-card-content-pb);
+  --spacing-home-action-card-button-max-width: var(--home-action-card-button-max-width);
+  --spacing-home-action-card-text-overlay-right: var(--home-action-card-text-overlay-right);
+  --spacing-home-action-card-border-width: var(--home-action-card-border-width);
 
   --color-header-bg: var(--header-bg);
   --color-header-bg-wt: var(--header-bg-wt);
@@ -135,4 +263,7 @@
   --breakpoint-2xl: 1536px;
 
   --shadow-default: -4px 4px 10px 0px #0000001a;
+  --shadow-home-action-card: var(--home-action-card-shadow);
+  --radius-home-hero: var(--home-hero-radius);
+  --radius-home-action-card: var(--home-action-card-radius);
 }

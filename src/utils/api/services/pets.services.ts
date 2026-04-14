@@ -8,13 +8,29 @@ import type { TUpdatePet } from '@/schemas/pet/pet.update.shema';
 
 type TPetsListResponse = TPetProfile[] | { results: TPetProfile[] };
 
+/** Значення для `ordering` у DRF (уточни в Swagger, якщо поле не `created_at`). */
+export const PETS_LIST_ORDERING = {
+  newestFirst: '-created_at',
+  oldestFirst: 'created_at',
+} as const;
+
+export type TPetsListOrdering = (typeof PETS_LIST_ORDERING)[keyof typeof PETS_LIST_ORDERING];
+
+export type TGetPetsParams = {
+  ordering?: TPetsListOrdering;
+};
+
 export const petsServices = {
   getPet: async (id: number) => {
     return await client.get<TPetProfile>(`/api/v1/pets/listings/${id}/`);
   },
 
-  getPets: async (): Promise<TPetsListResponse> => {
-    return await client.get<TPetsListResponse>('/api/v1/pets/listings/');
+  getPets: async (params?: TGetPetsParams): Promise<TPetsListResponse> => {
+    const searchParams = new URLSearchParams();
+    if (params?.ordering) searchParams.set('ordering', params.ordering);
+    const query = searchParams.toString();
+    const url = query ? `/api/v1/pets/listings/?${query}` : '/api/v1/pets/listings/';
+    return await client.get<TPetsListResponse>(url);
   },
 
   getMyPets: async (status?: boolean): Promise<TMyPetCard[]> => {
