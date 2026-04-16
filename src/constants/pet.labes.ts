@@ -45,7 +45,7 @@ export const PET_TYPE_LABEL_UA: Record<PetType, string> = {
   hamster: 'Гризун',
   bird: 'Птах',
   fish: 'Рибка',
-  other: 'Інше',
+  other: 'Інший',
 };
 
 export const PET_COLOR_LABEL_UA: Record<PetColor, string> = {

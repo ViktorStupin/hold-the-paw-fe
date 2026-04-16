@@ -4,8 +4,9 @@ import {
   PET_COLOR_LABEL_UA,
   PET_SEX_LABEL_UA,
   PET_SIZE_LABEL_UA,
+  PET_TYPE_LABEL_UA,
 } from '@/constants/pet.labes';
-import { PET_AGE, PET_BREED, PET_COLOR, PET_GENDER, PET_SIZE } from '@/types/PetFileds';
+import { PET_AGE, PET_BREED, PET_COLOR, PET_GENDER, PET_SIZE, PET_TYPE } from '@/types/PetFileds';
 
 export type FindFilter = {
   id: string;
@@ -14,6 +15,7 @@ export type FindFilter = {
 
 export const FIND_FILTERS: FindFilter[] = [
   { id: 'gender', label: 'Стать' },
+  { id: 'pet_type', label: 'Тип тваринки' },
   { id: 'breed', label: 'Порода' },
   { id: 'age', label: 'Вік' },
   { id: 'size', label: 'Розмір' },
@@ -28,6 +30,7 @@ export const FIND_FILTERS: FindFilter[] = [
 export type FilterSection = {
   key:
     | 'gender'
+    | 'pet_type'
     | 'age'
     | 'breed'
     | 'size'
@@ -49,6 +52,11 @@ export const FILTER_SECTIONS: FilterSection[] = [
     key: 'gender',
     label: 'Стать',
     options: PET_GENDER.map((value) => ({ value, label: PET_SEX_LABEL_UA[value] })),
+  },
+  {
+    key: 'pet_type',
+    label: 'Тип тваринки',
+    options: PET_TYPE.map((value) => ({ value, label: PET_TYPE_LABEL_UA[value] })),
   },
   {
     key: 'age',
