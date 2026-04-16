@@ -1,10 +1,9 @@
-import { useEffect, useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
-import { Menu, UserRound, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 import logo from '@/assets/Logo.svg';
-import { BASE_URL } from '@/constants/env';
 import { PROTECTED_ROUTES_CONFIG, RoutePath } from '@/routes/root.config';
 import { useClickOutside } from '@/utils/helpers/dom/useClickOutside';
 import { useIsMobile } from '@/utils/helpers/layouts/useIsMobile';
@@ -36,7 +35,6 @@ const MOBILE_MENU_ITEMS = [
 export const Header = () => {
   const { pathname } = useLocation();
   const isHomeRoute = pathname === RoutePath.Default || pathname === RoutePath.Home;
-  const [isHomeScrolled, setIsHomeScrolled] = useState(false);
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -48,38 +46,19 @@ export const Header = () => {
 
   useClickOutside(menuRef, closeMenu, isMenuOpen);
 
-  useEffect(() => {
-    if (!isHomeRoute) {
-      setIsHomeScrolled(false);
-      return;
-    }
-
-    const onScroll = () => {
-      setIsHomeScrolled(window.scrollY > 24);
-    };
-
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [isHomeRoute]);
-
-  const useDarkHeaderContent = !isHomeRoute || isHomeScrolled;
-
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    clsx('type-secondary whitespace-nowrap transition-colors duration-200', {
+    clsx('type-secondary whitespace-nowrap text-gray-90 transition-colors duration-200', {
       'text-primary-40': isActive,
-      'text-gray-90 hover:text-primary-40': useDarkHeaderContent && !isActive,
-      'text-gray-0 hover:text-primary-20': !useDarkHeaderContent && !isActive,
+      'hover:text-primary-40': !isActive,
     });
 
   const mobileMenuTop = isMobile ? 'var(--header-height-mobile)' : 'var(--header-height-desktop)';
-  const logoSrc = `${BASE_URL}icons/${useDarkHeaderContent ? 'Logo.svg' : 'Logo-wt.svg'}`;
 
   return (
     <header
       className={clsx('sticky top-0 left-0 right-0 z-50 w-full shadow-header', {
-        'bg-gray-100/20 backdrop-blur-md': isHomeRoute && !isHomeScrolled,
-        'bg-header-bg-wt': !isHomeRoute || isHomeScrolled,
+        'bg-header-bg backdrop-blur-md': isHomeRoute,
+        'bg-header-bg-wt': !isHomeRoute,
       })}
       style={{
         height: isMobile ? 'var(--header-height-mobile)' : 'var(--header-height-desktop)',
@@ -94,7 +73,7 @@ export const Header = () => {
             aria-label='На головну'
           >
             <img
-              src={logoSrc}
+              src={logo}
               alt='Hold The Paw'
               className='h-(--header-logo-height) w-(--header-logo-width) shrink-0'
             />
@@ -132,8 +111,7 @@ export const Header = () => {
               className={({ isActive }) =>
                 clsx('type-secondary whitespace-nowrap transition-colors duration-200', {
                   'text-primary-40': isActive,
-                  'text-gray-90 hover:text-primary-40': useDarkHeaderContent && !isActive,
-                  'text-gray-0 hover:text-primary-20': !useDarkHeaderContent && !isActive,
+                  'text-gray-90 hover:text-primary-40': !isActive,
                 })
               }
             >
@@ -143,10 +121,7 @@ export const Header = () => {
             <div className='relative' ref={menuRef}>
               <button
                 onClick={toggleMenu}
-                className={clsx('inline-flex size-10 items-center justify-center', {
-                  'text-gray-90': useDarkHeaderContent,
-                  'text-gray-0': !useDarkHeaderContent,
-                })}
+                className='inline-flex size-10 items-center justify-center text-gray-90'
                 aria-label={isMenuOpen ? 'Закрити меню' : 'Відкрити меню'}
                 aria-expanded={isMenuOpen}
                 aria-controls='mobile-menu'
@@ -161,24 +136,6 @@ export const Header = () => {
                   className='fixed left-0 right-0 rounded-b-3xl bg-gray-30 px-4 pt-4 pb-8 shadow-[0_12px_24px_rgba(0,0,0,0.2)]'
                   style={{ top: mobileMenuTop }}
                 >
-<<<<<<< HEAD
-=======
-                  <div className='mb-4 flex items-center gap-3'>
-                    <div
-                      aria-label='Порожній аватар профілю'
-                      className='flex size-12 items-center justify-center rounded-full bg-gray-0/90'
-                    >
-                      <UserRound size={24} className='text-gray-90' />
-                    </div>
-                    <div>
-                      <p className='typo-h3 text-gray-100'>{user.name}</p>
-                      <p className='type-main mt-1 text-gray-90'>{user.type}</p>
-                    </div>
-                  </div>
-
-                  <div className='mb-4 border-b border-gray-70/35' />
-
->>>>>>> 4288acc (filter + fix)
                   <ul className='flex flex-col gap-4'>
                     {MOBILE_MENU_ITEMS.map((item) => {
                       const isPublic = isPublicRoute(item.to);
