@@ -75,7 +75,9 @@ export const Header = () => {
             <img
               src={logo}
               alt='Hold The Paw'
-              className='h-(--header-logo-height) w-(--header-logo-width) shrink-0'
+              className={clsx('h-(--header-logo-height) w-(--header-logo-width) shrink-0', {
+                'brightness-0 invert': !useDarkHeaderContent,
+              })}
             />
           </NavLink>
         </div>
