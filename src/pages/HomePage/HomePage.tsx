@@ -97,6 +97,9 @@ const HomeActionCard = ({
 
 const StatDivider = () => <span className='h-[207px] w-[2px] shrink-0 bg-gray-0/60' />;
 
+const HOME_HERO_MOBILE_INTRO =
+  'Hold The Paw — це спільнота людей, які небайдужі до долі тварин. Наша мета — зробити процес усиновлення простим та безпечним.';
+
 const HomeHero = () => {
   const catHeroSrc = `${import.meta.env.BASE_URL}photos/CatHome.webp`;
 
@@ -106,7 +109,7 @@ const HomeHero = () => {
         <img
           src={catHeroSrc}
           alt='Кіт на головному банері'
-          className='absolute inset-0 h-full w-full object-cover object-center [transform:scaleX(-1)]'
+          className='absolute inset-0 h-full w-full object-cover object-[20%_38%] [transform:scaleX(-1)] md:object-center'
         />
 
         <div className='absolute inset-0 left-0 flex w-full items-start px-4 pt-(--home-hero-mobile-content-top) pb-34 md:inset-y-0 md:items-center md:px-5 md:pt-0 md:pb-0 md:max-w-[560px] md:px-14'>
@@ -172,13 +175,13 @@ const HomeHero = () => {
           </div>
         </div>
         <div
-          className='absolute left-1/2 z-[59] h-px w-(--home-hero-mobile-stats-width) max-w-full -translate-x-1/2 bg-gray-0 md:hidden'
+          className='absolute left-1/2 z-40 h-px w-(--home-hero-mobile-stats-width) max-w-full -translate-x-1/2 bg-gray-0 md:hidden'
           style={{
             top: 'calc(var(--home-hero-mobile-stats-block-top) - var(--home-hero-mobile-stats-line-gap) - 1px)',
           }}
           aria-hidden
         />
-        <div className='absolute top-(--home-hero-mobile-stats-block-top) right-0 left-0 z-[60] flex h-[185px] w-full gap-2 overflow-hidden rounded-(--home-hero-mobile-stats-radius) border border-gray-70/20 bg-gray-0 shadow-[0_8px_20px_rgba(31,32,34,0.12)] md:hidden'>
+        <div className='absolute top-(--home-hero-mobile-stats-block-top) right-0 left-0 z-40 flex h-[185px] w-full gap-2 overflow-hidden rounded-(--home-hero-mobile-stats-radius) border border-gray-70/20 bg-gray-0 shadow-[0_8px_20px_rgba(31,32,34,0.12)] md:hidden'>
           <span
             className='pointer-events-none absolute top-1/2 left-[16px] h-(--home-hero-mobile-stats-divider-height) w-px -translate-y-1/2 bg-gray-50'
             aria-hidden
@@ -355,28 +358,127 @@ type THomeCatShowcaseSectionProps = {
   /** `true` — зображення зліва на десктопі (перше в сітці); `false` — текст зліва */
   imageLeading: boolean;
   sectionClassName: string;
+  mobileImageAboveText?: boolean;
+  mobileTextWithoutBg?: boolean;
+  /** Мобільний варіант: заголовок і текст поверх зображення (без окремого блоку під картинкою) */
+  mobileTextOnImage?: boolean;
+  desktopHeading?: string;
+  mobileHeading?: string;
+  desktopBody?: string;
+  mobileBody?: string;
 };
 
-const HomeCatShowcaseSection = ({ imageFile, imageLeading, sectionClassName }: THomeCatShowcaseSectionProps) => {
+const HomeCatShowcaseSection = ({
+  imageFile,
+  imageLeading,
+  sectionClassName,
+  mobileImageAboveText = false,
+  mobileTextWithoutBg = false,
+  mobileTextOnImage = false,
+  desktopHeading,
+  mobileHeading,
+  desktopBody,
+  mobileBody,
+}: THomeCatShowcaseSectionProps) => {
   const base = import.meta.env.BASE_URL;
   const imageSrc = `${base}photos/${imageFile}`;
+  const resolvedDesktopHeading = desktopHeading ?? HOME_CAT_CARD_HEADING;
+  const resolvedMobileHeading = mobileHeading ?? resolvedDesktopHeading;
+  const resolvedDesktopBody = desktopBody ?? HOME_CAT_CARD_BODY;
+  const resolvedMobileBody = mobileBody ?? resolvedDesktopBody;
 
   const catShowcaseCtaClassName =
     'inline-flex h-[50px] shrink-0 items-center justify-center self-start rounded-full bg-primary-60 px-8 text-[16px] font-medium text-gray-0 transition-colors hover:bg-primary-80';
 
-  const renderCatShowcaseCta = () => (
-    <NavLink to={RoutePath.Pets} className={catShowcaseCtaClassName}>
+  const renderCatShowcaseCta = (extraClassName?: string) => (
+    <NavLink
+      to={RoutePath.Pets}
+      className={[catShowcaseCtaClassName, extraClassName].filter(Boolean).join(' ')}
+    >
       {HOME_CAT_CARD_CTA_LABEL}
     </NavLink>
+  );
+
+  const mobileStackedContent = (
+    <div className='lg:hidden'>
+      <div className='overflow-hidden rounded-(--home-cat-card-image-radius-mobile) border-[5px] border-solid border-gray-0'>
+        <img
+          src={imageSrc}
+          alt='Картка тварини'
+          className='block h-auto w-full'
+          loading='lazy'
+          decoding='async'
+        />
+      </div>
+      <div className={mobileTextWithoutBg ? 'mt-4 px-4 py-1' : 'mt-4 rounded-(--radius-lg) bg-gray-0 px-4 py-5'}>
+        <h2 className='text-balance text-[20px] leading-[110%] font-semibold text-gray-100'>
+          {resolvedMobileHeading}
+        </h2>
+        <p className='mt-3 text-[16px] leading-[125%] text-gray-100'>{resolvedMobileBody}</p>
+        <div className='mt-5'>{renderCatShowcaseCta()}</div>
+      </div>
+    </div>
+  );
+
+  const mobileOverlayContent = (
+    <div className='lg:hidden'>
+      <div className='relative overflow-hidden rounded-(--home-cat-card-image-radius-mobile) border-[5px] border-solid border-gray-0'>
+        <img
+          src={imageSrc}
+          alt='Картка тварини'
+          className='block h-auto w-full'
+          loading='lazy'
+          decoding='async'
+        />
+        <div className='pointer-events-none absolute inset-0 flex flex-col justify-between gap-4 bg-gradient-to-b from-black/55 via-black/15 to-black/55 p-4 pt-5 pb-5'>
+          <div className='min-w-0'>
+            <h2 className='text-balance text-[20px] leading-[110%] font-semibold text-gray-0 drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)]'>
+              {resolvedMobileHeading}
+            </h2>
+            <p className='mt-3 text-[16px] leading-[125%] text-gray-0 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]'>
+              {resolvedMobileBody}
+            </p>
+          </div>
+          <div className='pointer-events-auto'>{renderCatShowcaseCta()}</div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const mobileTextOnImageContent = (
+    <div className='lg:hidden'>
+      <div className='relative overflow-hidden rounded-(--home-cat-card-image-radius-mobile)'>
+        <img
+          src={imageSrc}
+          alt='Картка тварини'
+          className='block h-auto w-full'
+          loading='lazy'
+          decoding='async'
+        />
+        <div className='pointer-events-none absolute inset-0 flex flex-col justify-between gap-4 p-4 pt-5 pb-5'>
+          <div className='min-w-0'>
+            <h2 className='text-balance text-[20px] leading-[110%] font-semibold text-gray-100 [text-shadow:0_1px_0_var(--gray-0),0_0_12px_rgba(255,255,255,0.85),0_0_24px_rgba(255,255,255,0.55)]'>
+              {resolvedMobileHeading}
+            </h2>
+            <p className='mt-3 text-[16px] leading-[125%] text-gray-100 [text-shadow:0_1px_0_var(--gray-0),0_0_10px_rgba(255,255,255,0.8),0_0_20px_rgba(255,255,255,0.45)]'>
+              {resolvedMobileBody}
+            </p>
+          </div>
+          <div className='pointer-events-auto mt-auto w-full shrink-0'>
+            {renderCatShowcaseCta('w-full max-w-none self-stretch')}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 
   const desktopTextCol = (
     <div className='relative z-10 flex h-full min-h-0 min-w-0 flex-col justify-center overflow-x-clip'>
       <h2 className='text-balance text-[32px] leading-[110%] font-semibold text-gray-100'>
-        {HOME_CAT_CARD_HEADING}
+        {resolvedDesktopHeading}
       </h2>
       <p className='mt-6 text-[16px] leading-[125%] text-gray-100'>
-        {HOME_CAT_CARD_BODY}
+        {resolvedDesktopBody}
       </p>
       <div className='mt-(--home-cat-card-body-to-button-gap)'>{renderCatShowcaseCta()}</div>
     </div>
@@ -402,28 +504,11 @@ const HomeCatShowcaseSection = ({ imageFile, imageLeading, sectionClassName }: T
 
   return (
     <section className={sectionClassName}>
-      <div className='lg:hidden'>
-        <div className='relative overflow-hidden rounded-(--home-cat-card-image-radius-mobile) border-[5px] border-solid border-gray-0'>
-          <img
-            src={imageSrc}
-            alt='Картка тварини'
-            className='block h-auto w-full'
-            loading='lazy'
-            decoding='async'
-          />
-          <div className='pointer-events-none absolute inset-0 flex flex-col justify-between gap-4 bg-gradient-to-b from-black/55 via-black/15 to-black/55 p-4 pt-5 pb-5'>
-            <div className='min-w-0'>
-              <h2 className='text-balance text-[20px] leading-[110%] font-semibold text-gray-0 drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)]'>
-                {HOME_CAT_CARD_HEADING}
-              </h2>
-              <p className='mt-3 text-[16px] leading-[125%] text-gray-0 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]'>
-                {HOME_CAT_CARD_BODY}
-              </p>
-            </div>
-            <div className='pointer-events-auto'>{renderCatShowcaseCta()}</div>
-          </div>
-        </div>
-      </div>
+      {mobileTextOnImage
+        ? mobileTextOnImageContent
+        : mobileImageAboveText
+          ? mobileStackedContent
+          : mobileOverlayContent}
 
       <div className='hidden min-w-0 gap-(--home-cat-card-text-image-gap) lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-stretch'>
         {imageLeading ? (
@@ -452,11 +537,18 @@ export const HomePage = () => {
         imageFile='Cat-Card.webp'
         imageLeading
         sectionClassName='u-container pt-(--home-photo-band-to-cat-card-gap) pb-16 lg:pb-20'
+        mobileImageAboveText
+        mobileTextWithoutBg
       />
       <HomeCatShowcaseSection
         imageFile='Cat-Card-2.webp'
         imageLeading={false}
         sectionClassName='u-container pt-(--home-cat-card-stack-gap) pb-16 lg:pt-24 lg:pb-20'
+        mobileTextOnImage
+        desktopHeading='Чому адопція тварин важлива'
+        mobileHeading='Дім для тварин з Hold the Paw'
+        desktopBody="Кожна тварина на Hold the Paw має детальну історію та фото, щоб ви могли серцем обрати свого улюбленця. Ми робимо адопцію та прилаштування тварин у сім'ю максимально безпечними й прозорими."
+        mobileBody="Кожна тварина на Hold the Paw має детальну історію та фото, щоб ви могли серцем обрати свого улюбленця. Ми робимо адопцію та прилаштування тварин у сім'ю максимально безпечними й прозорими."
       />
     </>
   );
