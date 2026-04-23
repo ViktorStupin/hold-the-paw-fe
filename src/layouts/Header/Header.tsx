@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 import { Menu, X } from 'lucide-react';
@@ -35,6 +35,7 @@ const MOBILE_MENU_ITEMS = [
 export const Header = () => {
   const { pathname } = useLocation();
   const isHomeRoute = pathname === RoutePath.Default || pathname === RoutePath.Home;
+  const [isHomeScrolled, setIsHomeScrolled] = useState(false);
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -46,10 +47,28 @@ export const Header = () => {
 
   useClickOutside(menuRef, closeMenu, isMenuOpen);
 
+  useEffect(() => {
+    if (!isHomeRoute) {
+      setIsHomeScrolled(false);
+      return;
+    }
+
+    const onScroll = () => {
+      setIsHomeScrolled(window.scrollY > 24);
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [isHomeRoute]);
+
+  const useDarkHeaderContent = !isHomeRoute || isHomeScrolled;
+
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    clsx('type-secondary whitespace-nowrap text-gray-90 transition-colors duration-200', {
+    clsx('type-secondary whitespace-nowrap transition-colors duration-200', {
       'text-primary-40': isActive,
-      'hover:text-primary-40': !isActive,
+      'text-gray-90 hover:text-primary-40': useDarkHeaderContent && !isActive,
+      'text-gray-0 hover:text-primary-20': !useDarkHeaderContent && !isActive,
     });
 
   const mobileMenuTop = isMobile ? 'var(--header-height-mobile)' : 'var(--header-height-desktop)';
@@ -57,8 +76,8 @@ export const Header = () => {
   return (
     <header
       className={clsx('sticky top-0 left-0 right-0 z-50 w-full shadow-header', {
-        'bg-header-bg backdrop-blur-md': isHomeRoute,
-        'bg-header-bg-wt': !isHomeRoute,
+        'bg-gray-100/20 backdrop-blur-md': isHomeRoute && !isHomeScrolled,
+        'bg-header-bg-wt': !isHomeRoute || isHomeScrolled,
       })}
       style={{
         height: isMobile ? 'var(--header-height-mobile)' : 'var(--header-height-desktop)',
@@ -113,7 +132,8 @@ export const Header = () => {
               className={({ isActive }) =>
                 clsx('type-secondary whitespace-nowrap transition-colors duration-200', {
                   'text-primary-40': isActive,
-                  'text-gray-90 hover:text-primary-40': !isActive,
+                  'text-gray-90 hover:text-primary-40': useDarkHeaderContent && !isActive,
+                  'text-gray-0 hover:text-primary-20': !useDarkHeaderContent && !isActive,
                 })
               }
             >
@@ -123,7 +143,10 @@ export const Header = () => {
             <div className='relative' ref={menuRef}>
               <button
                 onClick={toggleMenu}
-                className='inline-flex size-10 items-center justify-center text-gray-90'
+                className={clsx('inline-flex size-10 items-center justify-center', {
+                  'text-gray-90': useDarkHeaderContent,
+                  'text-gray-0': !useDarkHeaderContent,
+                })}
                 aria-label={isMenuOpen ? 'Закрити меню' : 'Відкрити меню'}
                 aria-expanded={isMenuOpen}
                 aria-controls='mobile-menu'
