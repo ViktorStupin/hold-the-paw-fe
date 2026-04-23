@@ -166,6 +166,12 @@
   }
 }
 
+@media (min-width: 1024px) and (max-width: 1150px) {
+  :root {
+    --find-filters-width-lg: 230px;
+  }
+}
+
 @media (min-width: 1024px) {
   :root {
     --home-action-card-1-image-position: var(--home-action-card-1-image-position-desktop);
