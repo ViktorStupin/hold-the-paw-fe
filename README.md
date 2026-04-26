@@ -1,68 +1,136 @@
-# Pet Adoption Platform
+🐾 Pet Adoption Platform
 
-A responsive web application for publishing, managing, and discovering pet profiles for adoption or help.
+A modern, responsive web application for discovering, managing, and publishing pet adoption profiles.
 
-## Overview
+🚀 About the Project
 
-Pet Adoption Platform is a frontend web application that helps shelters, companies, and individual users create pet profiles, manage their own listings, and help people find animals through search and filters.
+Pet Adoption Platform is a frontend-focused application designed to simplify the process of finding and managing pets for adoption.
 
-The app includes authentication, personal account management, pet profile creation, editing flows, and a public catalog with detailed pet pages.
+It allows individual users and shelters to create and manage pet listings, while providing a clean and intuitive interface for browsing, filtering, and saving pets.
 
-## Features
+This project demonstrates real-world frontend architecture including authentication flows, form handling, protected routes, and responsive UI design.
 
-- User registration and login
-- Role-based accounts: Individual or Company / Shelter
-- Personal profile management
-- Change email and password
-- Create, edit, deactivate, and delete pet profiles
-- Multi-step pet creation form
-- Pet catalog with search, filters, and sorting
-- Favorites functionality
-- Responsive layout for mobile and desktop
-- Protected actions for authorized users only
+✨ Key Features
 
-## Tech Stack
+🔐 Authentication & Security
 
-- React
-- TypeScript
-- React Router
-- React Hook Form
-- Zod
-- shadcn
-- Tailwind CSS / SCSS
-- Axios or Fetch API
-- JWT Authentication
+User registration and login
+JWT-based authentication
+Protected routes and actions
 
-## Pages
+👤 User Management
 
-- Home / Catalog
-- Login / Registration modal
-- User Profile
-- My Pets
-- Create Pet Profile
-- Edit Pet Profile
-- Pet Details
-- Favorites
+Role-based accounts (Individual / Shelter)
+Profile editing
+Change email & password
 
-## Main Functionality
+🐶 Pet Management
 
-### Authentication
+Create, edit, deactivate, and delete pet profiles
+Multi-step form with validation
+Image upload support
 
-Users can sign up and log in through modal windows. The system supports access and refresh token flow, password recovery, and protected access to private pages and actions.
+🔎 Discovery & Interaction
 
-### User Profile
+Public pet catalog
+Search, filters, and sorting
+Detailed pet pages
+Favorites system
 
-Authorized users can manage their personal information depending on their role. They can also update contact data, email, and password.
+📱 Responsive Design
 
-### Pet Management
+Fully optimized for mobile and desktop
+Sticky header + mobile navigation
+🛠 Tech Stack
 
-Users can create pet profiles through a multi-step form, upload photos, edit existing profiles, deactivate them, or mark them as helped.
+Frontend:
 
-### Catalog
+⚛️ React
+🟦 TypeScript
+🧭 React Router
+🧾 React Hook Form + Zod
+🎨 Tailwind CSS / SCSS
+🧩 shadcn/ui
 
-The platform provides a public pet catalog with search, filtering, sorting, and navigation to detailed pet pages.
+Other:
 
-## Responsive Design
+🌐 Axios / Fetch API
+🔑 JWT Authentication
+🧱 Project Structure
+src/
+  components/   # reusable UI components
+  pages/        # route-based pages
+  hooks/        # custom React hooks
+  api/          # API logic
+  utils/        # helper functions
+⚙️ Getting Started
+📦 Installation
+npm install
+▶️ Run locally
+npm run dev
+🏗 Build project
+npm run build
+npm run preview
+🧪 Available Scripts
+npm run dev
+npm run build
+npm run preview
+npm run lint
+npm run lint:check
+🔗 Backend
 
-The application is fully responsive and optimized for both desktop and mobile devices. It includes a sticky header and mobile tab bar navigation.
+This project is frontend-only and requires a separate backend.
 
+🔌 Expected API:
+
+http://127.0.0.1:8001
+/api
+/media
+Backend запуск
+
+Without Docker:
+
+pip install -r requirements.txt
+python manage.py runserver
+
+With Docker:
+
+docker-compose up --build
+🌍 Environment Variables
+
+Frontend:
+
+Uses default Vite config
+import.meta.env.BASE_URL
+
+Backend:
+
+.env file required
+Example: .env.sample
+🎯 What This Project Demonstrates
+Clean component-based architecture
+Scalable folder structure
+Advanced form handling (React Hook Form + Zod)
+Authentication & protected routes
+API integration patterns
+Responsive UI/UX thinking
+📈 Future Improvements
+🔔 Notifications system
+🧠 Smarter filtering & recommendations
+🛠 Admin dashboard
+🌍 Deployment & CI/CD
+🤝 Contributing
+
+Feel free to fork the project and submit pull requests 🙌
+
+👨‍💻 Team
+
+Frontend Developers
+GitHub: https://github.com/ViktorStupin
+https://www.linkedin.com/in/artem-yakhno-2b9305258
+
+Backend Developer
+GitHub: https://github.com/toomuchtearz
+
+QA Engineer
+https://www.linkedin.com/in/olena-ryhun-qa-mateacademy?utm_source=share_via&utm_content=profile&utm_medium=member_ios
