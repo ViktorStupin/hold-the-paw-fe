@@ -22,7 +22,7 @@ export const PET_SEX_LABEL_UA: Record<PetGender, string> = {
 
 export const PET_AGE_LABEL_UA: Record<PetAge, string> = {
   puppy: 'До 1 року',
-  junior: '1-2 роки',
+  junior: '1-3 роки',
   adult: '3-5 років',
   senior: '5+ років',
 };

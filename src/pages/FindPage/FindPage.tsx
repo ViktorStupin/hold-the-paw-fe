@@ -96,9 +96,9 @@ export const FindPage = () => {
   const [listOrdering, setListOrdering] = useState<TPetsListOrdering>(PETS_LIST_ORDERING.newestFirst);
   const [sortMenuOpen, setSortMenuOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState<Record<TFilterSectionKey, boolean>>({
-    gender: true,
+    gender: false,
     pet_type: false,
-    age: true,
+    age: false,
     breed: false,
     size: false,
     color: false,
@@ -545,7 +545,7 @@ export const FindPage = () => {
             </div>
           </div>
 
-          <ul className='mt-4 grid grid-cols-2 justify-between gap-2 md:gap-4 lg:grid-cols-[repeat(4,var(--find-card-width))]'>
+          <ul className='mt-4 grid grid-cols-2 justify-between gap-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-[repeat(4,var(--find-card-width))]'>
             {visiblePets.map((pet) => (
               <li key={pet.id} className='flex justify-center lg:block'>
                 <GeneralPetCard pet={pet} />
