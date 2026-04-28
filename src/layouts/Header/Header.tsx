@@ -156,9 +156,18 @@ export const Header = () => {
               </button>
 
               {isMenuOpen && (
+                <div
+                  className='fixed inset-x-0 bottom-0 z-40 bg-gray-100/30 backdrop-blur-md backdrop-saturate-150 md:hidden'
+                  style={{ top: mobileMenuTop }}
+                  onClick={closeMenu}
+                  aria-hidden
+                />
+              )}
+
+              {isMenuOpen && (
                 <nav
                   id='mobile-menu'
-                  className='fixed left-0 right-0 rounded-b-3xl bg-gray-30 px-4 pt-4 pb-8 shadow-[0_12px_24px_rgba(0,0,0,0.2)]'
+                  className='fixed left-0 right-0 z-50 rounded-b-3xl bg-gray-30 px-4 pt-4 pb-8 shadow-[0_12px_24px_rgba(0,0,0,0.2)]'
                   style={{ top: mobileMenuTop }}
                 >
                   <ul className='flex flex-col gap-4'>
