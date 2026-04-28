@@ -417,6 +417,7 @@ export const FindPage = () => {
       filters.is_sterilized !== null ||
       filters.is_vaccinated !== null
   );
+  const hasActiveFilters = Object.values(filters).some((value) => value !== null);
 
   if (hasAdvancedFilters && isDetailsLoading) {
     return (
@@ -437,7 +438,11 @@ export const FindPage = () => {
           <button
             type='button'
             onClick={resetFilters}
-            className='mt-6 h-12 w-full rounded-full border border-gray-70/60 px-4 text-[20px] leading-[100%] text-gray-70 transition-colors hover:border-primary-40 hover:text-primary-40'
+            className={`mt-6 h-12 w-full rounded-full border px-4 text-[20px] leading-[100%] transition-colors ${
+              hasActiveFilters
+                ? 'border-gray-100/60 text-gray-100 hover:border-primary-40 hover:text-primary-40'
+                : 'border-gray-70/60 text-gray-70 hover:border-primary-40 hover:text-primary-40'
+            }`}
           >
             Очистити фільтри
           </button>
@@ -559,7 +564,7 @@ export const FindPage = () => {
 
       {isMobileFiltersOpen && (
         <div
-          className='fixed inset-0 z-50 bg-gray-100/25 backdrop-blur-[4px] md:hidden'
+          className='fixed inset-0 z-50 bg-gray-100/30 backdrop-blur-md backdrop-saturate-150 md:hidden'
           onClick={() => setIsMobileFiltersOpen(false)}
         >
           <div
@@ -586,7 +591,11 @@ export const FindPage = () => {
             <button
               type='button'
               onClick={resetFilters}
-              className='mt-5 h-11 w-full rounded-full border border-gray-70/60 text-[20px] leading-[100%] text-gray-70'
+              className={`mt-5 h-11 w-full rounded-full border text-[20px] leading-[100%] transition-colors ${
+                hasActiveFilters
+                  ? 'border-gray-100/60 text-gray-100 hover:border-primary-40 hover:text-primary-40'
+                  : 'border-gray-70/60 text-gray-70 hover:border-primary-40 hover:text-primary-40'
+              }`}
             >
               Очистити фільтри
             </button>
