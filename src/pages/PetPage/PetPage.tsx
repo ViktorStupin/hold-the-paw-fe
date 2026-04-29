@@ -254,7 +254,9 @@ export const PetPage = () => {
                 ))}
               </div>
 
-              <Button className='mt-6 w-full'>Зв&apos;язатися з власником</Button>
+              <Button className='mt-6 w-full' onClick={() => setActiveTab('details')}>
+                Зв&apos;язатися з власником
+              </Button>
             </>
           ) : (
             <div className='grid gap-4'>
