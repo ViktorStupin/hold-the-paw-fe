@@ -188,7 +188,7 @@ export function SignUpForm() {
                 <CheckBoxField name='terms_accepted' />
                 <FieldLabel htmlFor='terms_accepted' className='cursor-pointer'>
                   Я приймаю{' '}
-                  <Link className='typo-main typo-link' to={RoutePath.TermsAndContitions}>
+                  <Link target='_blank' className='typo-main typo-link' to={RoutePath.TermsAndContitions}>
                     умови угоди
                   </Link>
                 </FieldLabel>
