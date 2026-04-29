@@ -97,8 +97,6 @@ const HomeActionCard = ({
 
 const StatDivider = () => <span className='h-[207px] w-[2px] shrink-0 bg-gray-0/60' />;
 
-const HOME_HERO_MOBILE_INTRO =
-  'Hold The Paw — це спільнота людей, які небайдужі до долі тварин. Наша мета — зробити процес усиновлення простим та безпечним.';
 
 const HomeHero = () => {
   const catHeroSrc = `${import.meta.env.BASE_URL}photos/CatHome.webp`;
@@ -247,7 +245,7 @@ const HomeActions = () => {
           <HomeActionCard key={action.title} {...action} />
         ))}
       </div>
-      
+
     </section>
   );
 };
@@ -309,11 +307,10 @@ const HomePhotoBand = () => {
             {HOME_PHOTO_BAND_DESKTOP_STEPS.map(({ id, copyKey }) => (
               <div
                 key={id}
-                className={`flex items-start gap-(--home-photo-band-icon-text-gap)${
-                  id === '1' || id === '3'
-                    ? ' min-[1411px]:ml-(--home-photo-band-step-1-3-from-left-1411)'
-                    : ' min-[1071px]:max-[1409px]:ml-(--home-photo-band-step-2-indent-from-1300) min-[1410px]:max-[1485px]:ml-(--home-photo-band-step-2-from-left-1410-1485) min-[1486px]:ml-(--home-photo-band-step-2-from-left-1411)'
-                }`}
+                className={`flex items-start gap-(--home-photo-band-icon-text-gap)${id === '1' || id === '3'
+                  ? ' min-[1411px]:ml-(--home-photo-band-step-1-3-from-left-1411)'
+                  : ' min-[1071px]:max-[1409px]:ml-(--home-photo-band-step-2-indent-from-1300) min-[1410px]:max-[1485px]:ml-(--home-photo-band-step-2-from-left-1410-1485) min-[1486px]:ml-(--home-photo-band-step-2-from-left-1411)'
+                  }`}
               >
                 <img
                   src={iconSrc(id)}

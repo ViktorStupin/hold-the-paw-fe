@@ -1,4 +1,4 @@
-import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { NotFoundPage } from '../pages/NotFoundPage';
 import App from '@/App';
 import { RoutePath } from './root.config';
@@ -23,7 +23,7 @@ export const Root = () => {
 
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Routes>
         <Route path={RoutePath.Default} element={<App />}>
           <Route index element={<HomePage />} />
@@ -58,6 +58,6 @@ export const Root = () => {
         isOpen={isOpen}
         onClose={close}
       />
-    </HashRouter>
+    </BrowserRouter>
   );
 };
