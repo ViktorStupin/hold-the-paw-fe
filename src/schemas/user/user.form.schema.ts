@@ -1,7 +1,7 @@
 import z from 'zod';
 import { personalShema, shelterShema } from '../auth/register/payload.schema';
 import {
-  optionalNormalizedSchema,
+  nullableNormalizedSchema,
   telegramNameShema,
   ukrainianPhoneShema,
 } from '../primitives.schema';
@@ -9,8 +9,8 @@ import {
 const baseUserSchema = z.object({
   phone_number: ukrainianPhoneShema,
   email: z.email(),
-  viber_phone_number: optionalNormalizedSchema(ukrainianPhoneShema),
-  telegram_nickname: optionalNormalizedSchema(telegramNameShema),
+  viber_phone_number: nullableNormalizedSchema(ukrainianPhoneShema),
+  telegram_nickname: nullableNormalizedSchema(telegramNameShema),
 });
 
 export const extendedShelterSchema = baseUserSchema.extend(shelterShema);

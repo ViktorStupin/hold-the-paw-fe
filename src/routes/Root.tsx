@@ -11,9 +11,12 @@ import { PublicOnlyRoute } from './PublicOnlyRoute';
 import { CreatePetProfile } from '@/pages/CreatePetProfile/CreatePetProfile';
 import { EditPetProfile } from '@/pages/EditPetProfile/EditPetProfile';
 import { FindPage } from '@/pages/FindPage/FindPage';
+import { HomePage } from '@/pages/HomePage/HomePage';
 import { MyPetPage } from '@/pages/MyPetPage/MyPetPage';
 import { Profile } from '@/pages/ProfilePage/Profile';
+import { PetPage } from '@/pages/PetPage/PetPage';
 import { useAuthModalStore } from '@/store/authModal.store';
+import { TermAndConditions } from '@/pages/TermAndContitions/TermAndContitions';
 
 export const Root = () => {
   const { isOpen, message, close } = useAuthModalStore();
@@ -23,11 +26,12 @@ export const Root = () => {
     <HashRouter>
       <Routes>
         <Route path={RoutePath.Default} element={<App />}>
-          <Route index element={<div />} />
+          <Route index element={<HomePage />} />
           <Route path={RoutePath.Home} element={<Navigate to={RoutePath.Default} replace />} />
 
           <Route path={RoutePath.Pets} element={<FindPage />} />
-          <Route path={RoutePath.Pet} element={<div>Pet Detail Page</div>} />
+          <Route path={RoutePath.Pet} element={<PetPage />} />
+          <Route path={RoutePath.TermsAndContitions} element={<TermAndConditions />} />
 
           <Route element={<PublicOnlyRoute />}>
             <Route path={RoutePath.Auth} element={<AuthPage />}>
@@ -36,9 +40,9 @@ export const Root = () => {
               <Route path={RoutePath.SignIn} element={<SignInForm />} />
             </Route>
           </Route>
-          <Route element={<ProtectedRoute/>}>
+          <Route element={<ProtectedRoute />}>
             <Route path={RoutePath.CreatePetProfile} element={<CreatePetProfile />} />
-            <Route path={RoutePath.EditPetProfile} element={<EditPetProfile/>} />
+            <Route path={RoutePath.EditPetProfile} element={<EditPetProfile />} />
             <Route path={RoutePath.MyPets} element={<MyPetPage />} />
 
             <Route path={RoutePath.Profile} element={<Profile variant='view' />} />

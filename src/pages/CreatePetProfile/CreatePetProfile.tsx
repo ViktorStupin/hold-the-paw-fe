@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 // import { DevTool } from '@hookform/devtools';
 import { steps } from '@/components/steps/constants/steps';
 import { Button } from '@/components/ui/button';
@@ -9,17 +9,17 @@ import { ProgressBar } from '@/components/ProgressBar/ProgressBar';
 import clsx from 'clsx';
 import { scrollTop } from '@/utils/helpers/layouts/layouts';
 import { Back } from '@/components/Back/Back';
-import { petsServices } from '@/utils/api/services/pets.services';
 import { Loader } from 'lucide-react';
-import { getServerErrorMessage } from '@/utils/errors/getServerErrorMessage';
 import { FieldMessage } from '@/components/ui/field';
 import { createPetShema, type TCreatePet } from '@/schemas/pet/pet.create.shema';
 import { useNavigate } from 'react-router-dom';
 import { RoutePath } from '@/routes/root.config';
+import { useCreatePet } from '@/queries/pets/pets.mutations';
 
 export const CreatePetProfile = () => {
   const isMobile = useIsMobile();
   const [currentStep, setCurrentStep] = React.useState(0);
+  const createPet = useCreatePet();
   const step = steps[currentStep];
   const StepComponent = step.component;
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ export const CreatePetProfile = () => {
     },
   });
 
-  const { getFieldState, formState, watch, clearErrors, setError } = methods;
+  const { getFieldState, formState } = methods;
 
   const isStepValid = step.fields.every((name) => {
     const s = getFieldState(name, formState);
@@ -60,7 +60,7 @@ export const CreatePetProfile = () => {
   const next = async () => {
     const ok = await methods.trigger(step.fields);
     if (!ok) return;
-    changeStep(currentStep + 1);
+    setCurrentStep((prev) => prev + 1);
     scrollTop();
   };
 
@@ -71,32 +71,18 @@ export const CreatePetProfile = () => {
   };
 
   const onSubmit = async (data: TCreatePet) => {
-    try {
-      const { photos, ...rest } = data;
-
-      await petsServices.createPet({
-        ...rest,
-        is_sterilized: false,
-        main_image: photos[0],
-        is_helped: false,
-        is_active: true,
-        additional_images: photos.slice(1),
-      });
-
-      navigate(RoutePath.MyPets);
-    } catch (error) {
-      setError('root', { message: getServerErrorMessage(error) });
-    }
-  };
-
-  useEffect(() => {
-    const subscription = watch(() => {
-      if (formState.errors.root) {
-        clearErrors('root');
-      }
+    const { photos, ...rest } = data;
+    await createPet.mutateAsync({
+      ...rest,
+      is_sterilized: false,
+      main_image: photos[0],
+      is_helped: false,
+      is_active: true,
+      additional_images: photos.slice(1),
     });
-    return () => subscription.unsubscribe();
-  }, [watch, formState.errors.root, clearErrors]);
+    methods.reset();
+    navigate(RoutePath.MyPets);
+  };
 
   return (
     <FormProvider {...methods}>

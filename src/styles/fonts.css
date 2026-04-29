@@ -11,3 +11,10 @@
   font-weight: 500;    /* medium */
   font-display: swap;
 }
+
+@font-face {
+  font-family: "Airfool";
+  src: url('../assets/fonts/airfool.otf') format('opentype');
+  font-weight: 700;
+  font-display: swap;
+}

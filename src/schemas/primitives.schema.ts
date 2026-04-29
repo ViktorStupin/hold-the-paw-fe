@@ -21,12 +21,12 @@ export function optionalStringWithMin(min: number, message: string) {
     .pipe(z.string().min(min, message).max(1024, 'Максимум 1024').optional());
 }
 
-export function optionalNormalizedSchema(schema: z.ZodString) {
+export function nullableNormalizedSchema(schema: z.ZodString) {
   return z
     .string()
-    .optional()
-    .transform((val) => (val === '' ? undefined : val))
-    .pipe(schema.optional());
+    .transform((val) => (val === '' ? null : val))
+    .nullable()
+    .pipe(schema.nullable());
 }
 
 export const nameSchema = z

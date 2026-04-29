@@ -6,3 +6,4 @@ export const USER_ROLE = {
 export type TUserRole = (typeof USER_ROLE)[keyof typeof USER_ROLE];
 
 export const ROLE_OPTIONS = Object.values(USER_ROLE) as TUserRole[];
+

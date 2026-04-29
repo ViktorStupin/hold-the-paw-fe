@@ -8,8 +8,7 @@ export function mapSignUpToRequest(data: TSignUpFields) {
       email: data.email,
       password: data.password,
       phone_number: data.phone_number,
-      first_name: data.full_name,
-      last_name: 'temp'
+      full_name: data.full_name,
     };
   }
 

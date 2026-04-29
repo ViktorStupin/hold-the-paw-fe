@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/utils/helpers/layouts/useIsMobile';
-import { MapPin } from 'lucide-react';
+import { Loader, MapPin } from 'lucide-react';
 import { Icon } from '../ui/icon';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
@@ -8,34 +8,37 @@ import { getPath } from '@/routes/root.config';
 import type { TMyPetCard } from '@/schemas/pet/pet.myCard.shema';
 import { useState } from 'react';
 import { ConfirmModal } from '../ConfirmModal/ConfirmModal';
-import { usePetActions } from './usePetActions';
-import { usePetsStore } from '@/store/myPets.store';
+import { PET_STATUS_LABEL_UA } from '@/constants/pet.labes';
+import { useSetActive, useSetHelped } from '@/queries/pets/pets.mutations';
+
 export const MyPetCard = ({
   pet: { main_image, location, is_active, status, name, id },
 }: {
   pet: TMyPetCard;
 }) => {
   const isMobile = useIsMobile();
-  const { toggleActive, setHelped } = usePetActions();
-  const { fetchMyPets } = usePetsStore();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const mutateActive = useSetActive();
+  const mutateHelped = useSetHelped();
+
+  const isMutating = mutateActive.isPending || mutateHelped.isPending;
+
   const handleConfirm = async () => {
     setIsConfirmOpen(false);
-    await toggleActive(id, false);
-    await setHelped(id, true);
-    await fetchMyPets();
+
+    await mutateActive.mutateAsync({ id, is_active: false });
+    await mutateHelped.mutateAsync({ id, is_helped: true });
   };
 
   const handleDecline = async () => {
     setIsConfirmOpen(false);
-    await toggleActive(id, false);
-    await setHelped(id, false);
-    await fetchMyPets();
+    await mutateActive.mutateAsync({ id, is_active: false });
+    await mutateHelped.mutateAsync({ id, is_helped: false });
   };
 
   const handleActivate = async () => {
-    await toggleActive(id, true);
-    await setHelped(id, false);
+    await mutateActive.mutateAsync({ id, is_active: true });
+    await mutateHelped.mutateAsync({ id, is_helped: false });
   };
 
   const image = (
@@ -50,11 +53,11 @@ export const MyPetCard = ({
   );
   const statusLabel = is_active ? (
     <div className='w-fit bg-primary-0 rounded-sm px-6 py-1 border border-solid border-primary-80'>
-      <p className='typo-main text-primary-80'>{status || 'Статус'}</p>
+      <p className='typo-main text-primary-80 inline-block'>{PET_STATUS_LABEL_UA[status] || 'Статус'}</p>
     </div>
   ) : (
     <div className='w-fit bg-gray-30 rounded-sm px-6 py-1 border border-solid border-gray-70'>
-      <p className='typo-main text-gray-70'>Деактивовано</p>
+      <p className='typo-main text-gray-70 '>Деактивовано</p>
     </div>
   );
   const info = (
@@ -72,11 +75,18 @@ export const MyPetCard = ({
     <div className={isMobile ? 'grid gap-4' : 'grid grid-cols-2 gap-4'}>
       <Button
         variant='secondary'
+        disabled={isMutating}
         onClick={() => (is_active ? setIsConfirmOpen(true) : handleActivate())}
       >
-        {is_active ? 'Деактивувати' : 'Активувати'}
+        {isMutating ? (
+          <Loader className='animate-spin w-4 h-4' />
+        ) : is_active ? (
+          'Деактивувати'
+        ) : (
+          'Активувати'
+        )}
       </Button>
-      <Button variant='primary' asChild>
+      <Button disabled={isMutating} variant='primary' asChild>
         <Link to={getPath.editPetProfile(id)}>Редагувати</Link>
       </Button>
       <ConfirmModal
@@ -94,8 +104,8 @@ export const MyPetCard = ({
       <div className='bg-gray-0 shadow-default p-4 rounded-md grid gap-2'>
         <div className='flex gap-6'>
           {image}
-          <div className='flex flex-col justify-between flex-1 gap-2'>
-            {info} {isMobile && statusLabel}{' '}
+          <div className='flex flex-col justify-between gap-2'>
+            {info} {isMobile && statusLabel}
           </div>
         </div>
         {buttons}

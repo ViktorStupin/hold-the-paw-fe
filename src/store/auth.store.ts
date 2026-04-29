@@ -1,4 +1,4 @@
-// store/auth.store.ts
+import { queryClient } from '@/queries/queryClient';
 import { create, type StateCreator } from 'zustand';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
@@ -8,16 +8,21 @@ interface IInitialState {
   accessToken: string | null;
   refreshToken: string | null;
   refreshTokenExpiresAt: number | null;
-  userId: number | null;
   isAuthenticated: boolean;
+  isInitialized: boolean;
+  userId: number | null;
   isLoading: boolean;
   returnURL: string | null;
+}
+interface IJwtPayload {
+  user_id: number;
 }
 
 interface IActionsState {
   setTokens: (access: string, refresh: string) => void;
   setLoading: (value: boolean) => void;
   setReturnUrl: (url: string | null) => void;
+  setInitialized: () => void;
   logout: () => void;
 }
 
@@ -27,15 +32,12 @@ const initialState: IInitialState = {
   accessToken: null,
   refreshToken: null,
   refreshTokenExpiresAt: null,
-  userId: null,
   isAuthenticated: false,
+  isInitialized: false,
+  userId: null,
   isLoading: false,
   returnURL: null,
 };
-
-interface IJwtPayload {
-  user_id: number;
-}
 
 const authStore: StateCreator<
   IAuthState,
@@ -47,9 +49,11 @@ const authStore: StateCreator<
     set((state) => {
       const { user_id } = jwtDecode<IJwtPayload>(access);
       state.userId = Number(user_id);
+
       state.accessToken = access;
       state.refreshToken = refresh;
       state.isAuthenticated = true;
+
       state.isLoading = false;
       state.refreshTokenExpiresAt = Date.now() + 7 * 60 * 60 * 1000;
     }),
@@ -64,14 +68,19 @@ const authStore: StateCreator<
       state.returnURL = url;
     }),
 
+  setInitialized: () =>
+    set((state) => {
+      state.isInitialized = true;
+    }),
+
   logout: () =>
     set((state) => {
       state.accessToken = null;
       state.refreshToken = null;
       state.isAuthenticated = false;
       state.refreshTokenExpiresAt = null;
-      state.userId = null;
       state.returnURL = null;
+      queryClient.clear();
     }),
 });
 
@@ -85,7 +94,6 @@ export const useAuthStore = create<IAuthState>()(
           refreshToken: state.refreshToken,
           refreshTokenExpiresAt: state.refreshTokenExpiresAt,
           isAuthenticated: state.isAuthenticated,
-          userId: state.userId,
         }),
       })
     )
@@ -96,4 +104,5 @@ export const useIsAuthenticated = () => useAuthStore((s) => s.isAuthenticated);
 export const getAuthState = () => useAuthStore.getState();
 export const setTokens = (a: string, r: string) => useAuthStore.getState().setTokens(a, r);
 export const logout = () => useAuthStore.getState().logout();
-export const setLoading = (value: boolean)=> useAuthStore.getState().setLoading(value);
+export const setLoading = (value: boolean) => useAuthStore.getState().setLoading(value);
+export const setInitialized = () => useAuthStore.getState().setInitialized();

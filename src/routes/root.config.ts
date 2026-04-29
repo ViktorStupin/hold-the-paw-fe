@@ -25,6 +25,8 @@ export const PROTECTED_ROUTES_CONFIG: Record<string, string> = {
   [RoutePath.EditProfile]: 'Для редагування профілю потрібно бути авторизованим',
 };
 
+
+
 export const getPath = {
   editPetProfile: (id: number | string) => `/edit-pet-profile/${id}`,
   pet: (id: number | string) => `/pets/${id}`,
